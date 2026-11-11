@@ -1,0 +1,37 @@
+<section class="home-hero">
+  <div class="hero-inner">
+    <div class="eyebrow"><span class="status-dot"></span> Исследовательская платформа · фитохимия · вычислительная приоритизация</div>
+    <h1>От растительного сырья<br>к кандидатам для проверки</h1>
+    <p class="hero-copy">Herbarium AI объединяет сведения о растениях, соединениях и экспериментальных измерениях, чтобы исследователь мог изучать происхождение данных и формировать список кандидатов для дальнейшей проверки.</p>
+    <div class="row hero-actions"><a class="btn" routerLink="/plants">Исследовать растения <span>↗</span></a><a class="btn secondary" routerLink="/prediction">Оценить структуру</a><a class="text-link" routerLink="/methodology">Как работает платформа →</a></div>
+    <div class="hero-footnote">Поддержка исследовательского процесса · не диагностика и не медицинская рекомендация</div>
+  </div>
+  <div class="hero-art" aria-label="Схема исследовательского процесса"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orbit orbit-three"></div>
+    <div class="art-node node-plant"><span>01</span><b>Растение</b><small>сырьё</small></div><div class="art-node node-extract"><span>02</span><b>Экстракт</b><small>образец</small></div><div class="art-node node-molecule"><span>03</span><b>Соединение</b><small>структура</small></div><div class="art-core"><div class="core-mark">✳</div><b>Данные</b><small>→ приоритет</small></div><div class="art-caption">Связанные записи<br>с указанием источника</div>
+  </div>
+</section>
+<section class="page home-content">
+  <div class="section-heading"><div><div class="eyebrow">Состав каталога</div><h2>Отправная точка исследования</h2></div><p>Проследите путь от ботанической записи к химической структуре и доступным результатам исследований.</p></div>
+  <div class="stats-grid">
+    <article class="stat-card"><div class="stat-icon">✳</div><div><strong>{{plants()??'—'}}</strong><span>растений в каталоге</span></div><a routerLink="/plants">↗</a></article>
+    <article class="stat-card"><div class="stat-icon">⌬</div><div><strong>{{compounds()??'—'}}</strong><span>соединений в каталоге</span></div><a routerLink="/compounds">↗</a></article>
+    <article class="stat-card model-stat"><div class="stat-icon">AI</div><div><strong>AChE IC50</strong><span>локальный ML-baseline · exploratory</span></div><a routerLink="/methodology">↗</a></article>
+  </div>
+  <div class="section-heading workflow-heading"><div><div class="eyebrow">Исследовательский маршрут</div><h2>Проследите каждое звено</h2></div><p>Система показывает, что известно, откуда получены сведения и где остаются пробелы.</p></div>
+  <div class="workflow">
+    <article class="workflow-step"><span class="step-number">01</span><div class="step-glyph">♧</div><h3>Растение и образец</h3><p>Название, семейство, часть растения и происхождение — если эти сведения присутствуют в записи.</p><a routerLink="/plants">Открыть каталог →</a></article>
+    <article class="workflow-step"><span class="step-number">02</span><div class="step-glyph">⌬</div><h3>Соединение и источник</h3><p>Структура и связь с растением вместе с источником и статусом проверки записи.</p><a routerLink="/compounds">Изучить соединения →</a></article>
+    <article class="workflow-step"><span class="step-number">03</span><div class="step-glyph">▤</div><h3>Экспериментальные данные</h3><p>Результаты тестов с типом assay, единицами измерения и ссылкой на источник.</p><a routerLink="/methodology">Как читать данные →</a></article>
+    <article class="workflow-step"><span class="step-number">04</span><div class="step-glyph">✳</div><h3>AI-приоритизация</h3><p>Предварительная оценка одного типа активности — гипотеза для проверки, а не доказательство эффекта.</p><a routerLink="/prediction">Оценить кандидата →</a></article>
+  </div>
+  <section class="ai-panel"><div class="ai-copy"><div class="eyebrow">Искусственный интеллект · экспериментальный этап</div><h2>Что именно делает AI</h2><p>Ограниченный классификационный baseline оценивает активность по IC50 человеческой ацетилхолинэстеразы (AChE) и помогает упорядочить исследовательские приоритеты.</p><p>Модель обучена на 74 записях: 58 для обучения и 16 для случайной тестовой выборки. ROC-AUC 0,781 и PR-AUC 0,822 — предварительные метрики на небольшой выборке, не подтверждение эффективности.</p><a class="btn light" routerLink="/methodology">Методология и ограничения</a></div>
+    <div class="ai-score"><div class="score-label">Оценка на тестовой выборке</div><div class="score-number">0,781</div><div class="score-name">ROC-AUC · случайное разделение</div><div class="score-rule"></div><div class="score-caveat">74 записи<br>Без разделения по химическим каркасам</div><div class="score-tag">EXPLORATORY · НЕ КЛИНИЧЕСКИЙ ПРОГНОЗ</div></div>
+  </section>
+  <div class="evidence-heading"><div><div class="eyebrow">Интерпретация</div><h2>Различайте типы сведений</h2></div><a class="text-link" routerLink="/methodology">Методология →</a></div>
+  <div class="evidence-grid">
+    <article><span class="evidence-mark measured">●</span><div><h3>Экспериментальное измерение</h3><p>Результат конкретного теста с единицей и источником относится к описанному эксперименту.</p></div></article>
+    <article><span class="evidence-mark imported">◆</span><div><h3>Импортированная запись</h3><p>Происхождение указано; не все структуры и связи независимо проверены.</p></div></article>
+    <article><span class="evidence-mark predicted">✳</span><div><h3>Вычислительная оценка</h3><p>Результат модели содержит версию и предупреждения и требует экспериментальной проверки.</p></div></article>
+  </div>
+  <div class="notice home-notice"><strong>Область применения.</strong> Herbarium AI поддерживает исследовательскую работу с растительным сырьём и соединениями. Платформа не ставит диагноз, не подбирает лечение и не подтверждает эффективность или безопасность препаратов.</div>
+</section>

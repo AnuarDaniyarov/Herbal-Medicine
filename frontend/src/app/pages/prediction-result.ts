@@ -1,0 +1,3 @@
+import { Component, inject, signal } from '@angular/core';import { DecimalPipe, PercentPipe } from '@angular/common';import { ActivatedRoute, RouterLink } from '@angular/router';import { ApiService } from '../core/api.service';import { Prediction } from '../core/api.models';
+@Component({selector:'app-prediction-result',standalone:true,imports:[RouterLink, DecimalPipe, PercentPipe],templateUrl:'./prediction-result.html'})
+export class PredictionResultPage {private resultId=Number(inject(ActivatedRoute).snapshot.paramMap.get('id'));readonly result=signal<Prediction|null>(null);readonly error=signal('');constructor(){inject(ApiService).prediction(this.resultId).subscribe({next:r=>this.result.set(r),error:e=>this.error.set(e.error?.message||'Результат не найден')})}}

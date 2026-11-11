@@ -1,0 +1,2 @@
+ALTER TABLE compounds
+    ALTER COLUMN name TYPE VARCHAR(1000);

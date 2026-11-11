@@ -1,0 +1,8 @@
+<section class="page">
+  <div class="eyebrow">Растительное сырьё · каталог исследования</div><h1 class="page-title">Растения</h1><p class="lead">Найдите ботанические записи и проследите связанные образцы, экстракты и соединения. Доступные детали зависят от источника.</p>
+
+  <form class="toolbar" (submit)="$event.preventDefault(); search()"><label class="field">Название<input name="query" [(ngModel)]="query" placeholder="Например, Glycyrrhiza"></label><label class="field">Семейство<input name="family" [(ngModel)]="family" placeholder="Например, Fabaceae"></label><button class="btn">Найти</button></form>
+  @if (error()) { <div class="error">{{error()}}</div> } @if (loading()) { <p class="empty">Загрузка каталога…</p> }
+  @if (!loading() && result(); as data) { @if(data.content.length){<div class="grid">@for(plant of data.content;track plant.id){<a class="card data-card" [routerLink]="['/plants',plant.id]"><span class="badge">РАСТЕНИЕ</span><h3>{{plant.scientificName}}</h3><div>{{plant.displayName}}</div><p class="muted">{{plant.family||'Семейство не указано'}}</p></a>}</div>}@else{<div class="empty">По запросу ничего не найдено.</div>}
+  <div class="pager"><span>Всего: {{data.totalElements}}</span><div class="row"><button class="btn secondary" [disabled]="data.first" (click)="move(-1)">Назад</button><span>Страница {{data.page+1}} из {{data.totalPages||1}}</span><button class="btn secondary" [disabled]="data.last" (click)="move(1)">Далее</button></div></div> }
+</section>

@@ -1,0 +1,12 @@
+<header class="topbar">
+  <a class="brand" routerLink="/" aria-label="Herbarium AI — на главную"><span class="brand-mark">✳</span> Herbarium<span>AI</span></a>
+  <nav aria-label="Основная навигация">
+    <a class="nav-link" routerLink="/plants" routerLinkActive="active">Растения</a>
+    <a class="nav-link" routerLink="/compounds" routerLinkActive="active">Соединения</a>
+    <a class="nav-link" routerLink="/prediction" routerLinkActive="active">AI-оценка</a>
+    <a class="nav-link" routerLink="/comparison" routerLinkActive="active">Сравнение <span class="count">{{ selection.count() }}</span></a>
+    <a class="nav-link" routerLink="/methodology" routerLinkActive="active">Методология</a>
+  </nav>
+</header>
+<main class="app-main"><router-outlet /></main>
+<footer class="footer"><span>Herbarium AI · исследовательская платформа</span><a routerLink="/methodology">Методология и ограничения</a><span>Вычислительные оценки не являются медицинскими рекомендациями.</span></footer>
