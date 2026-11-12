@@ -1,1 +1,66 @@
-<section class="page">@if(error()){<div class="error">{{error()}}</div>}@if(plant();as p){<a routerLink="/plants">← К каталогу</a><div class="eyebrow" style="margin-top:30px">Растение</div><h1 class="page-title">{{p.scientificName}}</h1><p class="lead">{{p.displayName}} · {{p.family||'семейство не указано'}}</p><p>{{p.description||'Описание растения в источнике не предоставлено.'}}</p><h2>Образцы</h2>@if(samples().length){<div class="grid">@for(s of samples();track s.id){<article class="card shadow-sm"><b>{{s.plantPart||'Часть не указана'}}</b><p class="muted">{{s.origin||'Происхождение не указано'}} · партия {{s.batchIdentifier||'—'}}</p>@for(e of (extractsBySample()[s.id]||[]);track e.id){<div class="muted">Экстракт: {{e.extractionMethod||'метод не указан'}} · {{e.solvent||'растворитель не указан'}} · партия {{e.batchIdentifier||'—'}}</div>}</article>}</div>}@else{<p class="muted">Связанные образцы в каталоге не указаны.</p>}<h2>Связанные соединения</h2><div class="grid">@for(c of compounds();track c.id){<a class="card data-card" [routerLink]="['/compounds',c.id]"><h3>{{c.name}}</h3><p class="smiles">{{c.canonicalSmiles}}</p></a>}</div>}</section>
+<section class="page">
+  @if (error()) { <div class="error" role="alert">{{error()}}</div> }
+  @if (notice()) { <div class="success" role="status">{{notice()}}</div> }
+  @if (plant(); as p) {
+    <a routerLink="/plants">← К каталогу растений</a>
+    <div class="eyebrow" style="margin-top: 30px">Растение</div>
+    <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+      <h1 class="page-title" style="margin-bottom: 0;">{{p.scientificName}}</h1>
+      <button class="btn secondary" (click)="toggleFavorite()">
+        {{isFavorite() ? '★ В избранном' : '☆ В избранное'}}
+      </button>
+    </div>
+    <p class="lead">{{p.displayName}} · {{p.family || 'Семейство не указано'}}</p>
+    @if (p.nameRu || p.nameKk || p.synonyms) { <p><b>Названия:</b> {{p.nameRu || p.displayName}} · {{p.nameKk || 'Қазақша атауы белгісіз'}} · {{p.synonyms || 'синонимы не указаны'}}</p> }
+    @if (p.distributionRegions || p.usedParts) { <p><b>Регионы:</b> {{p.distributionRegions || 'не указаны'}} · <b>Используемые части:</b> {{p.usedParts || 'не указаны'}}</p> }
+    <span class="badge">Статус записи: {{p.reviewStatus}}</span>
+    <p>{{p.description || 'Описание растения в источнике не предоставлено.'}}</p>
+
+    <h2>Сведения, прошедшие экспертную проверку</h2>
+    @if (claims().length) {
+      <div class="claim-list">
+        @for (claim of claims(); track claim.id) {
+          <article class="claim-card">
+            <span class="badge">{{claim.claimType}}</span>
+            <h3>{{claim.title}}</h3>
+            <p>{{claim.claimText}}</p>
+            @if (claim.interactionPartner) { <p><b>Связанный фактор:</b> {{claim.interactionPartner}}</p> }
+            <div class="source-box">
+              <strong>Источник: {{claim.source.title}}</strong>
+              @if (claim.source.authors) { <span>{{claim.source.authors}}</span> }
+              @if (claim.source.doi) { <a [href]="'https://doi.org/' + claim.source.doi" target="_blank" rel="noopener">DOI: {{claim.source.doi}}</a> }
+              @else if (claim.source.url) { <a [href]="claim.source.url" target="_blank" rel="noopener">Открыть источник</a> }
+              @if (claim.sourceLocator) { <span>Место в источнике: {{claim.sourceLocator}}</span> }
+            </div>
+          </article>
+        }
+      </div>
+    } @else {
+      <p class="notice">В базе пока нет утверждённых экспертами показаний, противопоказаний или сведений о взаимодействиях для этой записи. Отсутствие сведений не означает отсутствие риска.</p>
+    }
+
+    <h2>Образцы и экстракты</h2>
+    @if (samples().length) {
+      <div class="grid">
+        @for (sample of samples(); track sample.id) {
+          <article class="card shadow-sm">
+            <b>{{sample.plantPart || 'Часть растения не указана'}}</b>
+            <p class="muted">{{sample.origin || 'Происхождение не указано'}} · партия {{sample.batchIdentifier || '—'}}</p>
+            @for (extract of (extractsBySample()[sample.id] || []); track extract.id) {
+              <div class="muted">Экстракт: {{extract.extractionMethod || 'метод не указан'}} · {{extract.solvent || 'растворитель не указан'}} · партия {{extract.batchIdentifier || '—'}}</div>
+            }
+          </article>
+        }
+      </div>
+    } @else { <p class="muted">Связанные образцы в каталоге не указаны.</p> }
+
+    <h2>Связанные соединения</h2>
+    <div class="grid">
+      @for (compound of compounds(); track compound.id) {
+        <a class="card data-card" [routerLink]="['/compounds', compound.id]"><h3>{{compound.name}}</h3><p class="smiles">{{compound.canonicalSmiles}}</p></a>
+      }
+    </div>
+    @if (!compounds().length) { <p class="muted">Связанные соединения не указаны.</p> }
+    <p class="notice">Справочная информация для исследовательских целей. Она не является назначением врача и не подтверждает эффективность или безопасность лечения.</p>
+  }
+</section>

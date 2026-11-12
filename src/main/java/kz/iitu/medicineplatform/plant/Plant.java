@@ -31,6 +31,24 @@ public class Plant {
     @Column(columnDefinition = "text")
     private String description;
 
+    @Column(name = "name_ru", length = 250)
+    private String nameRu;
+
+    @Column(name = "name_kk", length = 250)
+    private String nameKk;
+
+    @Column(columnDefinition = "text")
+    private String synonyms;
+
+    @Column(name = "distribution_regions", columnDefinition = "text")
+    private String distributionRegions;
+
+    @Column(name = "used_parts", columnDefinition = "text")
+    private String usedParts;
+
+    @Column(name = "review_status", nullable = false, length = 30)
+    private String reviewStatus = "UNVERIFIED";
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private OffsetDateTime createdAt;
 
@@ -47,11 +65,28 @@ public class Plant {
         this.description = description;
     }
 
+    public Plant(String scientificName, String displayName, String family, String description, String nameRu,
+                 String nameKk, String synonyms, String distributionRegions, String usedParts, String reviewStatus) {
+        this(scientificName, displayName, family, description);
+        this.nameRu = nameRu;
+        this.nameKk = nameKk;
+        this.synonyms = synonyms;
+        this.distributionRegions = distributionRegions;
+        this.usedParts = usedParts;
+        this.reviewStatus = reviewStatus == null ? "UNVERIFIED" : reviewStatus;
+    }
+
     public Long getId() { return id; }
     public String getScientificName() { return scientificName; }
     public String getDisplayName() { return displayName; }
     public String getFamily() { return family; }
     public String getDescription() { return description; }
+    public String getNameRu() { return nameRu; }
+    public String getNameKk() { return nameKk; }
+    public String getSynonyms() { return synonyms; }
+    public String getDistributionRegions() { return distributionRegions; }
+    public String getUsedParts() { return usedParts; }
+    public String getReviewStatus() { return reviewStatus; }
     public OffsetDateTime getCreatedAt() { return createdAt; }
     public OffsetDateTime getUpdatedAt() { return updatedAt; }
 

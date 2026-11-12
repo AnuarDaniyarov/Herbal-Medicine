@@ -1,0 +1,15 @@
+<section class="page">
+  <div class="eyebrow">Панель администратора</div><h1 class="page-title">Пользователи и роли</h1>
+  <p class="lead">Администратор назначает роли исследователя и эксперта. Регистрация самостоятельно создаёт только обычный пользовательский аккаунт.</p>
+  @if (error()) { <div class="error" role="alert">{{error()}}</div> }
+  @if (!result() && !error()) { <div class="empty">Загрузка аккаунтов…</div> }
+  @if (result(); as page) {
+    @if (page.content.length) {
+      <div class="table-wrap"><table><thead><tr><th>Пользователь</th><th>Почта</th><th>Роль</th><th>Создан</th></tr></thead><tbody>
+        @for (user of page.content; track user.id) {
+          <tr><td>{{user.displayName}}</td><td>{{user.email}}</td><td><select class="form-select role-select" [value]="user.role" [disabled]="savingId() === user.id" (change)="updateRole(user, $any($event.target).value)">@for (role of roles; track role) { <option [value]="role">{{role}}</option> }</select></td><td>{{user.createdAt | date:'short'}}</td></tr>
+        }
+      </tbody></table></div>
+    } @else { <div class="empty">Аккаунтов пока нет.</div> }
+  }
+</section>

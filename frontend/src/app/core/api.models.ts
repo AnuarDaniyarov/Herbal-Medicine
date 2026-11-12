@@ -14,6 +14,12 @@ export interface Plant {
   displayName: string;
   family?: string | null;
   description?: string | null;
+  nameRu?: string | null;
+  nameKk?: string | null;
+  synonyms?: string | null;
+  distributionRegions?: string | null;
+  usedParts?: string | null;
+  reviewStatus: ReviewStatus;
   createdAt: string;
   updatedAt: string;
 }
@@ -28,6 +34,7 @@ export interface PlantSample {
   collectedOn?: string | null;
   metadata?: string | null;
   createdAt: string;
+  extracts?: Extract[];
 }
 
 export interface Extract {
@@ -167,4 +174,129 @@ export interface ApiError {
   message: string;
   path: string;
   fieldErrors: { field: string; message: string }[];
+}
+
+export type UserRole = 'USER' | 'EXPERT' | 'ADMIN';
+
+export interface UserAccountView {
+  id: number;
+  email: string;
+  displayName: string;
+  role: UserRole;
+  createdAt: string;
+}
+
+export interface RegisterRequest {
+  email: string;
+  displayName: string;
+  password: string;
+}
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export type ClaimType = 'INDICATION' | 'CONTRAINDICATION' | 'INTERACTION';
+export type ReviewStatus = 'UNVERIFIED' | 'PENDING' | 'VERIFIED' | 'REJECTED';
+
+export interface KnowledgeClaim {
+  id: number;
+  plantId?: number | null;
+  plantName?: string | null;
+  preparationId?: number | null;
+  preparationName?: string | null;
+  claimType: ClaimType;
+  title: string;
+  claimText: string;
+  interactionPartner?: string | null;
+  reviewStatus: ReviewStatus;
+  source: Source;
+  sourceLocator?: string | null;
+  reviewedAt?: string | null;
+}
+
+export interface ClaimReviewRequest {
+  reviewStatus: 'VERIFIED' | 'REJECTED';
+  reviewNote?: string;
+}
+
+export interface CreateSourceRequest {
+  title: string;
+  authors?: string | null;
+  publicationYear?: number | null;
+  doi?: string | null;
+  url?: string | null;
+  sourceType: 'ARTICLE' | 'REGISTRY' | 'MONOGRAPH' | 'DATASET' | 'OTHER';
+  licenseNote?: string | null;
+}
+
+export interface AssistantRequest {
+  question: string;
+  conversationId?: number;
+}
+
+export interface AssistantCitation {
+  claimId: number;
+  title: string;
+  claimText: string;
+  subject?: string | null;
+  sourceLocator?: string | null;
+  source: Source;
+}
+
+export interface AssistantResponse {
+  conversationId: number;
+  answer: string;
+  status: 'SAFETY_REDIRECT' | 'NO_EVIDENCE' | 'EVIDENCE_FOUND';
+  answerMode: string;
+  isAiGenerated: boolean;
+  safetyNotice: string;
+  citations: AssistantCitation[];
+}
+
+export interface AssistantHistoryEntry {
+  conversationId: number;
+  updatedAt: string;
+  lastQuestion?: string | null;
+  lastAnswer?: string | null;
+  lastStatus?: string | null;
+}
+
+export interface Preparation {
+  id: number;
+  name: string;
+  dosageForm?: string | null;
+  manufacturer?: string | null;
+  registrationNumber?: string | null;
+  registrationCountry?: string | null;
+  description?: string | null;
+  reviewStatus: ReviewStatus;
+  source: Source;
+}
+
+export interface PreparationIngredient {
+  id: number;
+  ingredientName?: string | null;
+  quantity?: string | null;
+  plant?: Plant | null;
+  compound?: CompoundSummary | null;
+  reviewStatus: ReviewStatus;
+  source: Source;
+}
+
+export interface FavoriteItem {
+  id: number;
+  type: 'PLANT' | 'COMPOUND' | 'PREPARATION';
+  targetId: number;
+  title: string;
+  subtitle?: string | null;
+  route: string;
+  createdAt: string;
+}
+
+export interface AddFavoriteRequest {
+  plantId?: number | null;
+  compoundId?: number | null;
+  preparationId?: number | null;
 }

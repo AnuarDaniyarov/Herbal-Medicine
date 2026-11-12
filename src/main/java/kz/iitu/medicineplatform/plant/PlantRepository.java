@@ -13,6 +13,9 @@ public interface PlantRepository extends JpaRepository<Plant, Long> {
             where (:query = ''
                or lower(p.scientificName) like lower(concat('%', :query, '%'))
                or lower(p.displayName) like lower(concat('%', :query, '%'))
+               or lower(coalesce(p.nameRu, '')) like lower(concat('%', :query, '%'))
+               or lower(coalesce(p.nameKk, '')) like lower(concat('%', :query, '%'))
+               or lower(coalesce(p.synonyms, '')) like lower(concat('%', :query, '%'))
                or lower(coalesce(p.family, '')) like lower(concat('%', :query, '%')))
               and (:family = '' or lower(p.family) like lower(concat('%', :family, '%')))
             """)

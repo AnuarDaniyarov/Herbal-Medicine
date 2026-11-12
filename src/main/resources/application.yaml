@@ -4,7 +4,7 @@ spring:
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/medicine_platform}
     username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:}
+    password: ${DB_PASSWORD:1006}
   jpa:
     hibernate:
       ddl-auto: validate
@@ -39,7 +39,17 @@ springdoc:
   swagger-ui:
     path: /swagger-ui.html
 
+assistant:
+  llm:
+    enabled: ${ASSISTANT_LLM_ENABLED:false}
+    base-url: ${ASSISTANT_LLM_BASE_URL:}
+    model: ${ASSISTANT_LLM_MODEL:local-model}
+    api-key: ${ASSISTANT_LLM_API_KEY:}
+
 app:
+  security:
+    bootstrap-admin-email: ${BOOTSTRAP_ADMIN_EMAIL:}
+    bootstrap-admin-password: ${BOOTSTRAP_ADMIN_PASSWORD:}
   prediction:
     model-path: ${APP_MODEL_PATH:./data/processed/ache-baseline-model.json}
   cors:

@@ -1,0 +1,44 @@
+<section class="page">
+  <div class="eyebrow">Лекарственные средства · каталог препаратов</div>
+  <h1 class="page-title">Препараты</h1>
+  <p class="lead">Каталог готовых лекарственных средств и фитопрепаратов с проверенным составом, производителями и источниками регистрации.</p>
+
+  <form class="toolbar" (submit)="$event.preventDefault(); search()">
+    <label class="field">Название или регистрационный номер
+      <input name="query" [(ngModel)]="query" placeholder="Например, Экстракт валерианы">
+    </label>
+    <label class="field">Форма выпуска
+      <input name="dosageForm" [(ngModel)]="dosageForm" placeholder="Например, Таблетки, Настойка">
+    </label>
+    <button class="btn">Найти</button>
+  </form>
+
+  @if (error()) { <div class="error" role="alert">{{error()}}</div> }
+  @if (loading()) { <p class="empty">Загрузка каталога препаратов…</p> }
+
+  @if (!loading() && result(); as data) {
+    @if (data.content.length) {
+      <div class="grid">
+        @for (prep of data.content; track prep.id) {
+          <a class="card data-card" [routerLink]="['/preparations', prep.id]">
+            <span class="badge">ПРЕПАРАТ · {{prep.reviewStatus}}</span>
+            <h3>{{prep.name}}</h3>
+            <div>{{prep.dosageForm || 'Форма выпуска не указана'}}</div>
+            <p class="muted">{{prep.manufacturer || 'Производитель не указан'}} @if (prep.registrationNumber) { · Рег. № {{prep.registrationNumber}} }</p>
+          </a>
+        }
+      </div>
+    } @else {
+      <div class="empty">По заданным критериям препаратов не найдено.</div>
+    }
+
+    <div class="pager">
+      <span>Всего: {{data.totalElements}}</span>
+      <div class="row">
+        <button class="btn secondary" [disabled]="data.first" (click)="move(-1)">Назад</button>
+        <span>Страница {{data.page + 1}} из {{data.totalPages || 1}}</span>
+        <button class="btn secondary" [disabled]="data.last" (click)="move(1)">Далее</button>
+      </div>
+    </div>
+  }
+</section>

@@ -1,0 +1,37 @@
+<section class="page">
+  <div class="eyebrow">Личный кабинет · закладки</div>
+  <h1 class="page-title">Избранное</h1>
+  <p class="lead">Сохранённые растения, препараты и химические соединения для быстрого доступа и анализа.</p>
+
+  @if (notice()) { <div class="success" role="status">{{notice()}}</div> }
+  @if (error()) {
+    <div class="error" role="alert">
+      {{error()}} @if (!authApi.currentAccount()) { <a routerLink="/login">Войти</a> }
+    </div>
+  }
+
+  @if (loading()) { <p class="empty">Загрузка избранного…</p> }
+
+  @if (!loading() && authApi.currentAccount()) {
+    @if (items().length) {
+      <div class="grid">
+        @for (item of items(); track item.id) {
+          <article class="card data-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <span class="badge">{{item.type}}</span>
+              <h3><a [routerLink]="item.route">{{item.title}}</a></h3>
+              @if (item.subtitle) { <p class="muted">{{item.subtitle}}</p> }
+              <small class="muted">Сохранено: {{item.createdAt | date:'short'}}</small>
+            </div>
+            <div style="margin-top: 16px; display: flex; gap: 8px;">
+              <a class="btn secondary" [routerLink]="item.route">Открыть</a>
+              <button class="btn btn-outline-danger" (click)="remove(item)">Удалить</button>
+            </div>
+          </article>
+        }
+      </div>
+    } @else {
+      <div class="empty">У вас пока нет сохранённых записей. Нажмите «☆ В избранное» на карточке любого растения, препарата или соединения.</div>
+    }
+  }
+</section>

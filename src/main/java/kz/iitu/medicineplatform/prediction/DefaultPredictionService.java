@@ -8,17 +8,17 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
-public class StubPredictionService implements PredictionService {
+public class DefaultPredictionService implements PredictionService {
 
     private final PredictionRepository predictions;
     private final ModelVersionRepository modelVersions;
     private final CompoundRepository compounds;
     private final PredictionProvider provider;
 
-    public StubPredictionService(PredictionRepository predictions,
-                                 ModelVersionRepository modelVersions,
-                                 CompoundRepository compounds,
-                                 PredictionProvider provider) {
+    public DefaultPredictionService(PredictionRepository predictions,
+                                   ModelVersionRepository modelVersions,
+                                   CompoundRepository compounds,
+                                   PredictionProvider provider) {
         this.predictions = predictions;
         this.modelVersions = modelVersions;
         this.compounds = compounds;

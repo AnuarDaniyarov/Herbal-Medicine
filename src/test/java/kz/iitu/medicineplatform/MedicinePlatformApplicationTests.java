@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import kz.iitu.medicineplatform.activity.ActivityMeasurement;
@@ -31,6 +32,21 @@ import kz.iitu.medicineplatform.prediction.ModelVersionRepository;
 import kz.iitu.medicineplatform.prediction.ModelVersion;
 import kz.iitu.medicineplatform.source.DataSource;
 import kz.iitu.medicineplatform.source.DataSourceRepository;
+import kz.iitu.medicineplatform.knowledge.ClaimType;
+import kz.iitu.medicineplatform.knowledge.KnowledgeClaim;
+import kz.iitu.medicineplatform.knowledge.KnowledgeClaimRepository;
+import kz.iitu.medicineplatform.knowledge.ReviewStatus;
+import kz.iitu.medicineplatform.auth.UserAccount;
+import kz.iitu.medicineplatform.auth.UserAccountRepository;
+import kz.iitu.medicineplatform.auth.UserRole;
+import kz.iitu.medicineplatform.assistant.AssistantConversationRepository;
+import kz.iitu.medicineplatform.assistant.AssistantMessageRepository;
+import kz.iitu.medicineplatform.assistant.AssistantMessageSourceRepository;
+import kz.iitu.medicineplatform.assistant.AssistantRequest;
+import kz.iitu.medicineplatform.assistant.AssistantService;
+import kz.iitu.medicineplatform.preparation.Preparation;
+import kz.iitu.medicineplatform.preparation.PreparationRepository;
+import kz.iitu.medicineplatform.preparation.PreparationIngredientRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,14 +94,96 @@ class MedicinePlatformApplicationTests {
     @Autowired
     private ModelVersionRepository modelVersions;
 
+    @Autowired
+    private KnowledgeClaimRepository knowledgeClaims;
+
+    @Autowired
+    private PreparationRepository preparations;
+
+    @Autowired
+    private PreparationIngredientRepository preparationIngredients;
+
+    @Autowired
+    private AssistantConversationRepository assistantConversations;
+
+    @Autowired
+    private AssistantMessageRepository assistantMessages;
+
+    @Autowired
+    private AssistantMessageSourceRepository assistantMessageSources;
+
+    @Autowired
+    private UserAccountRepository userAccounts;
+
+    @Autowired
+    private AssistantService assistantService;
+
     @BeforeEach
     void clearDatabase() {
+        assistantMessageSources.deleteAll();
+        assistantMessages.deleteAll();
+        assistantConversations.deleteAll();
+        knowledgeClaims.deleteAll();
+        preparationIngredients.deleteAll();
+        preparations.deleteAll();
         predictions.deleteAll();
         measurements.deleteAll();
         relationships.deleteAll();
         compounds.deleteAll();
         plants.deleteAll();
         sources.deleteAll();
+    }
+
+    @Test
+    void assistantRetrievesOnlyVerifiedClaimsAndReturnsTheirSources() {
+        Plant plant = plants.save(new Plant("Assistant species", "Assistant plant", null, null));
+        DataSource source = sources.save(new DataSource("Verified research paper", "Research group", 2025,
+                "10.0000/assistant", "https://example.org/assistant", "ARTICLE", OffsetDateTime.now(ZoneOffset.UTC)));
+        var claim = knowledgeClaims.save(new KnowledgeClaim(plant, null, ClaimType.INDICATION,
+                "Research topic evidence", "This verified statement discusses the research topic in a laboratory assay.",
+                null, source, "p. 4", null));
+        claim.review(null, ReviewStatus.VERIFIED, null);
+        knowledgeClaims.save(claim);
+        UserAccount user = userAccounts.save(new UserAccount("assistant-" + UUID.randomUUID() + "@example.test", "Assistant Test",
+                "not-a-real-login-hash", UserRole.USER));
+
+        var response = assistantService.ask(new AssistantRequest("research topic", null), user);
+
+        assertEquals("EVIDENCE_FOUND", response.status());
+        assertEquals("SOURCE_EXTRACTIVE", response.answerMode());
+        assertTrue(!response.isAiGenerated());
+        assertEquals(1, response.citations().size());
+        assertEquals("Verified research paper", response.citations().getFirst().source().title());
+    }
+
+    @Test
+    void unverifiedPreparationsNeverAppearInPublicCatalogOrDetails() throws Exception {
+        DataSource source = sources.save(new DataSource("Registry source", "Agency", 2025,
+                "10.0000/registry", "https://example.org/registry", "REGISTRY", OffsetDateTime.now(ZoneOffset.UTC)));
+        Preparation preparation = preparations.save(new Preparation("Unreviewed product", "capsule",
+                "Example manufacturer", "REG-TEST", "KZ", "Unverified fixture", source));
+
+        mockMvc.perform(get("/api/preparations"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content.length()").value(0));
+        mockMvc.perform(get("/api/preparations/{id}", preparation.getId()))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void unreviewedClaimsStayOutOfPublicKnowledgeEndpointAndExpertQueueIsProtected() throws Exception {
+        Plant plant = plants.save(new Plant("Review species", "Review plant", null, null));
+        DataSource source = sources.save(new DataSource("Source for review", "Researcher", 2025,
+                "10.0000/review", "https://example.org/review", "ARTICLE", OffsetDateTime.now(ZoneOffset.UTC)));
+        knowledgeClaims.save(new KnowledgeClaim(plant, null, ClaimType.INDICATION,
+                "Research finding", "A source-backed research statement.", null, source, "p. 12", null));
+
+        mockMvc.perform(get("/api/expert/claims/queue"))
+                .andExpect(status().isUnauthorized());
+
+        mockMvc.perform(get("/api/knowledge/claims").param("plantId", plant.getId().toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content.length()").value(0));
     }
 
     @Test

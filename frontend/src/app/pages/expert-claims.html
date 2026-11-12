@@ -1,0 +1,37 @@
+<section class="page">
+  <div class="eyebrow">Экспертная панель</div>
+  <h1 class="page-title">Проверка сведений</h1>
+  <p class="lead">Перед публикацией проверьте формулировку и первоисточник. В основной каталог попадают только утверждённые сведения.</p>
+  @if (notice()) { <div class="success" role="status">{{notice()}}</div> }
+  @if (error()) { <div class="error" role="alert">{{error()}}</div> }
+  @if (!result() && !error()) { <div class="empty">Загрузка очереди…</div> }
+  @if (result(); as page) {
+    @if (page.content.length) {
+      <div class="claim-list">
+        @for (claim of page.content; track claim.id) {
+          <article class="claim-card">
+            <div class="claim-head">
+              <span class="badge">{{claim.claimType}}</span>
+              <span class="badge badge-muted">{{claim.reviewStatus}}</span>
+              <span class="claim-date">{{claim.source.publicationYear || 'Год не указан'}}</span>
+            </div>
+            <h2>{{claim.title}}</h2>
+            <p>{{claim.claimText}}</p>
+            <p class="claim-subject">{{claim.plantName || claim.preparationName}} @if (claim.interactionPartner) { · Взаимодействие: {{claim.interactionPartner}} }</p>
+            <div class="source-box">
+              <strong>Источник: {{claim.source.title}}</strong>
+              @if (claim.source.authors) { <span>{{claim.source.authors}}</span> }
+              @if (claim.source.doi) { <a [href]="'https://doi.org/' + claim.source.doi" target="_blank" rel="noopener">DOI: {{claim.source.doi}}</a> }
+              @else if (claim.source.url) { <a [href]="claim.source.url" target="_blank" rel="noopener">Открыть источник</a> }
+              @if (claim.sourceLocator) { <span>Фрагмент/страница: {{claim.sourceLocator}}</span> }
+            </div>
+            <div class="claim-actions">
+              <button class="btn btn-primary" [disabled]="savingId() === claim.id" (click)="review(claim, 'VERIFIED')">Утвердить</button>
+              <button class="btn btn-outline-danger" [disabled]="savingId() === claim.id" (click)="review(claim, 'REJECTED')">Отклонить</button>
+            </div>
+          </article>
+        }
+      </div>
+    } @else { <div class="empty">Непроверенных сведений нет.</div> }
+  }
+</section>

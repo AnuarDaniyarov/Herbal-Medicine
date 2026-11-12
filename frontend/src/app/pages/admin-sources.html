@@ -1,0 +1,33 @@
+<section class="page">
+  <div class="eyebrow">Администрирование базы</div>
+  <h1 class="page-title">Источники данных</h1>
+  <p class="lead">Регистрируйте публикации, реестры и монографии до добавления фактов. Для каждого утверждения затем выбирается конкретный источник и место в нём.</p>
+
+  <form class="card source-form" [formGroup]="form" (ngSubmit)="submit()">
+    <h2>Добавить источник</h2>
+    <label class="field">Название <input formControlName="title" maxlength="1000"></label>
+    <div class="source-fields">
+      <label class="field">Авторы <input formControlName="authors" maxlength="1000"></label>
+      <label class="field">Год публикации <input type="number" formControlName="publicationYear" min="1500" max="2100"></label>
+      <label class="field">Тип <select formControlName="sourceType"><option value="ARTICLE">Статья</option><option value="REGISTRY">Реестр</option><option value="MONOGRAPH">Монография</option><option value="DATASET">Набор данных</option><option value="OTHER">Другое</option></select></label>
+      <label class="field">DOI <input formControlName="doi" maxlength="300" placeholder="10.xxxx/... "></label>
+      <label class="field">URL <input type="url" formControlName="url" maxlength="2000" placeholder="https://..."></label>
+    </div>
+    <label class="field">Лицензия и условия использования <textarea formControlName="licenseNote" rows="3" maxlength="5000"></textarea></label>
+    @if (error()) { <div class="error" role="alert">{{error()}}</div> }
+    @if (notice()) { <div class="success" role="status">{{notice()}}</div> }
+    <button class="btn" type="submit" [disabled]="saving()">{{saving() ? 'Сохраняем…' : 'Добавить источник'}}</button>
+  </form>
+
+  <h2>Зарегистрированные источники</h2>
+  @if (!result() && !error()) { <div class="empty">Загрузка…</div> }
+  @if (result(); as page) {
+    @if (page.content.length) {
+      <div class="table-wrap"><table><thead><tr><th>ID</th><th>Источник</th><th>Тип</th><th>DOI / URL</th><th>Лицензия</th></tr></thead><tbody>
+        @for (source of page.content; track source.id) {
+          <tr><td>{{source.id}}</td><td>{{source.title}}<div class="muted">{{source.authors || ''}} {{source.publicationYear || ''}}</div></td><td>{{source.sourceType}}</td><td>@if (source.doi) { <a [href]="'https://doi.org/' + source.doi" target="_blank" rel="noopener">{{source.doi}}</a> } @else if (source.url) { <a [href]="source.url" target="_blank" rel="noopener">Открыть</a> }</td><td>{{source.licenseNote || 'Условия не указаны'}}</td></tr>
+        }
+      </tbody></table></div>
+    } @else { <div class="empty">Источников пока нет.</div> }
+  }
+</section>

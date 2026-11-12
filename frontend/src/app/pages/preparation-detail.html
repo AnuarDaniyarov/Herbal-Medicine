@@ -1,0 +1,76 @@
+<section class="page">
+  @if (error()) { <div class="error" role="alert">{{error()}}</div> }
+  @if (notice()) { <div class="success" role="status">{{notice()}}</div> }
+
+  @if (preparation(); as p) {
+    <a routerLink="/preparations">← К каталогу препаратов</a>
+    <div class="eyebrow" style="margin-top: 30px">Препарат · Лекарственная форма</div>
+
+    <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+      <h1 class="page-title" style="margin-bottom: 0;">{{p.name}}</h1>
+      <button class="btn secondary" (click)="toggleFavorite()">
+        {{isFavorite() ? '★ В избранном' : '☆ В избранное'}}
+      </button>
+    </div>
+
+    <p class="lead">{{p.dosageForm || 'Форма выпуска не указана'}} · {{p.manufacturer || 'Производитель не указан'}}</p>
+
+    <div class="card shadow-sm" style="margin-bottom: 24px;">
+      <p><b>Регистрационный номер:</b> {{p.registrationNumber || 'не указан'}} · <b>Страна регистрации:</b> {{p.registrationCountry || 'не указана'}}</p>
+      <span class="badge">Статус проверки: {{p.reviewStatus}}</span>
+      <p>{{p.description || 'Описание препарата в регистрационных данных не заполнено.'}}</p>
+      <div class="source-box">
+        <strong>Источник регистрации: {{p.source.title}}</strong>
+        @if (p.source.authors) { <span>{{p.source.authors}}</span> }
+        @if (p.source.doi) { <a [href]="'https://doi.org/' + p.source.doi" target="_blank" rel="noopener">DOI: {{p.source.doi}}</a> }
+        @else if (p.source.url) { <a [href]="p.source.url" target="_blank" rel="noopener">Открыть первоисточник</a> }
+      </div>
+    </div>
+
+    <h2>Состав препарата (ингредиенты)</h2>
+    @if (ingredients().length) {
+      <div class="grid">
+        @for (ing of ingredients(); track ing.id) {
+          <article class="card data-card">
+            <span class="badge">ИНГРЕДИЕНТ · {{ing.reviewStatus}}</span>
+            <h3>{{ing.ingredientName || (ing.plant ? ing.plant.displayName : ing.compound?.name)}}</h3>
+            @if (ing.quantity) { <p><b>Дозировка / количество:</b> {{ing.quantity}}</p> }
+            @if (ing.plant) {
+              <p><b>Связанное растение:</b> <a [routerLink]="['/plants', ing.plant.id]">{{ing.plant.scientificName}} ({{ing.plant.displayName}})</a></p>
+            }
+            @if (ing.compound) {
+              <p><b>Связанное вещество:</b> <a [routerLink]="['/compounds', ing.compound.id]">{{ing.compound.name}}</a></p>
+            }
+            <div class="muted">Источник: {{ing.source.title}}</div>
+          </article>
+        }
+      </div>
+    } @else {
+      <p class="notice">Состав и дозировки компонентов ещё не привязаны или находятся на проверке.</p>
+    }
+
+    <h2>Сведения, прошедшие экспертную проверку</h2>
+    @if (claims().length) {
+      <div class="claim-list">
+        @for (claim of claims(); track claim.id) {
+          <article class="claim-card">
+            <span class="badge">{{claim.claimType}}</span>
+            <h3>{{claim.title}}</h3>
+            <p>{{claim.claimText}}</p>
+            @if (claim.interactionPartner) { <p><b>Связанный фактор:</b> {{claim.interactionPartner}}</p> }
+            <div class="source-box">
+              <strong>Источник: {{claim.source.title}}</strong>
+              @if (claim.source.doi) { <a [href]="'https://doi.org/' + claim.source.doi" target="_blank" rel="noopener">DOI: {{claim.source.doi}}</a> }
+              @else if (claim.source.url) { <a [href]="claim.source.url" target="_blank" rel="noopener">Открыть источник</a> }
+              @if (claim.sourceLocator) { <span>Место в источнике: {{claim.sourceLocator}}</span> }
+            </div>
+          </article>
+        }
+      </div>
+    } @else {
+      <p class="notice">В базе пока нет утверждённых экспертами показаний или противопоказаний для этой карточки препарата. Отсутствие записи не означает отсутствие противопоказаний.</p>
+    }
+
+    <p class="notice">Справочная информация для исследовательских целей. Она не является назначением врача и не подтверждает эффективность или безопасность самостоятельного применения препарата.</p>
+  }
+</section>

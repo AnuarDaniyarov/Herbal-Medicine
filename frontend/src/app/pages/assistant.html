@@ -1,0 +1,56 @@
+<section class="page">
+  <div class="eyebrow">Справочный помощник</div>
+  <h1 class="page-title">Поиск по проверенной базе</h1>
+  <p class="lead">Помощник находит экспертно утверждённые сведения и показывает источники. Он не назначает лечение и не заменяет консультацию специалиста.</p>
+  <div class="notice">Текущая версия использует поиск по словам и дословные сведения из базы. Генеративная языковая модель пока не подключена.</div>
+
+  @if (account() && history().length) {
+    <section class="assistant-history">
+      <h2>Последние запросы</h2>
+      @for (entry of history(); track entry.conversationId) {
+        <article class="card history-card">
+          <small>{{entry.updatedAt | date:'short'}}</small>
+          <b>{{entry.lastQuestion}}</b>
+          <p>{{entry.lastAnswer}}</p>
+          <span class="badge">{{entry.lastStatus}}</span>
+        </article>
+      }
+    </section>
+  }
+
+  <div class="assistant-thread" aria-live="polite">
+    @for (item of responses(); track item.response.conversationId + '-' + $index) {
+      <article class="assistant-turn">
+        <div class="user-question"><b>Ваш вопрос</b><p>{{item.question}}</p></div>
+        <div class="assistant-answer">
+          <b>Ответ · {{item.response.answerMode}}</b>
+          <p>{{item.response.answer}}</p>
+          @if (item.response.status === 'SAFETY_REDIRECT') { <div class="notice">{{item.response.safetyNotice}}</div> }
+          @if (item.response.citations.length) {
+            <h3>Найденные фрагменты и источники</h3>
+            @for (citation of item.response.citations; track citation.claimId) {
+              <div class="source-box">
+                <strong>{{citation.subject}} · {{citation.title}}</strong>
+                <span>{{citation.claimText}}</span>
+                <b>Источник: {{citation.source.title}}</b>
+                @if (citation.source.doi) { <a [href]="'https://doi.org/' + citation.source.doi" target="_blank" rel="noopener">DOI: {{citation.source.doi}}</a> }
+                @else if (citation.source.url) { <a [href]="citation.source.url" target="_blank" rel="noopener">Открыть источник</a> }
+                @if (citation.sourceLocator) { <span>Место в источнике: {{citation.sourceLocator}}</span> }
+              </div>
+            }
+          }
+        </div>
+      </article>
+    }
+  </div>
+
+  @if (error()) {
+    <div class="error" role="alert">{{error()}} @if (error().startsWith('Чтобы')) { <a routerLink="/login">Войти</a> }</div>
+  }
+  <form class="assistant-form" [formGroup]="form" (ngSubmit)="ask()">
+    <label class="field" for="assistant-question">Задайте вопрос по содержимому базы</label>
+    <textarea id="assistant-question" rows="3" maxlength="2000" formControlName="question" placeholder="Например: какие проверенные сведения есть о валериане?"></textarea>
+    @if (form.controls.question.touched && form.controls.question.invalid) { <small>Введите вопрос длиной до 2000 символов.</small> }
+    <button class="btn" type="submit" [disabled]="loading()">{{loading() ? 'Ищем в базе…' : 'Найти сведения'}}</button>
+  </form>
+</section>

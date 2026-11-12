@@ -2,11 +2,25 @@
   <a class="brand" routerLink="/" aria-label="Herbarium AI — на главную"><span class="brand-mark">✳</span> Herbarium<span>AI</span></a>
   <nav aria-label="Основная навигация">
     <a class="nav-link" routerLink="/plants" routerLinkActive="active">Растения</a>
+    <a class="nav-link" routerLink="/preparations" routerLinkActive="active">Препараты</a>
     <a class="nav-link" routerLink="/compounds" routerLinkActive="active">Соединения</a>
     <a class="nav-link" routerLink="/prediction" routerLinkActive="active">AI-оценка</a>
     <a class="nav-link" routerLink="/comparison" routerLinkActive="active">Сравнение <span class="count">{{ selection.count() }}</span></a>
     <a class="nav-link" routerLink="/methodology" routerLinkActive="active">Методология</a>
   </nav>
+  <div class="account-nav">
+    @if (auth.currentUser(); as user) {
+      <span class="account-name">{{user.displayName}}</span>
+      <a class="nav-link" routerLink="/favorites" routerLinkActive="active">Избранное</a>
+      <a class="nav-link" routerLink="/assistant">Помощник</a>
+      @if (user.role === 'EXPERT' || user.role === 'ADMIN') { <a class="nav-link" routerLink="/expert/review">Проверка базы</a> }
+      @if (user.role === 'ADMIN') { <a class="nav-link" routerLink="/admin/users">Пользователи</a><a class="nav-link" routerLink="/admin/sources">Источники</a> }
+      <button class="account-button" type="button" (click)="logout()">Выйти</button>
+    } @else {
+      <a class="nav-link" routerLink="/login">Войти</a>
+      <a class="btn account-register" routerLink="/register">Регистрация</a>
+    }
+  </div>
 </header>
 <main class="app-main"><router-outlet /></main>
 <footer class="footer"><span>Herbarium AI · исследовательская платформа</span><a routerLink="/methodology">Методология и ограничения</a><span>Вычислительные оценки не являются медицинскими рекомендациями.</span></footer>
