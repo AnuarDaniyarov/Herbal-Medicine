@@ -29,12 +29,33 @@ public interface KnowledgeClaimRepository extends JpaRepository<KnowledgeClaim, 
                 or lower(coalesce(c.interactionPartner, '')) like lower(concat('%', :term, '%'))
                 or (p is not null and (lower(p.scientificName) like lower(concat('%', :term, '%'))
                                    or lower(p.displayName) like lower(concat('%', :term, '%'))
-                                   or lower(coalesce(p.nameRu, '')) like lower(concat('%', :term, '%'))))
+                                   or lower(coalesce(p.nameRu, '')) like lower(concat('%', :term, '%'))
+                                   or lower(coalesce(p.nameKk, '')) like lower(concat('%', :term, '%'))
+                                   or lower(coalesce(p.synonyms, '')) like lower(concat('%', :term, '%'))))
                 or (pr is not null and lower(pr.name) like lower(concat('%', :term, '%')))
               )
             """)
     java.util.List<KnowledgeClaim> searchVerifiedCandidates(
             @org.springframework.data.repository.query.Param("status") ReviewStatus status,
             @org.springframework.data.repository.query.Param("term") String term,
+            Pageable pageable);
+
+    /**
+     * Vector similarity search: finds the most semantically similar verified claims.
+     * Uses cosine distance (<->) — lower values mean more similar (0 = identical).
+     * Native query because JPQL doesn't support pgvector operators.
+     */
+    @org.springframework.data.jpa.repository.Query(value = """
+            select kc from knowledge_claims kc
+            left join plants p on kc.plant_id = p.id
+            left join preparations pr on kc.preparation_id = pr.id
+            left join sources s on kc.source_id = s.id
+            where kc.review_status = :status
+              and kc.embedding IS NOT NULL
+            order by kc.embedding <-> :embedding::vector
+            """, nativeQuery = true)
+    java.util.List<KnowledgeClaim> findNearestByEmbedding(
+            @org.springframework.data.repository.query.Param("status") String status,
+            @org.springframework.data.repository.query.Param("embedding") String embedding,
             Pageable pageable);
 }

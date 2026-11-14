@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.List;
 import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -154,6 +155,54 @@ class MedicinePlatformApplicationTests {
         assertTrue(!response.isAiGenerated());
         assertEquals(1, response.citations().size());
         assertEquals("Verified research paper", response.citations().getFirst().source().title());
+    }
+
+    @Test
+    void assistantCanFindVerifiedClaimsByKazakhNameAndPlantSynonym() {
+        Plant plant = plants.save(new Plant("Valeriana officinalis", "Valerian", null, null,
+                "Валериана", "Дәрілік шүйгіншөп", "garden valerian", null, null, "VERIFIED"));
+        DataSource source = sources.save(new DataSource("Names reference", null, 2025,
+                "10.0000/names", "https://example.org/names", "ARTICLE", OffsetDateTime.now(ZoneOffset.UTC)));
+        KnowledgeClaim claim = knowledgeClaims.save(new KnowledgeClaim(plant, null, ClaimType.INDICATION,
+                "Reference entry", "A verified reference entry for this plant.", null, source, "p. 2", null));
+        claim.review(null, ReviewStatus.VERIFIED, null);
+        knowledgeClaims.save(claim);
+        UserAccount user = userAccounts.save(new UserAccount("names-" + UUID.randomUUID() + "@example.test",
+                "Names Test", "not-a-real-login-hash", UserRole.USER));
+
+        var kazakhResponse = assistantService.ask(new AssistantRequest("Дәрілік шүйгіншөп", null), user);
+        var synonymResponse = assistantService.ask(new AssistantRequest("garden valerian", null), user);
+
+        assertEquals("EVIDENCE_FOUND", kazakhResponse.status());
+        assertEquals(claim.getId(), kazakhResponse.citations().getFirst().claimId());
+        assertEquals("EVIDENCE_FOUND", synonymResponse.status());
+        assertEquals(claim.getId(), synonymResponse.citations().getFirst().claimId());
+    }
+
+    @Test
+    void assistantReturnsNoEvidenceInsteadOfGuessing() {
+        UserAccount user = userAccounts.save(new UserAccount("empty-" + UUID.randomUUID() + "@example.test",
+                "Empty Evidence Test", "not-a-real-login-hash", UserRole.USER));
+
+        var response = assistantService.ask(new AssistantRequest("unicornium zzzunknown", null), user);
+
+        assertEquals("NO_EVIDENCE", response.status());
+        assertTrue(response.citations().isEmpty());
+        assertTrue(response.answer().contains("не буду дополнять ответ догадками"));
+    }
+
+    @Test
+    void assistantSafetyRedirectCoversEnglishAndKazakhMedicalQuestions() {
+        UserAccount user = userAccounts.save(new UserAccount("safety-" + UUID.randomUUID() + "@example.test",
+                "Safety Test", "not-a-real-login-hash", UserRole.USER));
+
+        for (String question : List.of("What dose should a child take?", "Можно ли при жүктілік?")) {
+            var response = assistantService.ask(new AssistantRequest(question, null), user);
+
+            assertEquals("SAFETY_REDIRECT", response.status());
+            assertTrue(response.citations().isEmpty());
+            assertTrue(!response.isAiGenerated());
+        }
     }
 
     @Test

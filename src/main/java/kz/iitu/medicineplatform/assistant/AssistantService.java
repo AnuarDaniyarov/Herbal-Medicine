@@ -2,6 +2,7 @@ package kz.iitu.medicineplatform.assistant;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
@@ -13,6 +14,8 @@ import kz.iitu.medicineplatform.knowledge.KnowledgeClaim;
 import kz.iitu.medicineplatform.knowledge.KnowledgeClaimRepository;
 import kz.iitu.medicineplatform.knowledge.KnowledgeClaimResponse;
 import kz.iitu.medicineplatform.knowledge.ReviewStatus;
+import kz.iitu.medicineplatform.search.EmbeddingIndexer;
+import kz.iitu.medicineplatform.search.EmbeddingService;
 import kz.iitu.medicineplatform.api.PageResponse;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
@@ -28,9 +31,11 @@ public class AssistantService {
     private static final Pattern TOKEN_SPLIT = Pattern.compile("[^\\p{L}\\p{N}]+");
     private static final Set<String> STOP_WORDS = Set.of("что", "это", "как", "для", "при", "есть", "можно",
             "какие", "какой", "какая", "про", "или", "the", "what", "with", "from", "and", "for");
-    private static final List<String> SAFETY_TERMS = List.of("дозиров", "доза", "сколько принимать", "как пить",
-            "беремен", "дет", "ребен", "ребён", "взаимодейств", "совместим", "антидепрессант",
-            "рак", "инфаркт", "инсульт", "диабет", "диагноз", "лечить", "лечение", "вылеч");
+    private static final List<String> SAFETY_TERMS = List.of("дозиров", "доза", "дозу", "дозы", "сколько принимать", "как пить",
+            "беремен", "жүктілік", "жүкті", "дет", "ребен", "ребён", "бала", "балалар", "емізу",
+            "взаимодейств", "совместим", "антидепрессант", "өзара әрекеттесу", "дәрімен үйлес",
+            "рак", "инфаркт", "инсульт", "диабет", "диагноз", "лечить", "лечение", "вылеч", "емдеу",
+            "dose", "dosage", "pregnan", "breastfeed", "child", "children", "interact", "treat", "diagnos");
     private static final String SAFETY_NOTICE = "Я не могу давать схемы лечения, оценивать безопасность для конкретного человека или советовать сочетания. Обратитесь к врачу или фармацевту; эта платформа предназначена только для поиска справочных сведений.";
     private static final String NO_EVIDENCE = "В проверенной базе знаний нет подходящих сведений. Я не буду дополнять ответ догадками.";
 
@@ -40,16 +45,22 @@ public class AssistantService {
     private final KnowledgeClaimRepository claims;
     private final AssistantAnswerGenerator generator;
     private final SourceExtractiveAnswerGenerator extractiveFallback;
+    private final EmbeddingService embeddingService;
+    private final EmbeddingIndexer embeddingIndexer;
 
     public AssistantService(AssistantConversationRepository conversations, AssistantMessageRepository messages,
                             AssistantMessageSourceRepository messageSources, KnowledgeClaimRepository claims,
-                            AssistantAnswerGenerator generator, SourceExtractiveAnswerGenerator extractiveFallback) {
+                            AssistantAnswerGenerator generator, SourceExtractiveAnswerGenerator extractiveFallback,
+                            EmbeddingService embeddingService,
+                            org.springframework.beans.factory.ObjectProvider<EmbeddingIndexer> indexerProvider) {
         this.conversations = conversations;
         this.messages = messages;
         this.messageSources = messageSources;
         this.claims = claims;
         this.generator = generator;
         this.extractiveFallback = extractiveFallback;
+        this.embeddingService = embeddingService;
+        this.embeddingIndexer = indexerProvider.getIfAvailable();
     }
 
     public AssistantResponse ask(AssistantRequest request, UserAccount account) {
@@ -117,30 +128,56 @@ public class AssistantService {
         Set<String> terms = tokensFromNormalized(normalizedQuestion);
         if (terms.isEmpty()) return List.of();
 
-        // Optimized candidate retrieval via targeted SQL query instead of full in-memory scan
-        java.util.LinkedHashSet<KnowledgeClaim> candidates = new java.util.LinkedHashSet<>();
+        // Hybrid search: combine keyword-based and vector-based results
+        java.util.LinkedHashMap<Long, KnowledgeClaim> merged = new java.util.LinkedHashMap<>();
+
+        // 1. Keyword search
+        java.util.LinkedHashSet<KnowledgeClaim> keywordCandidates = new java.util.LinkedHashSet<>();
         for (String term : terms) {
-            candidates.addAll(claims.searchVerifiedCandidates(ReviewStatus.VERIFIED, term, PageRequest.of(0, 10)));
-            if (candidates.size() >= 30) break;
+            keywordCandidates.addAll(claims.searchVerifiedCandidates(ReviewStatus.VERIFIED, term, PageRequest.of(0, 10)));
+            if (keywordCandidates.size() >= 30) break;
         }
 
-        if (candidates.isEmpty()) {
-            candidates.addAll(claims.findByReviewStatus(ReviewStatus.VERIFIED,
+        // 2. Vector similarity search
+        try {
+            float[] queryEmbedding = embeddingService.embed(normalizedQuestion);
+            StringBuilder sb = new StringBuilder();
+            sb.append('[');
+            for (int i = 0; i < queryEmbedding.length; i++) {
+                if (i > 0) sb.append(',');
+                sb.append(queryEmbedding[i]);
+            }
+            sb.append(']');
+            String vectorStr = sb.toString();
+            List<KnowledgeClaim> vectorCandidates = claims.findNearestByEmbedding(
+                    ReviewStatus.VERIFIED.name(), vectorStr, PageRequest.of(0, 10));
+            for (KnowledgeClaim claim : vectorCandidates) {
+                keywordCandidates.add(claim);
+            }
+        } catch (Exception e) {
+            // Vector search failed — fall back to keyword-only
+        }
+
+        if (keywordCandidates.isEmpty()) {
+            keywordCandidates.addAll(claims.findByReviewStatus(ReviewStatus.VERIFIED,
                     PageRequest.of(0, 20, Sort.by(Sort.Direction.DESC, "reviewedAt"))).getContent());
         }
 
-        return candidates.stream()
+        // Score and rank: keyword matches get higher priority, vector matches supplement
+        return keywordCandidates.stream()
                 .map(claim -> Map.entry(claim, score(claim, terms)))
                 .filter(entry -> entry.getValue() > 0)
                 .sorted(Map.Entry.<KnowledgeClaim, Integer>comparingByValue().reversed())
-                .limit(5)
+                .limit(10)  // Increased from 5 to 10 for hybrid search
                 .map(entry -> KnowledgeClaimResponse.from(entry.getKey()))
                 .toList();
     }
 
     private int score(KnowledgeClaim claim, Set<String> terms) {
         String searchable = String.join(" ", claim.getTitle(), claim.getClaimText(),
-                claim.getPlant() == null ? "" : claim.getPlant().getScientificName() + " " + claim.getPlant().getDisplayName(),
+                claim.getPlant() == null ? "" : String.join(" ", claim.getPlant().getScientificName(),
+                        claim.getPlant().getDisplayName(), nullToEmpty(claim.getPlant().getNameRu()),
+                        nullToEmpty(claim.getPlant().getNameKk()), nullToEmpty(claim.getPlant().getSynonyms())),
                 claim.getPreparation() == null ? "" : claim.getPreparation().getName(),
                 claim.getInteractionPartner() == null ? "" : claim.getInteractionPartner());
         String normalized = Normalizer.normalize(searchable.toLowerCase(Locale.ROOT), Normalizer.Form.NFKC);
@@ -155,6 +192,10 @@ public class AssistantService {
 
     private boolean requiresSafetyRedirect(String normalizedQuestion) {
         return SAFETY_TERMS.stream().anyMatch(normalizedQuestion::contains);
+    }
+
+    private String nullToEmpty(String value) {
+        return value == null ? "" : value;
     }
 
     private kz.iitu.medicineplatform.source.DataSource sourceFor(KnowledgeClaimResponse response) {

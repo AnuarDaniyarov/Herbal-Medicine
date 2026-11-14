@@ -14,6 +14,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import kz.iitu.medicineplatform.auth.UserAccount;
 import kz.iitu.medicineplatform.plant.Plant;
 import kz.iitu.medicineplatform.preparation.Preparation;
@@ -74,6 +75,9 @@ public class KnowledgeClaim {
     @Column(name = "reviewed_at")
     private OffsetDateTime reviewedAt;
 
+    @Transient
+    private Object embedding;
+
     protected KnowledgeClaim() { }
 
     public KnowledgeClaim(Plant plant, Preparation preparation, ClaimType claimType, String title, String claimText,
@@ -114,4 +118,6 @@ public class KnowledgeClaim {
     public String getReviewNote() { return reviewNote; }
     public OffsetDateTime getCreatedAt() { return createdAt; }
     public OffsetDateTime getReviewedAt() { return reviewedAt; }
+    public Object getEmbedding() { return embedding; }
+    public void setEmbedding(Object embedding) { this.embedding = embedding; }
 }
