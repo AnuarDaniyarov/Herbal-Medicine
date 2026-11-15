@@ -46,16 +46,17 @@ public interface KnowledgeClaimRepository extends JpaRepository<KnowledgeClaim, 
      * Native query because JPQL doesn't support pgvector operators.
      */
     @org.springframework.data.jpa.repository.Query(value = """
-            select kc from knowledge_claims kc
-            left join plants p on kc.plant_id = p.id
-            left join preparations pr on kc.preparation_id = pr.id
-            left join sources s on kc.source_id = s.id
-            where kc.review_status = :status
-              and kc.embedding IS NOT NULL
-            order by kc.embedding <-> :embedding::vector
+            select *
+            from knowledge_claims
+            where review_status = :status
+              and embedding is not null
+            order by embedding <-> cast(:embedding as vector)
             """, nativeQuery = true)
     java.util.List<KnowledgeClaim> findNearestByEmbedding(
             @org.springframework.data.repository.query.Param("status") String status,
             @org.springframework.data.repository.query.Param("embedding") String embedding,
             Pageable pageable);
+
+    @org.springframework.data.jpa.repository.Query("select c.reviewStatus, count(c) from KnowledgeClaim c group by c.reviewStatus")
+    java.util.Map<ReviewStatus, Long> groupByReviewStatus();
 }

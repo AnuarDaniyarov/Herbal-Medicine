@@ -11,10 +11,11 @@
   <div class="account-nav">
     @if (auth.currentUser(); as user) {
       <span class="account-name">{{user.displayName}}</span>
+      <a class="nav-link" routerLink="/profile" routerLinkActive="active">Профиль</a>
       <a class="nav-link" routerLink="/favorites" routerLinkActive="active">Избранное</a>
       <a class="nav-link" routerLink="/assistant">Помощник</a>
       @if (user.role === 'EXPERT' || user.role === 'ADMIN') { <a class="nav-link" routerLink="/expert/review">Проверка базы</a> }
-      @if (user.role === 'ADMIN') { <a class="nav-link" routerLink="/admin/users">Пользователи</a><a class="nav-link" routerLink="/admin/sources">Источники</a> }
+      @if (user.role === 'ADMIN') { <a class="nav-link" routerLink="/admin/users">Пользователи</a><a class="nav-link" routerLink="/admin/sources">Источники</a><a class="nav-link" routerLink="/admin/stats">Статистика</a> }
       <button class="account-button" type="button" (click)="logout()">Выйти</button>
     } @else {
       <a class="nav-link" routerLink="/login">Войти</a>
@@ -23,4 +24,4 @@
   </div>
 </header>
 <main class="app-main"><router-outlet /></main>
-<footer class="footer"><span>Herbarium AI · исследовательская платформа</span><a routerLink="/methodology">Методология и ограничения</a><span>Вычислительные оценки не являются медицинскими рекомендациями.</span></footer>
+<footer class="footer"><span>Herbarium AI · поиск по проверенной базе</span><a routerLink="/methodology">Методология и ограничения</a><span>ИИ не лечит и не выдумывает факты · не медицинская рекомендация</span></footer>

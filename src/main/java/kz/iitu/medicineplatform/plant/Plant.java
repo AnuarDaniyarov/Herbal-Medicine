@@ -90,6 +90,17 @@ public class Plant {
     public OffsetDateTime getCreatedAt() { return createdAt; }
     public OffsetDateTime getUpdatedAt() { return updatedAt; }
 
+    public void setScientificName(String scientificName) { this.scientificName = scientificName; }
+    public void setDisplayName(String displayName) { this.displayName = displayName; }
+    public void setFamily(String family) { this.family = family; }
+    public void setDescription(String description) { this.description = description; }
+    public void setNameRu(String nameRu) { this.nameRu = nameRu; }
+    public void setNameKk(String nameKk) { this.nameKk = nameKk; }
+    public void setSynonyms(String synonyms) { this.synonyms = synonyms; }
+    public void setDistributionRegions(String distributionRegions) { this.distributionRegions = distributionRegions; }
+    public void setUsedParts(String usedParts) { this.usedParts = usedParts; }
+    public void setReviewStatus(String reviewStatus) { this.reviewStatus = reviewStatus; }
+
     @PrePersist
     void onCreate() {
         OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);

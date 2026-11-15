@@ -61,6 +61,17 @@ export class AuthApiService {
     return this.csrf().pipe(switchMap(() => this.http.patch<KnowledgeClaim>(`/api/expert/claims/${id}`, request)));
   }
 
+  getProfile(): Observable<UserAccountView> {
+    return this.http.get<UserAccountView>('/api/profile');
+  }
+
+  updateProfile(request: { displayName: string; currentPassword?: string; newPassword?: string }): Observable<UserAccountView> {
+    return this.csrf().pipe(
+      switchMap(() => this.http.put<UserAccountView>('/api/profile', request)),
+      tap(user => { this.currentUser.set(user); })
+    );
+  }
+
   private csrf(): Observable<void> {
     return this.http.get<{ token: string }>(`${this.base}/csrf`).pipe(map(() => void 0));
   }

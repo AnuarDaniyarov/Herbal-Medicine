@@ -18,10 +18,10 @@ import java.util.Map;
 /**
  * Indexes knowledge claims by computing and storing vector embeddings.
  * Runs on application startup for all verified claims that lack embeddings.
- * Only active when search.vector.enabled=true (default in production, disabled in tests).
+ * Active when search.vector.enabled=true (default true in application.yaml; false in tests).
  */
 @Service
-@ConditionalOnProperty(name = "search.vector.enabled", havingValue = "true", matchIfMissing = false)
+@ConditionalOnProperty(name = "search.vector.enabled", havingValue = "true")
 public class EmbeddingIndexer {
 
     private static final Logger log = LoggerFactory.getLogger(EmbeddingIndexer.class);

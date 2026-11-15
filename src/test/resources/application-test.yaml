@@ -11,6 +11,10 @@ spring:
   flyway:
     locations: classpath:db/migration
 
+search:
+  vector:
+    enabled: false
+
 management:
   endpoints:
     web:

@@ -120,4 +120,12 @@ public class KnowledgeClaim {
     public OffsetDateTime getReviewedAt() { return reviewedAt; }
     public Object getEmbedding() { return embedding; }
     public void setEmbedding(Object embedding) { this.embedding = embedding; }
+    public void setPlant(Plant plant) { this.plant = plant; }
+    public void setClaimType(ClaimType claimType) { this.claimType = claimType; }
+    public void setTitle(String title) { this.title = title; }
+    public void setClaimText(String claimText) { this.claimText = claimText; }
+    public void setInteractionPartner(String interactionPartner) { this.interactionPartner = interactionPartner; }
+    public void setSource(DataSource source) { this.source = source; }
+    public void setSourceLocator(String sourceLocator) { this.sourceLocator = sourceLocator; }
+    public void setReviewStatus(ReviewStatus reviewStatus) { this.reviewStatus = reviewStatus; }
 }

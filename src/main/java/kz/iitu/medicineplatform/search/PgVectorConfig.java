@@ -11,7 +11,7 @@ import jakarta.annotation.PostConstruct;
  * Only active when search.vector.enabled=true.
  */
 @Configuration
-@ConditionalOnProperty(name = "search.vector.enabled", havingValue = "true", matchIfMissing = false)
+@ConditionalOnProperty(name = "search.vector.enabled", havingValue = "true")
 public class PgVectorConfig {
 
     @Autowired

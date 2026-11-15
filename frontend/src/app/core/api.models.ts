@@ -300,3 +300,23 @@ export interface AddFavoriteRequest {
   compoundId?: number | null;
   preparationId?: number | null;
 }
+
+export interface SearchResult {
+  type: 'plant' | 'compound' | 'claim' | string;
+  id: number;
+  title: string;
+  subtitle: string;
+  description: string;
+  category: string;
+  verified: boolean;
+  reviewStatus: string;
+  href: string;
+}
+
+export interface SearchResponse {
+  results: SearchResult[];
+  plantsCount: number;
+  compoundsCount: number;
+  claimsCount: number;
+  searchMode: string;
+}

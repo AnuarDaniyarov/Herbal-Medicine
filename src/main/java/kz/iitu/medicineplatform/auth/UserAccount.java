@@ -62,6 +62,9 @@ public class UserAccount implements UserDetails {
     public UserRole getRole() { return role; }
     public OffsetDateTime getCreatedAt() { return createdAt; }
     public void changeRole(UserRole role) { this.role = role; }
+    public void setDisplayName(String displayName) { this.displayName = displayName; }
+    public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }
+    public String getPasswordHash() { return passwordHash; }
 
     @Override public String getUsername() { return email; }
     @Override public String getPassword() { return passwordHash; }

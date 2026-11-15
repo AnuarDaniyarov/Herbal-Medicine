@@ -20,4 +20,5 @@ public interface PlantRepository extends JpaRepository<Plant, Long> {
               and (:family = '' or lower(p.family) like lower(concat('%', :family, '%')))
             """)
     Page<Plant> search(@Param("query") String query, @Param("family") String family, Pageable pageable);
+    java.util.Optional<Plant> findByScientificName(String scientificName);
 }
