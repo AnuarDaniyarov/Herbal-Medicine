@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject, signal } from '@angular/core';
 import { Observable, catchError, map, of, switchMap, tap } from 'rxjs';
-import { ClaimReviewRequest, CreateSourceRequest, KnowledgeClaim, PageResponse, Source, UserAccountView, UserRole, LoginRequest, RegisterRequest } from './api.models';
+import { ClaimReviewRequest, CreateSourceRequest, KnowledgeClaim, PageResponse, PlatformStats, Source, UserAccountView, UserRole, LoginRequest, RegisterRequest } from './api.models';
 
 @Injectable({ providedIn: 'root' })
 export class AuthApiService {
@@ -53,12 +53,24 @@ export class AuthApiService {
     return this.csrf().pipe(switchMap(() => this.http.post<Source>('/api/admin/sources', request)));
   }
 
+  adminStats(): Observable<PlatformStats> {
+    return this.http.get<PlatformStats>('/api/admin/stats');
+  }
+
+  adminReindex(): Observable<{ success: boolean; indexedCount: number; message: string }> {
+    return this.csrf().pipe(switchMap(() => this.http.post<{ success: boolean; indexedCount: number; message: string }>('/api/admin/import/reindex-embeddings', {})));
+  }
+
   expertQueue(page = 0, size = 25): Observable<PageResponse<KnowledgeClaim>> {
     return this.http.get<PageResponse<KnowledgeClaim>>('/api/expert/claims/queue', { params: { page, size } });
   }
 
   reviewClaim(id: number, request: ClaimReviewRequest): Observable<KnowledgeClaim> {
     return this.csrf().pipe(switchMap(() => this.http.patch<KnowledgeClaim>(`/api/expert/claims/${id}`, request)));
+  }
+
+  updateClaim(id: number, request: ClaimReviewRequest): Observable<KnowledgeClaim> {
+    return this.csrf().pipe(switchMap(() => this.http.put<KnowledgeClaim>(`/api/expert/claims/${id}`, request)));
   }
 
   private csrf(): Observable<void> {

@@ -1,7 +1,25 @@
 <section class="page">
-  <div class="eyebrow">Личный кабинет · закладки</div>
-  <h1 class="page-title">Избранное</h1>
-  <p class="lead">Сохранённые растения, препараты и химические соединения для быстрого доступа и анализа.</p>
+  <div class="eyebrow">Личный кабинет пользователя</div>
+  <h1 class="page-title">Мой кабинет</h1>
+  <p class="lead">Сохранённые материалы и история обращений к справочному ассистенту.</p>
+
+  <!-- Tabs Navigation -->
+  <div style="display: flex; gap: 8px; margin: 20px 0; border-bottom: 2px solid #e1e4e8; padding-bottom: 8px;">
+    <button
+      type="button"
+      class="btn"
+      [class.secondary]="activeTab() !== 'favorites'"
+      (click)="setTab('favorites')">
+      ★ Избранное ({{ items().length }})
+    </button>
+    <button
+      type="button"
+      class="btn"
+      [class.secondary]="activeTab() !== 'history'"
+      (click)="setTab('history')">
+      🕒 История запросов ({{ historyItems().length }})
+    </button>
+  </div>
 
   @if (notice()) { <div class="success" role="status">{{notice()}}</div> }
   @if (error()) {
@@ -10,28 +28,73 @@
     </div>
   }
 
-  @if (loading()) { <p class="empty">Загрузка избранного…</p> }
+  @if (loading()) { <p class="empty">Загрузка данных кабинета…</p> }
 
   @if (!loading() && authApi.currentAccount()) {
-    @if (items().length) {
-      <div class="grid">
-        @for (item of items(); track item.id) {
-          <article class="card data-card" style="display: flex; flex-direction: column; justify-content: space-between;">
-            <div>
-              <span class="badge">{{item.type}}</span>
-              <h3><a [routerLink]="item.route">{{item.title}}</a></h3>
-              @if (item.subtitle) { <p class="muted">{{item.subtitle}}</p> }
-              <small class="muted">Сохранено: {{item.createdAt | date:'short'}}</small>
-            </div>
-            <div style="margin-top: 16px; display: flex; gap: 8px;">
-              <a class="btn secondary" [routerLink]="item.route">Открыть</a>
-              <button class="btn btn-outline-danger" (click)="remove(item)">Удалить</button>
-            </div>
-          </article>
+    <!-- TAB 1: FAVORITES -->
+    @if (activeTab() === 'favorites') {
+      @if (items().length) {
+        <div class="grid">
+          @for (item of items(); track item.id) {
+            <article class="card data-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <span class="badge">{{item.type}}</span>
+                <h3><a [routerLink]="item.route">{{item.title}}</a></h3>
+                @if (item.subtitle) { <p class="muted">{{item.subtitle}}</p> }
+                <small class="muted">Сохранено: {{item.createdAt | date:'short'}}</small>
+              </div>
+              <div style="margin-top: 16px; display: flex; gap: 8px;">
+                <a class="btn secondary" [routerLink]="item.route">Открыть</a>
+                <button class="btn btn-outline-danger" (click)="remove(item)">Удалить</button>
+              </div>
+            </article>
+          }
+        </div>
+      } @else {
+        <div class="empty">У вас пока нет сохранённых записей. Нажмите «☆ В избранное» на карточке любого растения, препарата или соединения.</div>
+      }
+    }
+
+    <!-- TAB 2: QUERY AND CHAT HISTORY -->
+    @if (activeTab() === 'history') {
+      @if (historyLoading()) {
+        <p class="empty">Загрузка истории…</p>
+      } @else if (historyError()) {
+        <div class="error" role="alert">{{historyError()}}</div>
+      } @else if (historyItems().length) {
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          @for (entry of historyItems(); track entry.conversationId) {
+            <article class="card" style="padding: 16px; border-left: 3px solid #0969da; border-radius: 6px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <small class="muted">{{ entry.updatedAt | date:'medium' }}</small>
+                <span class="badge">{{ entry.lastStatus }}</span>
+              </div>
+              <h3 style="margin: 4px 0 8px; font-size: 1.1rem; color: #0969da;">{{ entry.lastQuestion }}</h3>
+              @if (entry.lastAnswer) {
+                <p style="margin: 0 0 12px; color: #333; line-height: 1.45; max-height: 72px; overflow: hidden; text-overflow: ellipsis;">
+                  {{ entry.lastAnswer }}
+                </p>
+              }
+              <div>
+                <a class="btn secondary" [routerLink]="['/assistant']" [queryParams]="{conversationId: entry.conversationId}">
+                  Открыть переписку в ассистенте →
+                </a>
+              </div>
+            </article>
+          }
+        </div>
+      } @else {
+        <div class="empty">История запросов пуста. Задайте вопрос в <a routerLink="/assistant">поиске-помощнике</a>.</div>
+      }
+      @if (historyPage(); as page) {
+        @if (page.totalPages > 1) {
+          <nav aria-label="Страницы истории диалогов" style="display: flex; justify-content: center; align-items: center; gap: 12px; margin: 20px 0;">
+            <button type="button" class="btn secondary" [disabled]="page.first || historyLoading()" (click)="changeHistoryPage(historyPageIndex() - 1)">Назад</button>
+            <span>Страница {{page.page + 1}} из {{page.totalPages}} · диалогов: {{page.totalElements}}</span>
+            <button type="button" class="btn secondary" [disabled]="page.last || historyLoading()" (click)="changeHistoryPage(historyPageIndex() + 1)">Далее</button>
+          </nav>
         }
-      </div>
-    } @else {
-      <div class="empty">У вас пока нет сохранённых записей. Нажмите «☆ В избранное» на карточке любого растения, препарата или соединения.</div>
+      }
     }
   }
 </section>

@@ -8,6 +8,7 @@ export const routes: Routes = [
  {path:'admin/sources',loadComponent:()=>import('./pages/admin-sources').then(m=>m.AdminSourcesPage),title:'Источники данных'},
  {path:'expert/review',loadComponent:()=>import('./pages/expert-claims').then(m=>m.ExpertClaimsPage),title:'Очередь экспертной проверки'},
  {path:'assistant',loadComponent:()=>import('./pages/assistant').then(m=>m.AssistantPage),title:'Поиск-помощник'},
+ {path:'search',loadComponent:()=>import('./pages/search').then(m=>m.SearchPage),title:'Поиск по базе знаний'},
  {path:'plants',loadComponent:()=>import('./pages/plants').then(m=>m.PlantsPage),title:'Каталог растений'},
  {path:'plants/:id',loadComponent:()=>import('./pages/plant-detail').then(m=>m.PlantDetailPage),title:'Карточка растения'},
  {path:'preparations',loadComponent:()=>import('./pages/preparations').then(m=>m.PreparationsPage),title:'Каталог препаратов'},

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,7 +31,14 @@ public class AssistantController {
     @GetMapping("/history")
     @Operation(summary = "List the authenticated user's assistant history")
     public PageResponse<AssistantHistoryEntry> history(@AuthenticationPrincipal UserAccount account,
-                                                        @PageableDefault(size = 20) Pageable pageable) {
+                                                         @PageableDefault(size = 20) Pageable pageable) {
         return assistant.history(account, pageable);
+    }
+
+    @GetMapping("/history/{conversationId}")
+    @Operation(summary = "Get messages and sources for one of the authenticated user's conversations")
+    public java.util.List<AssistantHistoryMessage> conversationHistory(
+            @PathVariable long conversationId, @AuthenticationPrincipal UserAccount account) {
+        return assistant.conversationHistory(conversationId, account);
     }
 }

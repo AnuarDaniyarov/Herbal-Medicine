@@ -16,6 +16,7 @@ public interface PreparationRepository extends JpaRepository<Preparation, Long> 
               and (:dosageForm = '' or lower(coalesce(p.dosageForm, '')) like lower(concat('%', :dosageForm, '%')))
               and p.reviewStatus = :status
             """)
+    @org.springframework.data.jpa.repository.EntityGraph(attributePaths = "source")
     Page<Preparation> search(@Param("query") String query, @Param("dosageForm") String dosageForm,
                              @Param("status") ReviewStatus status, Pageable pageable);
 }

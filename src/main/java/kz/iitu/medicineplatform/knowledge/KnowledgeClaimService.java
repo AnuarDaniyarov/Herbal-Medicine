@@ -83,8 +83,29 @@ public class KnowledgeClaimService {
         }
         KnowledgeClaim claim = claims.findById(id).orElseThrow(() -> notFound("Claim"));
         ReviewStatus previous = claim.getReviewStatus();
+
+        // Apply expert edits to claim data if provided
+        claim.updateData(request.title(), request.claimText(), request.interactionPartner(), request.sourceLocator());
+
         claim.review(reviewer, request.reviewStatus(), normalize(request.reviewNote()));
         reviews.save(new KnowledgeClaimReview(claim, reviewer, previous, request.reviewStatus(), normalize(request.reviewNote())));
+        return KnowledgeClaimResponse.from(claim);
+    }
+
+    @Transactional
+    public KnowledgeClaimResponse updateClaim(long id, ClaimReviewRequest request, UserAccount editor) {
+        if (request.reviewStatus() != null
+                && request.reviewStatus() != ReviewStatus.VERIFIED
+                && request.reviewStatus() != ReviewStatus.REJECTED) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Review status must be VERIFIED or REJECTED");
+        }
+        KnowledgeClaim claim = claims.findById(id).orElseThrow(() -> notFound("Claim"));
+        claim.updateData(request.title(), request.claimText(), request.interactionPartner(), request.sourceLocator());
+        if (request.reviewStatus() != null) {
+            ReviewStatus previous = claim.getReviewStatus();
+            claim.review(editor, request.reviewStatus(), normalize(request.reviewNote()));
+            reviews.save(new KnowledgeClaimReview(claim, editor, previous, request.reviewStatus(), normalize(request.reviewNote())));
+        }
         return KnowledgeClaimResponse.from(claim);
     }
 

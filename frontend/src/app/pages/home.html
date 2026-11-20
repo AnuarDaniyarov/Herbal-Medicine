@@ -3,6 +3,27 @@
     <div class="eyebrow"><span class="status-dot"></span> Исследовательская платформа · фитохимия · вычислительная приоритизация</div>
     <h1>От растительного сырья<br>к кандидатам для проверки</h1>
     <p class="hero-copy">Herbarium AI объединяет сведения о растениях, соединениях и экспериментальных измерениях, чтобы исследователь мог изучать происхождение данных и формировать список кандидатов для дальнейшей проверки.</p>
+    <form class="hero-search" (ngSubmit)="onSearch()" style="margin: 20px 0; display: flex; gap: 8px;">
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        name="searchQuery"
+        placeholder="Поиск трав, симптомов, показаний («от кашля», «для сна»)..."
+        style="flex: 1; padding: 12px 16px; font-size: 1rem; border-radius: 6px; border: 1px solid #c8d1dc; color: #111;"
+      />
+      <button class="btn" type="submit">Найти</button>
+    </form>
+    <div class="popular-tags" style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; align-items: center;">
+      <span style="font-size: 0.85rem; opacity: 0.85;">Популярные запросы:</span>
+      @for (q of popularQueries; track q) {
+        <button
+          type="button"
+          (click)="selectPopular(q)"
+          style="background: rgba(255,255,255,0.25); color: inherit; border: 1px solid rgba(255,255,255,0.4); padding: 3px 8px; border-radius: 12px; font-size: 0.8rem; cursor: pointer;">
+          {{ q }}
+        </button>
+      }
+    </div>
     <div class="row hero-actions"><a class="btn" routerLink="/plants">Исследовать растения <span>↗</span></a><a class="btn secondary" routerLink="/prediction">Оценить структуру</a><a class="text-link" routerLink="/methodology">Как работает платформа →</a></div>
     <div class="hero-footnote">Поддержка исследовательского процесса · не диагностика и не медицинская рекомендация</div>
   </div>

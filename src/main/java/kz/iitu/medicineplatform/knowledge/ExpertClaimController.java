@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,5 +43,13 @@ public class ExpertClaimController {
                                          @Valid @RequestBody ClaimReviewRequest request,
                                          @AuthenticationPrincipal UserAccount reviewer) {
         return service.review(id, request, reviewer);
+    }
+
+    @PutMapping("/{id}")
+    @Operation(summary = "Edit claim data and update review state")
+    public KnowledgeClaimResponse update(@PathVariable long id,
+                                         @Valid @RequestBody ClaimReviewRequest request,
+                                         @AuthenticationPrincipal UserAccount editor) {
+        return service.updateClaim(id, request, editor);
     }
 }

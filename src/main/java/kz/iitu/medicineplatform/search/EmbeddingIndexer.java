@@ -10,7 +10,6 @@ import org.springframework.context.event.EventListener;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -36,24 +35,26 @@ public class EmbeddingIndexer {
     private JdbcTemplate jdbcTemplate;
 
     @EventListener(ApplicationReadyEvent.class)
-    @Transactional
-    public void indexUnembeddedClaims() {
+    public int indexUnembeddedClaims() {
         log.info("Starting embedding index for verified knowledge claims...");
         int totalIndexed = 0;
         int batchSize = 50;
+        long lastProcessedId = 0;
+        String modelId = embeddingService.modelId();
 
         try {
-            int page = 0;
             while (true) {
                 List<Long> ids = jdbcTemplate.queryForList(
                         "SELECT id FROM knowledge_claims " +
-                        "WHERE review_status = 'VERIFIED' AND embedding IS NULL " +
-                        "LIMIT ? OFFSET ?",
+                        "WHERE review_status = 'VERIFIED' " +
+                        "AND (embedding IS NULL OR embedding_model IS DISTINCT FROM ?) " +
+                        "AND id > ? ORDER BY id LIMIT ?",
                         Long.class,
-                        batchSize, page * batchSize
+                        modelId, lastProcessedId, batchSize
                 );
 
                 if (ids.isEmpty()) break;
+                lastProcessedId = ids.get(ids.size() - 1);
 
                 for (Long id : ids) {
                     try {
@@ -91,24 +92,24 @@ public class EmbeddingIndexer {
                             }
                         }
 
-                        float[] embedding = embeddingService.embed(text);
+                        float[] embedding = embeddingService.embedDocument(text);
                         PGvector pgVector = embeddingService.toPgVector(embedding);
 
                         jdbcTemplate.update(
-                                "UPDATE knowledge_claims SET embedding = ? WHERE id = ?",
-                                pgVector, id
+                                "UPDATE knowledge_claims SET embedding = ?, embedding_model = ? WHERE id = ?",
+                                pgVector, modelId, id
                         );
                         totalIndexed++;
                     } catch (Exception e) {
                         log.warn("Failed to index claim {}: {}", id, e.getMessage());
                     }
                 }
-                page++;
             }
 
             log.info("Embedding index complete: {} claims indexed", totalIndexed);
         } catch (Exception e) {
             log.warn("Embedding index failed (pgvector may not be available): {}", e.getMessage());
         }
+        return totalIndexed;
     }
 }

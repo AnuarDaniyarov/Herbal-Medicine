@@ -1,43 +1,138 @@
 <section class="page">
-  <div class="eyebrow">Справочный помощник</div>
-  <h1 class="page-title">Поиск по проверенной базе</h1>
-  <p class="lead">Помощник находит экспертно утверждённые сведения и показывает источники. Он не назначает лечение и не заменяет консультацию специалиста.</p>
-  <div class="notice">Текущая версия использует поиск по словам и дословные сведения из базы. Генеративная языковая модель пока не подключена.</div>
+  <div class="eyebrow">RAG-ассистент · верифицированная база знаний</div>
+  <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+    <div>
+      <h1 class="page-title" style="margin-bottom: 4px;">Интеллектуальный поиск-помощник</h1>
+      <p class="lead" style="margin-bottom: 0;">Помощник находит экспертно утверждённые сведения из монографий и фармакопей и формирует ответ со строгим цитированием источников.</p>
+    </div>
+    @if (conversationId() || responses().length) {
+      <button type="button" class="btn secondary" style="white-space: nowrap; margin-top: 10px;" (click)="startNewConversation()">
+        + Новый диалог
+      </button>
+    }
+  </div>
 
+  <div class="notice" style="margin-top: 16px;">
+    <strong>Принцип работы:</strong> ИИ отвечает <em>только</em> на основе проверенных данных в базе (RAG). Если сведений нет, система прямо сообщает «ДАННЫХ НЕТ». Рекомендации по лечению и дозировкам не выдаются.
+  </div>
+
+  <!-- Quick Prompts when thread is empty -->
+  @if (responses().length === 0) {
+    <div style="margin: 24px 0 12px;">
+      <span class="muted" style="font-size: 0.9rem;">Примеры частых исследовательских вопросов:</span>
+      <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px;">
+        @for (qp of quickPrompts; track qp) {
+          <button
+            type="button"
+            class="card"
+            style="text-align: left; cursor: pointer; padding: 10px 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px;"
+            (click)="useQuickPrompt(qp)">
+            💬 {{ qp }}
+          </button>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- Conversation History -->
+  @if (account() && historyError()) {
+    <div class="error" role="alert">{{historyError()}}</div>
+  }
   @if (account() && history().length) {
-    <section class="assistant-history">
-      <h2>Последние запросы</h2>
-      @for (entry of history(); track entry.conversationId) {
-        <article class="card history-card">
-          <small>{{entry.updatedAt | date:'short'}}</small>
-          <b>{{entry.lastQuestion}}</b>
-          <p>{{entry.lastAnswer}}</p>
-          <span class="badge">{{entry.lastStatus}}</span>
+    <section class="assistant-history" style="margin: 20px 0;">
+      <h3 style="font-size: 1rem; color: #555; margin-bottom: 10px;">Недавние диалоги</h3>
+      <a routerLink="/favorites" [queryParams]="{tab: 'history'}">Открыть всю историю →</a>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        @for (entry of history(); track entry.conversationId) {
+          <button type="button"
+            class="card history-card"
+            style="cursor: pointer; padding: 12px; border-left: 3px solid #0969da; border-radius: 4px; text-align: left;"
+            (click)="selectHistory(entry)">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <small class="muted">{{ entry.updatedAt | date:'short' }}</small>
+              <span class="badge" style="font-size: 0.75rem;">{{ entry.lastStatus }}</span>
+            </div>
+            <strong style="color: #0969da;">{{ entry.lastQuestion }}</strong>
+            @if (entry.lastAnswer) {
+              <p style="margin: 4px 0 0; font-size: 0.9rem; color: #444; max-height: 48px; overflow: hidden; text-overflow: ellipsis;">
+                {{ entry.lastAnswer }}
+              </p>
+            }
+          </button>
+        }
+      </div>
+    </section>
+  }
+
+  @if (conversationLoading()) { <div class="empty">Загрузка переписки…</div> }
+  @if (conversationError()) { <div class="error" role="alert">{{conversationError()}}</div> }
+  @if (selectedConversation().length) {
+    <section class="assistant-thread" aria-label="Выбранный диалог" style="margin: 24px 0;">
+      <h2>Переписка</h2>
+      @for (message of selectedConversation(); track message.id) {
+        <article class="card" style="margin-bottom: 12px; padding: 16px;">
+          <strong>{{message.role === 'USER' ? 'Вы спросили' : 'Ответ ассистента'}}</strong>
+          <p style="white-space: pre-wrap; line-height: 1.5;">{{message.content}}</p>
+          @if (message.responseStatus) { <span class="badge">{{message.responseStatus}}</span> }
+          @for (source of message.sources; track source.source.id) {
+            <div class="source-box" style="margin-top: 10px;">
+              <strong>Источник: {{source.source.title}}</strong>
+              @if (source.excerpt) { <p>{{source.excerpt}}</p> }
+              @if (source.locator) { <small>Локатор: {{source.locator}}</small> }
+              @if (source.source.doi) { <a [href]="'https://doi.org/' + source.source.doi" target="_blank" rel="noopener">DOI ↗</a> }
+              @else if (source.source.url) { <a [href]="source.source.url" target="_blank" rel="noopener">Открыть источник ↗</a> }
+            </div>
+          }
         </article>
       }
     </section>
   }
 
-  <div class="assistant-thread" aria-live="polite">
+  <!-- Active Conversation Thread -->
+  <div class="assistant-thread" aria-live="polite" style="margin: 24px 0;">
     @for (item of responses(); track item.response.conversationId + '-' + $index) {
-      <article class="assistant-turn">
-        <div class="user-question"><b>Ваш вопрос</b><p>{{item.question}}</p></div>
-        <div class="assistant-answer">
-          <b>Ответ · {{item.response.answerMode}}</b>
-          <p>{{item.response.answer}}</p>
-          @if (item.response.status === 'SAFETY_REDIRECT') { <div class="notice">{{item.response.safetyNotice}}</div> }
+      <article class="assistant-turn" style="margin-bottom: 24px;">
+        <div class="user-question" style="background: #f1f5f9; padding: 14px 18px; border-radius: 8px 8px 8px 0; margin-bottom: 12px;">
+          <b>Вы спросили:</b>
+          <p style="margin: 4px 0 0; font-size: 1.05rem;">{{ item.question }}</p>
+        </div>
+
+        <div class="assistant-answer" style="background: #ffffff; border: 1px solid #e2e8f0; padding: 18px; border-radius: 0 8px 8px 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <b>Ответ ассистента</b>
+            <span class="badge" style="background: #eef2f6;">Режим: {{ item.response.answerMode }}</span>
+          </div>
+
+          <p style="font-size: 1rem; line-height: 1.5; color: #222;">{{ item.response.answer }}</p>
+
+          @if (item.response.status === 'SAFETY_REDIRECT') {
+            <div class="notice" style="border-left-color: #cf222e; background: #fff5f5; color: #a40e26; margin: 12px 0;">
+              <strong>Предупреждение безопасности:</strong> {{ item.response.safetyNotice }}
+            </div>
+          }
+
           @if (item.response.citations.length) {
-            <h3>Найденные фрагменты и источники</h3>
-            @for (citation of item.response.citations; track citation.claimId) {
-              <div class="source-box">
-                <strong>{{citation.subject}} · {{citation.title}}</strong>
-                <span>{{citation.claimText}}</span>
-                <b>Источник: {{citation.source.title}}</b>
-                @if (citation.source.doi) { <a [href]="'https://doi.org/' + citation.source.doi" target="_blank" rel="noopener">DOI: {{citation.source.doi}}</a> }
-                @else if (citation.source.url) { <a [href]="citation.source.url" target="_blank" rel="noopener">Открыть источник</a> }
-                @if (citation.sourceLocator) { <span>Место в источнике: {{citation.sourceLocator}}</span> }
-              </div>
-            }
+            <div style="margin-top: 18px; border-top: 1px solid #eee; padding-top: 12px;">
+              <h4 style="margin: 0 0 10px; font-size: 0.95rem; color: #333;">Подтверждающие свидетельства и первоисточники:</h4>
+              @for (citation of item.response.citations; track citation.claimId) {
+                <div class="source-box" style="background: #f8fafc; border-left: 3px solid #1a7f37; padding: 10px 14px; margin-bottom: 8px; border-radius: 0 4px 4px 0;">
+                  <strong>{{ citation.subject }} · {{ citation.title }}</strong>
+                  <p style="margin: 4px 0; font-size: 0.9rem; color: #444;">{{ citation.claimText }}</p>
+                  <div style="font-size: 0.85rem; color: #555;">
+                    <b>Источник:</b> {{ citation.source.title }}
+                    @if (citation.source.doi) {
+                      · <a [href]="'https://doi.org/' + citation.source.doi" target="_blank" rel="noopener">DOI: {{ citation.source.doi }}</a>
+                    }
+                    @else if (citation.source.url) {
+                      · <a [href]="citation.source.url" target="_blank" rel="noopener">Открыть первоисточник ↗</a>
+                    }
+                    @if (citation.sourceLocator) {
+                      · <span>Локатор: {{ citation.sourceLocator }}</span>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
           }
         </div>
       </article>
@@ -45,12 +140,34 @@
   </div>
 
   @if (error()) {
-    <div class="error" role="alert">{{error()}} @if (error().startsWith('Чтобы')) { <a routerLink="/login">Войти</a> }</div>
+    <div class="error" role="alert" style="margin-bottom: 16px;">
+      {{ error() }}
+      @if (error().startsWith('Чтобы')) {
+        <a routerLink="/login" style="margin-left: 8px; font-weight: 600;">Войти</a>
+      }
+    </div>
   }
+
+  <!-- Ask Form -->
   <form class="assistant-form" [formGroup]="form" (ngSubmit)="ask()">
-    <label class="field" for="assistant-question">Задайте вопрос по содержимому базы</label>
-    <textarea id="assistant-question" rows="3" maxlength="2000" formControlName="question" placeholder="Например: какие проверенные сведения есть о валериане?"></textarea>
-    @if (form.controls.question.touched && form.controls.question.invalid) { <small>Введите вопрос длиной до 2000 символов.</small> }
-    <button class="btn" type="submit" [disabled]="loading()">{{loading() ? 'Ищем в базе…' : 'Найти сведения'}}</button>
+    <label class="field" for="assistant-question" style="font-weight: 600; margin-bottom: 6px; display: block;">
+      Задайте вопрос по проверенной базе знаний
+    </label>
+    <textarea
+      id="assistant-question"
+      rows="3"
+      maxlength="2000"
+      formControlName="question"
+      placeholder="Например: какие есть данные о взаимодействии зверобоя с антидепрессантами?"
+      style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; box-sizing: border-box;"
+    ></textarea>
+    @if (form.controls.question.touched && form.controls.question.invalid) {
+      <small style="color: #cf222e; display: block; margin-top: 4px;">Введите вопрос длиной до 2000 символов.</small>
+    }
+    <div style="display: flex; justify-content: flex-end; margin-top: 8px;">
+      <button class="btn" type="submit" [disabled]="loading()">
+        {{ loading() ? 'Поиск в базе и генерация…' : 'Отправить вопрос' }}
+      </button>
+    </div>
   </form>
 </section>

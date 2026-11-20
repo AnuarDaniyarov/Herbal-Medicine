@@ -30,6 +30,8 @@ services:
       ASSISTANT_LLM_BASE_URL: ${ASSISTANT_LLM_BASE_URL:-}
       ASSISTANT_LLM_MODEL: ${ASSISTANT_LLM_MODEL:-local-model}
       ASSISTANT_LLM_API_KEY: ${ASSISTANT_LLM_API_KEY:-}
+      SEARCH_EMBEDDING_URL: ${SEARCH_EMBEDDING_URL:-}
+      SEARCH_EMBEDDING_MODEL_ID: ${SEARCH_EMBEDDING_MODEL_ID:-intfloat/multilingual-e5-small}
       SERVER_PORT: 8081
       CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:4200}
     volumes:
@@ -48,5 +50,15 @@ services:
     depends_on:
       - app
 
+  embeddings:
+    image: ghcr.io/huggingface/text-embeddings-inference:cpu-1.6
+    profiles: ["semantic-search"]
+    command: ["--model-id", "intfloat/multilingual-e5-small"]
+    ports:
+      - "127.0.0.1:8082:80"
+    volumes:
+      - embedding_model_cache:/data
+
 volumes:
   postgres_data:
+  embedding_model_cache:

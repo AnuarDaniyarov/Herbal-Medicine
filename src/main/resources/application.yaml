@@ -48,6 +48,13 @@ assistant:
     model: ${ASSISTANT_LLM_MODEL:local-model}
     api-key: ${ASSISTANT_LLM_API_KEY:}
 
+search:
+  embedding:
+    url: ${SEARCH_EMBEDDING_URL:}
+    model-id: ${SEARCH_EMBEDDING_MODEL_ID:intfloat/multilingual-e5-small}
+  vector:
+    enabled: ${SEARCH_VECTOR_ENABLED:true}
+
 app:
   security:
     bootstrap-admin-email: ${BOOTSTRAP_ADMIN_EMAIL:}

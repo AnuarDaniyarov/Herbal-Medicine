@@ -17,6 +17,9 @@ import kz.iitu.medicineplatform.knowledge.ReviewStatus;
 import kz.iitu.medicineplatform.search.EmbeddingIndexer;
 import kz.iitu.medicineplatform.search.EmbeddingService;
 import kz.iitu.medicineplatform.api.PageResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -28,6 +31,7 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 @Transactional
 public class AssistantService {
+    private static final Logger log = LoggerFactory.getLogger(AssistantService.class);
     private static final Pattern TOKEN_SPLIT = Pattern.compile("[^\\p{L}\\p{N}]+");
     private static final Set<String> STOP_WORDS = Set.of("что", "это", "как", "для", "при", "есть", "можно",
             "какие", "какой", "какая", "про", "или", "the", "what", "with", "from", "and", "for");
@@ -47,6 +51,8 @@ public class AssistantService {
     private final SourceExtractiveAnswerGenerator extractiveFallback;
     private final EmbeddingService embeddingService;
     private final EmbeddingIndexer embeddingIndexer;
+    @Value("${search.vector.enabled:false}")
+    private boolean vectorSearchEnabled;
 
     public AssistantService(AssistantConversationRepository conversations, AssistantMessageRepository messages,
                             AssistantMessageSourceRepository messageSources, KnowledgeClaimRepository claims,
@@ -124,6 +130,23 @@ public class AssistantService {
         return PageResponse.from(page);
     }
 
+    @Transactional(readOnly = true)
+    public List<AssistantHistoryMessage> conversationHistory(long conversationId, UserAccount account) {
+        conversations.findByIdAndUser_Id(conversationId, account.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Conversation was not found"));
+        List<AssistantMessage> conversationMessages = messages.findByConversation_IdOrderByIdAsc(conversationId);
+        Map<Long, List<AssistantMessageSource>> sourcesByMessage = messageSources
+                .findByMessage_Conversation_IdOrderByMessage_IdAsc(conversationId).stream()
+                .collect(java.util.stream.Collectors.groupingBy(source -> source.getMessage().getId()));
+
+        return conversationMessages.stream().map(message -> new AssistantHistoryMessage(
+                message.getId(), message.getRole().name(), message.getContent(), message.getResponseStatus(),
+                message.getCreatedAt(), sourcesByMessage.getOrDefault(message.getId(), List.of()).stream()
+                        .map(source -> new AssistantHistoryMessage.SourceReference(source.getSourceLocator(),
+                                source.getExcerpt(), kz.iitu.medicineplatform.source.SourceResponse.from(source.getSource())))
+                        .toList())).toList();
+    }
+
     private List<KnowledgeClaimResponse> retrieve(String normalizedQuestion) {
         Set<String> terms = tokensFromNormalized(normalizedQuestion);
         if (terms.isEmpty()) return List.of();
@@ -139,23 +162,23 @@ public class AssistantService {
         }
 
         // 2. Vector similarity search
-        try {
-            float[] queryEmbedding = embeddingService.embed(normalizedQuestion);
-            StringBuilder sb = new StringBuilder();
-            sb.append('[');
-            for (int i = 0; i < queryEmbedding.length; i++) {
-                if (i > 0) sb.append(',');
-                sb.append(queryEmbedding[i]);
+        if (vectorSearchEnabled) {
+            try {
+                float[] queryEmbedding = embeddingService.embedQuery(normalizedQuestion);
+                StringBuilder sb = new StringBuilder();
+                sb.append('[');
+                for (int i = 0; i < queryEmbedding.length; i++) {
+                    if (i > 0) sb.append(',');
+                    sb.append(queryEmbedding[i]);
+                }
+                sb.append(']');
+                String vectorStr = sb.toString();
+                List<KnowledgeClaim> vectorCandidates = claims.findNearestByEmbedding(
+                        ReviewStatus.VERIFIED.name(), embeddingService.modelId(), vectorStr, PageRequest.of(0, 10));
+                keywordCandidates.addAll(vectorCandidates);
+            } catch (RuntimeException exception) {
+                log.warn("Assistant vector search unavailable; returning keyword matches: {}", exception.getMessage());
             }
-            sb.append(']');
-            String vectorStr = sb.toString();
-            List<KnowledgeClaim> vectorCandidates = claims.findNearestByEmbedding(
-                    ReviewStatus.VERIFIED.name(), vectorStr, PageRequest.of(0, 10));
-            for (KnowledgeClaim claim : vectorCandidates) {
-                keywordCandidates.add(claim);
-            }
-        } catch (Exception e) {
-            // Vector search failed — fall back to keyword-only
         }
 
         if (keywordCandidates.isEmpty()) {

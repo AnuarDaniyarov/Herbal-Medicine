@@ -1,9 +1,45 @@
 <section class="page">
-  <div class="eyebrow">Администрирование базы</div>
-  <h1 class="page-title">Источники данных</h1>
+  <div class="eyebrow">Администрирование базы · панель управления</div>
+  <h1 class="page-title">Управление источниками и базами знаний</h1>
   <p class="lead">Регистрируйте публикации, реестры и монографии до добавления фактов. Для каждого утверждения затем выбирается конкретный источник и место в нём.</p>
 
-  <form class="card source-form" [formGroup]="form" (ngSubmit)="submit()">
+  <!-- Platform Stats Overview -->
+  @if (stats(); as s) {
+    <div class="stats-overview" style="margin: 20px 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;">
+      <article class="card" style="padding: 14px; text-align: center; border-top: 3px solid #1a7f37;">
+        <strong style="font-size: 1.6rem; color: #1a7f37; display: block;">{{ s.totalPlants }}</strong>
+        <span class="muted" style="font-size: 0.85rem;">Растений ({{ s.verifiedPlants }} проверено)</span>
+      </article>
+      <article class="card" style="padding: 14px; text-align: center; border-top: 3px solid #0969da;">
+        <strong style="font-size: 1.6rem; color: #0969da; display: block;">{{ s.totalPreparations }}</strong>
+        <span class="muted" style="font-size: 0.85rem;">Препаратов ({{ s.verifiedPreparations }} проверено)</span>
+      </article>
+      <article class="card" style="padding: 14px; text-align: center; border-top: 3px solid #8250df;">
+        <strong style="font-size: 1.6rem; color: #8250df; display: block;">{{ s.totalCompounds }}</strong>
+        <span class="muted" style="font-size: 0.85rem;">Хим. соединений</span>
+      </article>
+      <article class="card" style="padding: 14px; text-align: center; border-top: 3px solid #d4a72c;">
+        <strong style="font-size: 1.6rem; color: #b08800; display: block;">{{ s.totalClaims }}</strong>
+        <span class="muted" style="font-size: 0.85rem;">Фактов ({{ s.verifiedClaims }} вериф. / {{ s.pendingClaims }} в очереди)</span>
+      </article>
+      <article class="card" style="padding: 14px; text-align: center; border-top: 3px solid #57606a;">
+        <strong style="font-size: 1.6rem; color: #24292f; display: block;">{{ s.totalSources }}</strong>
+        <span class="muted" style="font-size: 0.85rem;">Источников</span>
+      </article>
+    </div>
+
+    <div style="margin-bottom: 24px; display: flex; justify-content: flex-end;">
+      <button type="button" class="btn secondary" [disabled]="reindexing()" (click)="reindex()">
+        {{ reindexing() ? 'Выполняется индексация pgvector…' : '⚡ Переиндексировать pgvector-эмбеддинги' }}
+      </button>
+    </div>
+  }
+
+  @if (error()) { <div class="error" role="alert">{{error()}}</div> }
+  @if (notice()) { <div class="success" role="status">{{notice()}}</div> }
+  @if (statsError()) { <div class="error" role="alert">{{statsError()}}</div> }
+
+  <form class="card source-form" [formGroup]="form" (ngSubmit)="submit()" style="margin-top: 20px;">
     <h2>Добавить источник</h2>
     <label class="field">Название <input formControlName="title" maxlength="1000"></label>
     <div class="source-fields">
@@ -14,13 +50,11 @@
       <label class="field">URL <input type="url" formControlName="url" maxlength="2000" placeholder="https://..."></label>
     </div>
     <label class="field">Лицензия и условия использования <textarea formControlName="licenseNote" rows="3" maxlength="5000"></textarea></label>
-    @if (error()) { <div class="error" role="alert">{{error()}}</div> }
-    @if (notice()) { <div class="success" role="status">{{notice()}}</div> }
     <button class="btn" type="submit" [disabled]="saving()">{{saving() ? 'Сохраняем…' : 'Добавить источник'}}</button>
   </form>
 
-  <h2>Зарегистрированные источники</h2>
-  @if (!result() && !error()) { <div class="empty">Загрузка…</div> }
+  <h2 style="margin-top: 32px;">Зарегистрированные источники</h2>
+  @if (loading()) { <div class="empty" aria-live="polite">Загрузка источников…</div> }
   @if (result(); as page) {
     @if (page.content.length) {
       <div class="table-wrap"><table><thead><tr><th>ID</th><th>Источник</th><th>Тип</th><th>DOI / URL</th><th>Лицензия</th></tr></thead><tbody>
@@ -29,5 +63,12 @@
         }
       </tbody></table></div>
     } @else { <div class="empty">Источников пока нет.</div> }
+    @if (page.totalPages > 1) {
+      <nav aria-label="Страницы списка источников" style="display: flex; justify-content: center; align-items: center; gap: 12px; margin: 20px 0;">
+        <button type="button" class="btn secondary" [disabled]="page.first || loading()" (click)="changePage(pageIndex() - 1)">Назад</button>
+        <span>Страница {{page.page + 1}} из {{page.totalPages}} · записей: {{page.totalElements}}</span>
+        <button type="button" class="btn secondary" [disabled]="page.last || loading()" (click)="changePage(pageIndex() + 1)">Далее</button>
+      </nav>
+    }
   }
 </section>

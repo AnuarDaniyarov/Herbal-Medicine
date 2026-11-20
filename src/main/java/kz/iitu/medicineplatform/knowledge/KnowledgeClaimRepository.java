@@ -45,6 +45,7 @@ public interface KnowledgeClaimRepository extends JpaRepository<KnowledgeClaim, 
      * Uses cosine distance (<->) — lower values mean more similar (0 = identical).
      * Native query because JPQL doesn't support pgvector operators.
      */
+    @org.springframework.data.jpa.repository.EntityGraph(attributePaths = {"plant", "preparation", "source"})
     @org.springframework.data.jpa.repository.Query(value = """
             select kc from knowledge_claims kc
             left join plants p on kc.plant_id = p.id
@@ -52,10 +53,12 @@ public interface KnowledgeClaimRepository extends JpaRepository<KnowledgeClaim, 
             left join sources s on kc.source_id = s.id
             where kc.review_status = :status
               and kc.embedding IS NOT NULL
-            order by kc.embedding <-> :embedding::vector
+              and kc.embedding_model = :modelId
+            order by kc.embedding <-> CAST(:embedding AS vector)
             """, nativeQuery = true)
     java.util.List<KnowledgeClaim> findNearestByEmbedding(
             @org.springframework.data.repository.query.Param("status") String status,
+            @org.springframework.data.repository.query.Param("modelId") String modelId,
             @org.springframework.data.repository.query.Param("embedding") String embedding,
             Pageable pageable);
 }

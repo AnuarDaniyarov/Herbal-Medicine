@@ -1,37 +1,118 @@
 <section class="page">
-  <div class="eyebrow">Экспертная панель</div>
-  <h1 class="page-title">Проверка сведений</h1>
-  <p class="lead">Перед публикацией проверьте формулировку и первоисточник. В основной каталог попадают только утверждённые сведения.</p>
+  <div class="eyebrow">Экспертная панель · верификация и правка данных</div>
+  <h1 class="page-title">Очередь экспертной проверки</h1>
+  <p class="lead">Эксперт проверяет формулировку, связку с первоисточником и при необходимости вносит исправления перед утверждением в основную базу.</p>
+  <button type="button" class="btn secondary" (click)="load()" [disabled]="loading()">Обновить очередь</button>
+
   @if (notice()) { <div class="success" role="status">{{notice()}}</div> }
   @if (error()) { <div class="error" role="alert">{{error()}}</div> }
-  @if (!result() && !error()) { <div class="empty">Загрузка очереди…</div> }
+  @if (loading()) { <div class="empty">Загрузка очереди…</div> }
+
   @if (result(); as page) {
     @if (page.content.length) {
-      <div class="claim-list">
+      <div class="claim-list" style="display: flex; flex-direction: column; gap: 20px; margin-top: 16px;">
         @for (claim of page.content; track claim.id) {
-          <article class="claim-card">
-            <div class="claim-head">
-              <span class="badge">{{claim.claimType}}</span>
-              <span class="badge badge-muted">{{claim.reviewStatus}}</span>
-              <span class="claim-date">{{claim.source.publicationYear || 'Год не указан'}}</span>
+          <article class="claim-card" style="border: 1px solid #d0d7de; border-radius: 8px; padding: 18px; background: #fff;">
+            <div class="claim-head" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+              <div>
+                <span class="badge" style="margin-right: 8px;">{{claim.claimType}}</span>
+                <span class="badge badge-muted" style="background: #fff8c5; color: #9a6700; border: 1px solid #d4a72c;">{{claim.reviewStatus}}</span>
+              </div>
+              <span class="claim-date muted">{{claim.source.publicationYear || 'Год не указан'}}</span>
             </div>
-            <h2>{{claim.title}}</h2>
-            <p>{{claim.claimText}}</p>
-            <p class="claim-subject">{{claim.plantName || claim.preparationName}} @if (claim.interactionPartner) { · Взаимодействие: {{claim.interactionPartner}} }</p>
-            <div class="source-box">
-              <strong>Источник: {{claim.source.title}}</strong>
-              @if (claim.source.authors) { <span>{{claim.source.authors}}</span> }
-              @if (claim.source.doi) { <a [href]="'https://doi.org/' + claim.source.doi" target="_blank" rel="noopener">DOI: {{claim.source.doi}}</a> }
-              @else if (claim.source.url) { <a [href]="claim.source.url" target="_blank" rel="noopener">Открыть источник</a> }
-              @if (claim.sourceLocator) { <span>Фрагмент/страница: {{claim.sourceLocator}}</span> }
-            </div>
-            <div class="claim-actions">
-              <button class="btn btn-primary" [disabled]="savingId() === claim.id" (click)="review(claim, 'VERIFIED')">Утвердить</button>
-              <button class="btn btn-outline-danger" [disabled]="savingId() === claim.id" (click)="review(claim, 'REJECTED')">Отклонить</button>
-            </div>
+
+            <!-- View Mode -->
+            @if (editingId() !== claim.id) {
+              <h2 style="margin: 4px 0 8px; font-size: 1.25rem;">{{claim.title}}</h2>
+              <p style="margin: 0 0 10px; line-height: 1.5; color: #24292f;">{{claim.claimText}}</p>
+
+              <p class="claim-subject" style="margin: 6px 0; font-size: 0.9rem; color: #57606a;">
+                <strong>Объект:</strong> {{claim.plantName || claim.preparationName || 'Не указан'}}
+                @if (claim.interactionPartner) {
+                  · <strong>Взаимодействие с:</strong> {{claim.interactionPartner}}
+                }
+              </p>
+
+              <div class="source-box" style="background: #f6f8fa; border-left: 3px solid #0969da; padding: 10px 14px; margin: 12px 0; border-radius: 0 6px 6px 0;">
+                <strong>Источник: {{claim.source.title}}</strong>
+                @if (claim.source.authors) { <div style="font-size: 0.85rem; color: #57606a;">{{claim.source.authors}}</div> }
+                @if (claim.source.doi) { <a [href]="'https://doi.org/' + claim.source.doi" target="_blank" rel="noopener">DOI: {{claim.source.doi}}</a> }
+                @else if (claim.source.url) { <a [href]="claim.source.url" target="_blank" rel="noopener">Открыть первоисточник ↗</a> }
+                @if (claim.sourceLocator) { <div style="font-size: 0.85rem;">Фрагмент/страница: {{claim.sourceLocator}}</div> }
+              </div>
+
+              <div class="claim-actions" style="display: flex; gap: 10px; margin-top: 14px;">
+                <button class="btn btn-primary" [disabled]="savingId() === claim.id" (click)="review(claim, 'VERIFIED')">
+                  ✓ Утвердить
+                </button>
+                <button class="btn secondary" [disabled]="savingId() === claim.id" (click)="startEdit(claim)">
+                  ✏ Редактировать карточку
+                </button>
+                <button class="btn btn-outline-danger" [disabled]="savingId() === claim.id" (click)="review(claim, 'REJECTED')">
+                  ✗ Отклонить
+                </button>
+              </div>
+            }
+
+            <!-- Edit Mode -->
+            @if (editingId() === claim.id) {
+              <div class="edit-form" style="background: #fdfdfe; border: 1px dashed #0969da; padding: 16px; border-radius: 6px; margin: 10px 0;">
+                <h3 style="margin-top: 0; color: #0969da; font-size: 1.1rem;">Редактирование сведений экспертом</h3>
+
+                <div style="margin-bottom: 12px;">
+                  <label style="font-weight: 600; display: block; margin-bottom: 4px; font-size: 0.9rem;">Заголовок / Суть утверждения:</label>
+                  <input type="text" [(ngModel)]="editTitle" style="width: 100%; padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;" />
+                </div>
+
+                <div style="margin-bottom: 12px;">
+                  <label style="font-weight: 600; display: block; margin-bottom: 4px; font-size: 0.9rem;">Полный текст утверждения из источника:</label>
+                  <textarea rows="4" [(ngModel)]="editClaimText" style="width: 100%; padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"></textarea>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                  <div>
+                    <label style="font-weight: 600; display: block; margin-bottom: 4px; font-size: 0.9rem;">Партнёр взаимодействия (если применимо):</label>
+                    <input type="text" [(ngModel)]="editInteractionPartner" placeholder="Например: Барбитураты, СИОЗС" style="width: 100%; padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;" />
+                  </div>
+                  <div>
+                    <label style="font-weight: 600; display: block; margin-bottom: 4px; font-size: 0.9rem;">Указатель в источнике (том, стр., статья):</label>
+                    <input type="text" [(ngModel)]="editSourceLocator" placeholder="Например: WHO Monograph Vol. II, p. 1-28" style="width: 100%; padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;" />
+                  </div>
+                </div>
+
+                <div style="margin-bottom: 14px;">
+                  <label style="font-weight: 600; display: block; margin-bottom: 4px; font-size: 0.9rem;">Заметка эксперта к правке / проверке:</label>
+                  <input type="text" [(ngModel)]="editReviewNote" placeholder="Причина правки, примечание фитотерапевта..." style="width: 100%; padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;" />
+                </div>
+
+                <div style="display: flex; gap: 10px;">
+                  <button class="btn btn-primary" [disabled]="savingId() === claim.id" (click)="saveEdit(claim, 'VERIFIED')">
+                    💾 Сохранить и Утвердить
+                  </button>
+                  <button class="btn secondary" [disabled]="savingId() === claim.id" (click)="saveEdit(claim)">
+                    Сохранить черновик
+                  </button>
+                  <button class="btn" style="background: transparent; color: #555; border: 1px solid #ccc;" (click)="cancelEdit()">
+                    Отмена
+                  </button>
+                </div>
+              </div>
+            }
           </article>
         }
       </div>
-    } @else { <div class="empty">Непроверенных сведений нет.</div> }
+    } @else {
+      <div class="empty" style="text-align: center; padding: 40px; background: #fafbfc; border-radius: 8px;">
+        <h3>В очереди нет непроверенных сведений</h3>
+        <p class="muted">Все добавленные факты и монографии проверены экспертами.</p>
+      </div>
+    }
+    @if (page.totalPages > 1) {
+      <nav aria-label="Страницы очереди проверки" style="display: flex; justify-content: center; align-items: center; gap: 12px; margin: 20px 0;">
+        <button type="button" class="btn secondary" [disabled]="page.first || loading()" (click)="changePage(pageIndex() - 1)">Назад</button>
+        <span>Страница {{page.page + 1}} из {{page.totalPages}} · записей: {{page.totalElements}}</span>
+        <button type="button" class="btn secondary" [disabled]="page.last || loading()" (click)="changePage(pageIndex() + 1)">Далее</button>
+      </nav>
+    }
   }
 </section>

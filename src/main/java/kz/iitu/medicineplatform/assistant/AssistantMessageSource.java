@@ -38,4 +38,9 @@ public class AssistantMessageSource {
         this.sourceLocator = sourceLocator;
         this.excerpt = excerpt;
     }
+
+    public AssistantMessage getMessage() { return message; }
+    public DataSource getSource() { return source; }
+    public String getSourceLocator() { return sourceLocator; }
+    public String getExcerpt() { return excerpt; }
 }

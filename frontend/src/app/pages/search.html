@@ -1,0 +1,174 @@
+<section class="page">
+  <div class="eyebrow">Единый гибридный поиск · верифицированные источники</div>
+  <h1 class="page-title">Поиск по базе знаний</h1>
+  <p class="lead">Поиск по проверенным монографиям, фармакопеям и государственным реестрам. Векторный и ключевой поиск работают параллельно.</p>
+
+  <form class="search-form" (ngSubmit)="submit()" style="margin: 20px 0; display: flex; gap: 10px;">
+    <input
+      type="text"
+      class="field"
+      style="flex: 1; padding: 12px 16px; font-size: 1.05rem; border: 1px solid var(--border-color, #ccc); border-radius: 6px;"
+      [(ngModel)]="query"
+      name="query"
+      placeholder="Например: растения от бессонницы, зверобой противопоказания, кашель..."
+      autofocus
+    />
+    <button class="btn" type="submit" [disabled]="loading()">
+      {{ loading() ? 'Ищем…' : 'Найти' }}
+    </button>
+  </form>
+
+  <div class="popular-queries" style="margin-bottom: 24px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
+    <span class="muted" style="font-size: 0.9rem;">Популярные запросы:</span>
+    @for (pq of popularQueries; track pq) {
+      <button
+        type="button"
+        class="badge"
+        style="cursor: pointer; background: #eef2f6; border: 1px solid #d0d7de; padding: 4px 10px; border-radius: 12px;"
+        (click)="setPopular(pq)">
+        {{ pq }}
+      </button>
+    }
+  </div>
+
+  @if (response(); as res) {
+    <div class="intent-banner" style="background: #f0f7ff; border-left: 4px solid #0969da; padding: 10px 16px; border-radius: 4px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+      <div>
+        <strong>{{ intentLabel(res.detectedIntent) }}</strong>
+        <span class="muted" style="margin-left: 12px; font-size: 0.85rem;">Определён язык: {{ res.language.toUpperCase() }}</span>
+      </div>
+      <div class="muted" style="font-size: 0.85rem;">
+        Найдено результатов: <strong>{{ res.results.length }}</strong>
+      </div>
+    </div>
+
+    <!-- Type Filters -->
+    <div class="filters" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
+      <button
+        type="button"
+        class="btn"
+        [class.secondary]="selectedType !== 'all'"
+        (click)="filterByType('all')">
+        Все ({{ res.plantsCount + res.preparationsCount + res.compoundsCount + res.claimsCount }})
+      </button>
+      <button
+        type="button"
+        class="btn"
+        [class.secondary]="selectedType !== 'plant'"
+        (click)="filterByType('plant')">
+        Растения ({{ res.plantsCount }})
+      </button>
+      <button
+        type="button"
+        class="btn"
+        [class.secondary]="selectedType !== 'preparation'"
+        (click)="filterByType('preparation')">
+        Препараты ({{ res.preparationsCount }})
+      </button>
+      <button
+        type="button"
+        class="btn"
+        [class.secondary]="selectedType !== 'claim'"
+        (click)="filterByType('claim')">
+        Факты и свойства ({{ res.claimsCount }})
+      </button>
+      <button
+        type="button"
+        class="btn"
+        [class.secondary]="selectedType !== 'compound'"
+        (click)="filterByType('compound')">
+        Вещества ({{ res.compoundsCount }})
+      </button>
+    </div>
+
+    <!-- Claim Type Filters if claims are visible -->
+    @if (selectedType === 'all' || selectedType === 'claim') {
+      <div class="sub-filters" style="display: flex; gap: 6px; margin-bottom: 20px; font-size: 0.85rem; align-items: center;">
+        <span class="muted">Тип свойства:</span>
+        <button
+          type="button"
+          class="badge"
+          [style.background]="selectedClaimType === 'all' ? '#0969da' : '#eee'"
+          [style.color]="selectedClaimType === 'all' ? '#fff' : '#333'"
+          style="cursor: pointer; border: none; padding: 4px 8px; border-radius: 4px;"
+          (click)="filterByClaimType('all')">Все</button>
+        <button
+          type="button"
+          class="badge"
+          [style.background]="selectedClaimType === 'INDICATION' ? '#1a7f37' : '#eee'"
+          [style.color]="selectedClaimType === 'INDICATION' ? '#fff' : '#333'"
+          style="cursor: pointer; border: none; padding: 4px 8px; border-radius: 4px;"
+          (click)="filterByClaimType('INDICATION')">Показания</button>
+        <button
+          type="button"
+          class="badge"
+          [style.background]="selectedClaimType === 'CONTRAINDICATION' ? '#cf222e' : '#eee'"
+          [style.color]="selectedClaimType === 'CONTRAINDICATION' ? '#fff' : '#333'"
+          style="cursor: pointer; border: none; padding: 4px 8px; border-radius: 4px;"
+          (click)="filterByClaimType('CONTRAINDICATION')">Противопоказания</button>
+        <button
+          type="button"
+          class="badge"
+          [style.background]="selectedClaimType === 'INTERACTION' ? '#8250df' : '#eee'"
+          [style.color]="selectedClaimType === 'INTERACTION' ? '#fff' : '#333'"
+          style="cursor: pointer; border: none; padding: 4px 8px; border-radius: 4px;"
+          (click)="filterByClaimType('INTERACTION')">Взаимодействия</button>
+      </div>
+    }
+
+    <!-- Results List -->
+    @if (res.results.length) {
+      <div class="grid" style="display: flex; flex-direction: column; gap: 14px;">
+        @for (item of res.results; track item.type + '-' + item.id) {
+          <article class="card data-card" style="border: 1px solid #e1e4e8; border-radius: 8px; padding: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
+              <div>
+                <span class="badge" style="margin-right: 8px;">{{ categoryLabel(item.type, item.category) }}</span>
+                @if (item.verified) {
+                  <span class="badge" style="background: #dafbe1; color: #1a7f37; border: 1px solid #1a7f37;">✓ Проверено</span>
+                }
+              </div>
+              <small class="muted">{{ item.sourceName }}</small>
+            </div>
+
+            <h3 style="margin: 6px 0 4px;">
+              <a [routerLink]="item.route" style="color: #0969da; text-decoration: none; font-size: 1.15rem;">
+                {{ item.title }}
+              </a>
+            </h3>
+
+            @if (item.subtitle) {
+              <p class="muted" style="margin: 2px 0 8px; font-style: italic;">{{ item.subtitle }}</p>
+            }
+
+            @if (item.description) {
+              <p style="margin: 6px 0 10px; line-height: 1.45; color: #333;">{{ item.description }}</p>
+            }
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+              <a class="text-link" [routerLink]="item.route" style="font-weight: 500;">
+                Открыть карточку →
+              </a>
+              <a class="text-link" [routerLink]="['/assistant']" [queryParams]="{q: 'Расскажи подробнее про ' + item.title}" style="color: #8250df; font-size: 0.9rem;">
+                Спросить у AI-ассистента ↗
+              </a>
+            </div>
+          </article>
+        }
+      </div>
+    } @else {
+      <div class="empty" style="text-align: center; padding: 40px 20px; background: #fafbfc; border-radius: 8px;">
+        <h3>Ничего не найдено по запросу «{{ res.query }}»</h3>
+        <p class="muted">Попробуйте использовать синонимы или задать вопрос <a routerLink="/assistant">ИИ-ассистенту</a>.</p>
+      </div>
+    }
+  }
+
+  @if (error()) {
+    <div class="error" role="alert" style="margin-top: 20px;">{{ error() }}</div>
+  }
+
+  <div class="notice" style="margin-top: 36px;">
+    <strong>Медицинский дисклеймер:</strong> Платформа предоставляет справочно-информационные сведения из проверенных фармакопейных монографий. Сведения не являются назначением врача или руководством по лечению. По вопросам применения лекарственных трав обратитесь к врачу или квалифицированному фармацевту.
+  </div>
+</section>

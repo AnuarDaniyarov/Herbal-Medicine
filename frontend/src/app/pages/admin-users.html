@@ -1,15 +1,23 @@
 <section class="page">
   <div class="eyebrow">Панель администратора</div><h1 class="page-title">Пользователи и роли</h1>
   <p class="lead">Администратор назначает роли исследователя и эксперта. Регистрация самостоятельно создаёт только обычный пользовательский аккаунт.</p>
+  @if (notice()) { <div class="success" role="status">{{notice()}}</div> }
   @if (error()) { <div class="error" role="alert">{{error()}}</div> }
-  @if (!result() && !error()) { <div class="empty">Загрузка аккаунтов…</div> }
+  @if (loading()) { <div class="empty" aria-live="polite">Загрузка аккаунтов…</div> }
   @if (result(); as page) {
     @if (page.content.length) {
       <div class="table-wrap"><table><thead><tr><th>Пользователь</th><th>Почта</th><th>Роль</th><th>Создан</th></tr></thead><tbody>
         @for (user of page.content; track user.id) {
-          <tr><td>{{user.displayName}}</td><td>{{user.email}}</td><td><select class="form-select role-select" [value]="user.role" [disabled]="savingId() === user.id" (change)="updateRole(user, $any($event.target).value)">@for (role of roles; track role) { <option [value]="role">{{role}}</option> }</select></td><td>{{user.createdAt | date:'short'}}</td></tr>
+          <tr><td>{{user.displayName}}</td><td>{{user.email}}</td><td><select class="form-select role-select" [value]="user.role" [disabled]="savingId() === user.id" (change)="updateRoleFromEvent(user, $event)">@for (role of roles; track role) { <option [value]="role">{{role}}</option> }</select></td><td>{{user.createdAt | date:'short'}}</td></tr>
         }
       </tbody></table></div>
     } @else { <div class="empty">Аккаунтов пока нет.</div> }
+    @if (page.totalPages > 1) {
+      <nav aria-label="Страницы списка пользователей" style="display: flex; justify-content: center; align-items: center; gap: 12px; margin: 20px 0;">
+        <button type="button" class="btn secondary" [disabled]="page.first || loading()" (click)="changePage(pageIndex() - 1)">Назад</button>
+        <span>Страница {{page.page + 1}} из {{page.totalPages}} · записей: {{page.totalElements}}</span>
+        <button type="button" class="btn secondary" [disabled]="page.last || loading()" (click)="changePage(pageIndex() + 1)">Далее</button>
+      </nav>
+    }
   }
 </section>

@@ -217,8 +217,12 @@ export interface KnowledgeClaim {
 }
 
 export interface ClaimReviewRequest {
-  reviewStatus: 'VERIFIED' | 'REJECTED';
+  reviewStatus?: 'VERIFIED' | 'REJECTED' | 'PENDING' | 'UNVERIFIED';
   reviewNote?: string;
+  title?: string;
+  claimText?: string;
+  interactionPartner?: string;
+  sourceLocator?: string;
 }
 
 export interface CreateSourceRequest {
@@ -263,6 +267,21 @@ export interface AssistantHistoryEntry {
   lastStatus?: string | null;
 }
 
+export interface AssistantHistoryMessage {
+  id: number;
+  role: 'USER' | 'ASSISTANT';
+  content: string;
+  responseStatus?: string | null;
+  createdAt: string;
+  sources: AssistantHistorySource[];
+}
+
+export interface AssistantHistorySource {
+  locator?: string | null;
+  excerpt?: string | null;
+  source: Source;
+}
+
 export interface Preparation {
   id: number;
   name: string;
@@ -299,4 +318,43 @@ export interface AddFavoriteRequest {
   plantId?: number | null;
   compoundId?: number | null;
   preparationId?: number | null;
+}
+
+export interface SearchResult {
+  type: 'plant' | 'preparation' | 'compound' | 'claim';
+  id: number;
+  title: string;
+  subtitle?: string;
+  description?: string;
+  category?: string;
+  verified: boolean;
+  sourceName?: string;
+  route: string;
+}
+
+export interface SearchResponse {
+  results: SearchResult[];
+  plantsCount: number;
+  preparationsCount: number;
+  compoundsCount: number;
+  claimsCount: number;
+  detectedIntent: string;
+  language: string;
+  query: string;
+}
+
+export interface PlatformStats {
+  totalPlants: number;
+  verifiedPlants: number;
+  totalCompounds: number;
+  totalPreparations: number;
+  verifiedPreparations: number;
+  totalClaims: number;
+  verifiedClaims: number;
+  pendingClaims: number;
+  unverifiedClaims: number;
+  rejectedClaims: number;
+  totalSources: number;
+  totalUsers: number;
+  usersByRole: Record<string, number>;
 }

@@ -101,6 +101,13 @@ public class KnowledgeClaim {
         this.reviewedAt = OffsetDateTime.now(ZoneOffset.UTC);
     }
 
+    public void updateData(String title, String claimText, String interactionPartner, String sourceLocator) {
+        if (title != null && !title.isBlank()) this.title = title.trim();
+        if (claimText != null && !claimText.isBlank()) this.claimText = claimText.trim();
+        if (interactionPartner != null) this.interactionPartner = interactionPartner.isBlank() ? null : interactionPartner.trim();
+        if (sourceLocator != null) this.sourceLocator = sourceLocator.isBlank() ? null : sourceLocator.trim();
+    }
+
     @PrePersist
     void onCreate() { if (createdAt == null) createdAt = OffsetDateTime.now(ZoneOffset.UTC); }
 

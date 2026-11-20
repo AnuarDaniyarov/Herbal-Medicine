@@ -52,6 +52,7 @@ public class AssistantMessage {
     public Role getRole() { return role; }
     public String getContent() { return content; }
     public String getResponseStatus() { return responseStatus; }
+    public OffsetDateTime getCreatedAt() { return createdAt; }
 
     @PrePersist
     void onCreate() { createdAt = OffsetDateTime.now(ZoneOffset.UTC); }

@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import kz.iitu.medicineplatform.activity.ActivityMeasurement;
 import kz.iitu.medicineplatform.activity.ActivityMeasurementRepository;
 import kz.iitu.medicineplatform.activity.Assay;
@@ -155,6 +156,19 @@ class MedicinePlatformApplicationTests {
         assertTrue(!response.isAiGenerated());
         assertEquals(1, response.citations().size());
         assertEquals("Verified research paper", response.citations().getFirst().source().title());
+
+        var history = assistantService.conversationHistory(response.conversationId(), user);
+        assertEquals(2, history.size());
+        assertEquals("USER", history.getFirst().role());
+        assertEquals("ASSISTANT", history.getLast().role());
+        assertEquals(1, history.getLast().sources().size());
+        assertEquals("p. 4", history.getLast().sources().getFirst().locator());
+        assertTrue(history.getLast().sources().getFirst().excerpt().contains("verified statement"));
+
+        UserAccount otherUser = userAccounts.save(new UserAccount("other-" + UUID.randomUUID() + "@example.test",
+                "Other User", "not-a-real-login-hash", UserRole.USER));
+        assertThrows(org.springframework.web.server.ResponseStatusException.class,
+                () -> assistantService.conversationHistory(response.conversationId(), otherUser));
     }
 
     @Test
