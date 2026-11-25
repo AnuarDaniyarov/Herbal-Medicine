@@ -438,12 +438,12 @@ AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND k
 
 -- RHODIOLA (ЗОЛОТОЙ КОРЕНЬ)
 INSERT INTO knowledge_claims (plant_id, claim_type, title, claim_text, source_id, source_locator, review_status)
-SELECT p.id, 'INDICATION', 'Хроническая усталость, астенические состояния и психоэмоциональное истощение', 'Салидрозид и розавин родиолы розовой повышают умственную и физическую работоспособность, модулируя уровень серотонина и дофамина без эффекта привыкания.', s.id, 'Фитотерапевтический справочник: лекарственные растения Центральной Азии', 'Глава 4, Родиола розовая', 'VERIFIED'
+SELECT p.id, 'INDICATION', 'Хроническая усталость, астенические состояния и психоэмоциональное истощение', 'Салидрозид и розавин родиолы розовой повышают умственную и физическую работоспособность, модулируя уровень серотонина и дофамина без эффекта привыкания.', s.id, 'Глава 4, Родиола розовая', 'VERIFIED'
 FROM plants p, sources s WHERE p.scientific_name = 'Rhodiola rosea' AND s.title = 'Фитотерапевтический справочник: лекарственные растения Центральной Азии'
 AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Хроническая усталость, астенические состояния и психоэмоциональное истощение');
 
 INSERT INTO knowledge_claims (plant_id, claim_type, title, claim_text, source_id, source_locator, review_status)
-SELECT p.id, 'CONTRAINDICATION', 'Гипертонический криз и острое психомоторное возбуждение', 'Тонизирующие препараты родиолы категорически противопоказаны при высоком артериальном давлении, лихорадке и бессоннице.', s.id, 'Фитотерапевтический справочник: лекарственные растения Центральной Азии', 'Глава 4', 'VERIFIED'
+SELECT p.id, 'CONTRAINDICATION', 'Гипертонический криз и острое психомоторное возбуждение', 'Тонизирующие препараты родиолы категорически противопоказаны при высоком артериальном давлении, лихорадке и бессоннице.', s.id, 'Глава 4', 'VERIFIED'
 FROM plants p, sources s WHERE p.scientific_name = 'Rhodiola rosea' AND s.title = 'Фитотерапевтический справочник: лекарственные растения Центральной Азии'
 AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Гипертонический криз и острое психомоторное возбуждение');
 
