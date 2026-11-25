@@ -46,11 +46,21 @@ export class AssistantPage implements OnInit {
   });
 
   readonly quickPrompts = [
-    'Можно ли принимать валериану вместе с антидепрессантами?',
+    'Какие показания к применению валерианы лекарственной?',
     'Какие есть противопоказания у зверобоя?',
     'Что из проверенных трав обладает отхаркивающим действием?',
     'Какие показания к применению ромашки аптечной?'
   ];
+
+  answerModeDescription(response: AssistantResponse): string {
+    if (response.answerMode === 'LLM_RAG') {
+      return 'Ответ сгенерирован языковой моделью по найденным утверждениям; проверьте цитаты.';
+    }
+    if (response.answerMode === 'SOURCE_EXTRACTIVE') {
+      return 'Без языковой модели: приведены выдержки из базы знаний и источники.';
+    }
+    return 'Запрос обработан по правилам безопасности; медицинские рекомендации не выдаются.';
+  }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {

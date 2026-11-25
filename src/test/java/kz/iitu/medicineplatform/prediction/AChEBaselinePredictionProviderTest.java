@@ -36,6 +36,8 @@ class AChEBaselinePredictionProviderTest {
         assertThat(result.status()).isEqualTo("ML_BASELINE");
         assertThat(result.probability().doubleValue()).isBetween(0.549, 0.550);
         assertThat(result.warning()).contains("not scaffold split");
+        assertThat(result.warning()).contains("uncertainty is not quantified");
+        assertThat(result.uncertainty()).isNull();
         assertThat(result.label()).contains("IC50_10UM_THRESHOLD");
     }
 

@@ -47,7 +47,9 @@ export class AuthPage {
           this.notice.set('Аккаунт создан. Теперь войдите в систему.');
           this.form.reset();
         } else {
-          void this.router.navigateByUrl('/');
+          const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+          const safeReturnUrl = returnUrl?.startsWith('/') && !returnUrl.startsWith('//') ? returnUrl : '/';
+          void this.router.navigateByUrl(safeReturnUrl);
         }
       },
       error: error => this.error.set(error?.error?.message || 'Не удалось выполнить запрос. Проверьте данные и повторите попытку.')

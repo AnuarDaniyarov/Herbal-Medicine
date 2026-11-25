@@ -24,7 +24,8 @@ public class AChEBaselinePredictionProvider implements PredictionProvider {
     private static final String BASELINE_WARNING =
             "Exploratory ML baseline only: trained on 74 unverified IMPPAT AChE compounds; test set 16; " +
             "random compound split (not scaffold split). Original assay conditions are not fully harmonized. " +
-            "SMILES receives format checks only. Not evidence of efficacy or safety and not medical advice.";
+            "SMILES receives format checks only. The reported model probability is uncalibrated and uncertainty is not quantified. " +
+            "Not evidence of efficacy or safety and not medical advice.";
 
     private final ObjectMapper objectMapper;
     private final Path modelPath;
@@ -56,9 +57,8 @@ public class AChEBaselinePredictionProvider implements PredictionProvider {
         }
         score = Math.max(-30.0, Math.min(30.0, score));
         double probability = 1.0 / (1.0 + Math.exp(-score));
-        double uncertainty = 4.0 * probability * (1.0 - probability);
         String label = probability >= 0.5 ? "LIKELY_ACTIVE_AT_IC50_10UM_THRESHOLD" : "LIKELY_BELOW_IC50_10UM_THRESHOLD";
-        return new PredictionResult(label, null, BigDecimal.valueOf(probability), BigDecimal.valueOf(uncertainty),
+        return new PredictionResult(label, null, BigDecimal.valueOf(probability), null,
                 "EXPLORATORY", "ML_BASELINE", BASELINE_WARNING);
     }
 

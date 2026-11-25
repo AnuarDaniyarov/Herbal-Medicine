@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthApiService } from '../core/auth-api.service';
 import { KnowledgeClaim, PageResponse } from '../core/api.models';
+import { of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-expert-claims',
@@ -68,16 +69,20 @@ export class ExpertClaimsPage {
     this.notice.set('');
     this.error.set('');
 
-    const payload = {
+    const editPayload = {
       title: this.editTitle.trim(),
       claimText: this.editClaimText.trim(),
       interactionPartner: this.editInteractionPartner.trim() || undefined,
       sourceLocator: this.editSourceLocator.trim() || undefined,
-      reviewNote: this.editReviewNote.trim() || undefined,
-      reviewStatus
     };
+    const reviewNote = this.editReviewNote.trim() || undefined;
+    const saveRequest = this.api.updateClaim(claim.id, editPayload).pipe(
+      switchMap(updated => reviewStatus
+        ? this.api.reviewClaim(updated.id, { reviewStatus, reviewNote })
+        : of(updated))
+    );
 
-    this.api.updateClaim(claim.id, payload).subscribe({
+    saveRequest.subscribe({
       next: updated => {
         if (reviewStatus) {
           this.removeFromQueue(updated.id);

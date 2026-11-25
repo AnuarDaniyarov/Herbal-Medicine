@@ -1,9 +1,9 @@
 <section class="page">
-  <div class="eyebrow">RAG-ассистент · верифицированная база знаний</div>
+  <div class="eyebrow">Поиск-помощник · база экспертно проверенных утверждений</div>
   <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
     <div>
       <h1 class="page-title" style="margin-bottom: 4px;">Интеллектуальный поиск-помощник</h1>
-      <p class="lead" style="margin-bottom: 0;">Помощник находит экспертно утверждённые сведения из монографий и фармакопей и формирует ответ со строгим цитированием источников.</p>
+      <p class="lead" style="margin-bottom: 0;">Помощник ищет подходящие утверждения и показывает их источники. Режим ответа определяется сервером.</p>
     </div>
     @if (conversationId() || responses().length) {
       <button type="button" class="btn secondary" style="white-space: nowrap; margin-top: 10px;" (click)="startNewConversation()">
@@ -13,7 +13,13 @@
   </div>
 
   <div class="notice" style="margin-top: 16px;">
-    <strong>Принцип работы:</strong> ИИ отвечает <em>только</em> на основе проверенных данных в базе (RAG). Если сведений нет, система прямо сообщает «ДАННЫХ НЕТ». Рекомендации по лечению и дозировкам не выдаются.
+    <strong>Режим:</strong>
+    @if (responses().length) {
+      {{ answerModeDescription(responses()[responses().length - 1].response) }}
+    } @else {
+      Сервер ищет сведения в базе; подключение языковой модели зависит от конфигурации.
+    }
+    Рекомендации по лечению и дозировкам не выдаются.
   </div>
 
   <!-- Quick Prompts when thread is empty -->
@@ -117,6 +123,7 @@
               @for (citation of item.response.citations; track citation.claimId) {
                 <div class="source-box" style="background: #f8fafc; border-left: 3px solid #1a7f37; padding: 10px 14px; margin-bottom: 8px; border-radius: 0 4px 4px 0;">
                   <strong>{{ citation.subject }} · {{ citation.title }}</strong>
+                  <span class="badge">{{ citation.claimType }}</span>
                   <p style="margin: 4px 0; font-size: 0.9rem; color: #444;">{{ citation.claimText }}</p>
                   <div style="font-size: 0.85rem; color: #555;">
                     <b>Источник:</b> {{ citation.source.title }}
@@ -166,7 +173,7 @@
     }
     <div style="display: flex; justify-content: flex-end; margin-top: 8px;">
       <button class="btn" type="submit" [disabled]="loading()">
-        {{ loading() ? 'Поиск в базе и генерация…' : 'Отправить вопрос' }}
+        {{ loading() ? 'Поиск в базе…' : 'Отправить вопрос' }}
       </button>
     </div>
   </form>

@@ -8,6 +8,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -49,14 +50,21 @@ public class ApiExceptionHandler {
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<ApiError> handleStatus(ResponseStatusException exception, HttpServletRequest request) {
         HttpStatusCode status = exception.getStatusCode();
-        String code = switch (status.value()) {
+        String code = "SELF_REVIEW_FORBIDDEN".equals(exception.getReason()) ? "SELF_REVIEW_FORBIDDEN" : switch (status.value()) {
             case 400 -> "INVALID_REQUEST";
             case 404 -> "NOT_FOUND";
             case 409 -> "DATA_CONFLICT";
+            case 429 -> "TOO_MANY_REQUESTS";
             default -> "REQUEST_FAILED";
         };
         String message = Objects.requireNonNullElse(exception.getReason(), "Request failed");
-        return response(status, code, message, request, List.of());
+        ResponseEntity<ApiError> response = response(status, code, message, request, List.of());
+        if (exception instanceof RateLimitExceededException limited) {
+            return ResponseEntity.status(status)
+                    .header(HttpHeaders.RETRY_AFTER, Long.toString(limited.getRetryAfterSeconds()))
+                    .body(response.getBody());
+        }
+        return response;
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)

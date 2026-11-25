@@ -24,5 +24,11 @@
     }
   </div>
 </header>
+@if (notice.message()) {
+  <div class="notice api-notice" role="alert">
+    {{ notice.message() }}
+    <button type="button" class="btn secondary" (click)="notice.message.set('')">Закрыть</button>
+  </div>
+}
 <main class="app-main"><router-outlet /></main>
 <footer class="footer"><span>Herbarium AI · исследовательская платформа</span><a routerLink="/methodology">Методология и ограничения</a><span>Вычислительные оценки не являются медицинскими рекомендациями.</span></footer>

@@ -246,6 +246,7 @@ export interface AssistantCitation {
   claimText: string;
   subject?: string | null;
   sourceLocator?: string | null;
+  claimType: ClaimType;
   source: Source;
 }
 

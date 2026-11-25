@@ -95,10 +95,20 @@ public class KnowledgeClaim {
     }
 
     public void review(UserAccount reviewer, ReviewStatus status, String note) {
+        if (status == ReviewStatus.VERIFIED && reviewer == null) {
+            throw new IllegalArgumentException("A verified claim requires an assigned reviewer");
+        }
         this.reviewStatus = status;
         this.reviewedBy = reviewer;
         this.reviewNote = note;
         this.reviewedAt = OffsetDateTime.now(ZoneOffset.UTC);
+    }
+
+    public void resetVerification() {
+        this.reviewStatus = ReviewStatus.PENDING;
+        this.reviewedBy = null;
+        this.reviewedAt = null;
+        this.reviewNote = null;
     }
 
     public void updateData(String title, String claimText, String interactionPartner, String sourceLocator) {
@@ -121,6 +131,7 @@ public class KnowledgeClaim {
     public DataSource getSource() { return source; }
     public String getSourceLocator() { return sourceLocator; }
     public ReviewStatus getReviewStatus() { return reviewStatus; }
+    public UserAccount getCreatedBy() { return createdBy; }
     public UserAccount getReviewedBy() { return reviewedBy; }
     public String getReviewNote() { return reviewNote; }
     public OffsetDateTime getCreatedAt() { return createdAt; }

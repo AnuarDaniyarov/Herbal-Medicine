@@ -24,13 +24,15 @@ public class PredictionController {
     @PostMapping
     @Operation(summary = "Create a prediction record", description = "Saves either the exploratory human AChE IC50 ML baseline result or an explicitly marked demo result for unsupported activity types.")
     @ResponseStatus(HttpStatus.CREATED)
-    public PredictionResponse predict(@Valid @RequestBody PredictionRequest request) {
-        return service.predict(request);
+    public PredictionResponse predict(@Valid @RequestBody PredictionRequest request,
+                                      @org.springframework.security.core.annotation.AuthenticationPrincipal kz.iitu.medicineplatform.auth.UserAccount account) {
+        return service.predict(request, account);
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Get prediction record", description = "Returns the saved input, provider version, demo flag, and limitations.")
-    public PredictionResponse findById(@PathVariable Long id) {
-        return service.findById(id);
+    public PredictionResponse findById(@PathVariable Long id,
+                                       @org.springframework.security.core.annotation.AuthenticationPrincipal kz.iitu.medicineplatform.auth.UserAccount account) {
+        return service.findById(id, account);
     }
 }

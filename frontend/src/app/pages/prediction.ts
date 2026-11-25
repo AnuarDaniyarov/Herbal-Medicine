@@ -1,4 +1,4 @@
-﻿import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../core/api.service';
@@ -31,7 +31,10 @@ export class PredictionPage {
       error: () => this.error.set('Не удалось загрузить список доступных типов оценки.'),
     });
     if (compoundId > 0) {
-      this.api.compound(compoundId).subscribe((compound) => this.form.controls.smiles.setValue(compound.canonicalSmiles));
+      this.api.compound(compoundId).subscribe({
+        next: (compound) => this.form.controls.smiles.setValue(compound.canonicalSmiles),
+        error: (err) => this.error.set(err.error?.message || 'Не удалось загрузить структуру соединения.'),
+      });
     }
   }
 

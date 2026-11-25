@@ -28,13 +28,13 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                        .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler())
-                        .ignoringRequestMatchers("/api/predictions/**", "/api/comparisons/**"))
+                        .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/auth/csrf", "/api/auth/register", "/api/auth/login",
                                 "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/actuator/health")
                         .permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/predictions/**", "/api/comparisons/**").authenticated()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/expert/**").hasAnyRole("EXPERT", "ADMIN")
                         .requestMatchers("/api/auth/me", "/api/auth/logout", "/api/favorites/**", "/api/assistant/**")

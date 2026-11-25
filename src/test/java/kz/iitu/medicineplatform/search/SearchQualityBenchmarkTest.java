@@ -47,6 +47,7 @@ public class SearchQualityBenchmarkTest {
     @Autowired private KnowledgeClaimRepository claims;
     @Autowired private DataSourceRepository sources;
     @Autowired private PreparationRepository preparations;
+    @Autowired private kz.iitu.medicineplatform.auth.UserAccountRepository users;
     @Autowired private JdbcTemplate jdbcTemplate;
     @Autowired private ObjectMapper mapper;
 
@@ -257,8 +258,11 @@ public class SearchQualityBenchmarkTest {
         boolean exists = claims.findAll().stream()
                 .anyMatch(c -> c.getPlant() != null && c.getPlant().getId().equals(plant.getId()) && c.getTitle().equalsIgnoreCase(title));
         if (!exists) {
+            kz.iitu.medicineplatform.auth.UserAccount reviewer = users.findAll().stream().findFirst().orElseGet(() ->
+                    users.save(new kz.iitu.medicineplatform.auth.UserAccount("benchmark.expert@example.test", "Benchmark Expert",
+                            "hash", kz.iitu.medicineplatform.auth.UserRole.EXPERT)));
             KnowledgeClaim kc = new KnowledgeClaim(plant, null, type, title, text, interactionPartner, source, "WHO Monograph / Ph.Eur.", null);
-            kc.review(null, ReviewStatus.VERIFIED, "Автоматическая валидация эталонного набора");
+            kc.review(reviewer, ReviewStatus.VERIFIED, "Автоматическая валидация эталонного набора");
             claims.save(kc);
         }
     }

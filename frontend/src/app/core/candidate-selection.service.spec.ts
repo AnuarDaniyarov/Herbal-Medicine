@@ -1,4 +1,4 @@
-﻿import { TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { CandidateSelectionService } from './candidate-selection.service';
 import { CompoundSummary } from './api.models';
 

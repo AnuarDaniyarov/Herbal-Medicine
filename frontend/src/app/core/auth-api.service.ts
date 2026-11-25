@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject, signal } from '@angular/core';
-import { Observable, catchError, map, of, switchMap, tap } from 'rxjs';
+import { Observable, catchError, map, of, shareReplay, switchMap, tap } from 'rxjs';
 import { ClaimReviewRequest, CreateSourceRequest, KnowledgeClaim, PageResponse, PlatformStats, Source, UserAccountView, UserRole, LoginRequest, RegisterRequest } from './api.models';
 
 @Injectable({ providedIn: 'root' })
@@ -9,14 +9,19 @@ export class AuthApiService {
   private readonly base = '/api/auth';
   readonly currentUser = signal<UserAccountView | null>(null);
   readonly initialized = signal(false);
+  private initialization?: Observable<UserAccountView | null>;
 
   currentAccount(): UserAccountView | null { return this.currentUser(); }
 
-  initialize(): void {
-    this.http.get<UserAccountView>(`${this.base}/me`).pipe(
-      catchError(() => of(null)),
-      tap(user => { this.currentUser.set(user); this.initialized.set(true); })
-    ).subscribe();
+  initialize(): Observable<UserAccountView | null> {
+    if (!this.initialization) {
+      this.initialization = this.http.get<UserAccountView>(`${this.base}/me`).pipe(
+        catchError(() => of(null)),
+        tap(user => { this.currentUser.set(user); this.initialized.set(true); }),
+        shareReplay({ bufferSize: 1, refCount: false })
+      );
+    }
+    return this.initialization;
   }
 
   register(request: RegisterRequest): Observable<UserAccountView> {

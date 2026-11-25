@@ -24,6 +24,7 @@ services:
       DB_URL: jdbc:postgresql://db:5432/medicine_platform
       DB_USERNAME: ${DB_USERNAME:-postgres}
       DB_PASSWORD: "${DB_PASSWORD:?Set DB_PASSWORD in .env}"
+      SESSION_COOKIE_SECURE: ${SESSION_COOKIE_SECURE:-true}
       BOOTSTRAP_ADMIN_EMAIL: ${BOOTSTRAP_ADMIN_EMAIL:-}
       BOOTSTRAP_ADMIN_PASSWORD: ${BOOTSTRAP_ADMIN_PASSWORD:-}
       ASSISTANT_LLM_ENABLED: ${ASSISTANT_LLM_ENABLED:-false}
@@ -41,14 +42,27 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail --silent http://127.0.0.1:8081/actuator/health > /dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 45s
 
   web:
     build: ./frontend
     restart: unless-stopped
     ports:
-      - "127.0.0.1:4200:80"
+      - "127.0.0.1:4200:8080"
     depends_on:
-      - app
+      app:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://127.0.0.1:8080/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
 
   embeddings:
     image: ghcr.io/huggingface/text-embeddings-inference:cpu-1.6

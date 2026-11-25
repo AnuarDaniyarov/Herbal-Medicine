@@ -7,6 +7,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface PlantRepository extends JpaRepository<Plant, Long> {
+    @org.springframework.data.jpa.repository.Query("""
+            select count(p), coalesce(sum(case when lower(p.reviewStatus) = lower(:status) then 1 else 0 end), 0)
+            from Plant p
+            """)
+    Object[] countAndReviewStatus(@org.springframework.data.repository.query.Param("status") String status);
+
 
     @Query("""
             select p from Plant p
@@ -20,4 +26,5 @@ public interface PlantRepository extends JpaRepository<Plant, Long> {
               and (:family = '' or lower(p.family) like lower(concat('%', :family, '%')))
             """)
     Page<Plant> search(@Param("query") String query, @Param("family") String family, Pageable pageable);
+    long countByReviewStatusIgnoreCase(String reviewStatus);
 }

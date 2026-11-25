@@ -1,4 +1,4 @@
-﻿-- ============================================================================
+-- ============================================================================
 -- V12: Full Verified Knowledge Base Seed (Production & Defense Baseline)
 -- Covers 65+ medicinal plants, 60+ active compounds, 35+ finished preparations,
 -- and 200+ verified knowledge claims (indications, contraindications, interactions)
@@ -10,80 +10,80 @@
 INSERT INTO sources (title, authors, publication_year, doi, url, source_type, license_note)
 VALUES
     ('WHO Monographs on Selected Medicinal Plants', 'World Health Organization', 2009, '10.2471/WHO_MONOGRAPHS', 'https://www.who.int/publications/collection/selected-medical-plants-monographs', 'MONOGRAPH', 'Public domain authoritative reference'),
-    ('Р¤Р°СЂРјР°РєРѕРїРµСЏ Р РѕСЃСЃРёР№СЃРєРѕР№ Р¤РµРґРµСЂР°С†РёРё IV РёР·РґР°РЅРёРµ', 'РњРёРЅР·РґСЂР°РІ Р Р¤', 2018, NULL, 'https://pharmacopoeia.ru', 'PHARMACOPEIA', 'Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЃС‚Р°РЅРґР°СЂС‚ РєР°С‡РµСЃС‚РІР° Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ'),
-    ('Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р РµСЃРїСѓР±Р»РёРєРё РљР°Р·Р°С…СЃС‚Р°РЅ', 'РњРёРЅР·РґСЂР°РІ Р Рљ', 2022, NULL, 'https://drugregister.kz', 'REGISTRY', 'РћС„РёС†РёР°Р»СЊРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р Рљ'),
-    ('Р¤РёС‚РѕС‚РµСЂР°РїРµРІС‚РёС‡РµСЃРєРёР№ СЃРїСЂР°РІРѕС‡РЅРёРє: Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹Рµ СЂР°СЃС‚РµРЅРёСЏ Р¦РµРЅС‚СЂР°Р»СЊРЅРѕР№ РђР·РёРё', 'Рђ.Рљ. РђР№С‚Р±Р°РµРІ, Рљ.Р”. Р Р°С…РёРјРѕРІ', 2018, NULL, 'https://www.researchgate.net', 'MONOGRAPH', 'РќР°СѓС‡РЅРѕ-РїСЂР°РєС‚РёС‡РµСЃРєРѕРµ СЂСѓРєРѕРІРѕРґСЃС‚РІРѕ РїРѕ С„РёС‚РѕС‚РµСЂР°РїРёРё'),
-    ('Р•РІСЂРѕРїРµР№СЃРєР°СЏ С„Р°СЂРјР°РєРѕРїРµСЏ (European Pharmacopoeia 10th ed.)', 'EDQM', 2020, NULL, 'https://www.edqm.eu', 'PHARMACOPEIA', 'Official standards for medicines in Europe')
+    ('Фармакопея Российской Федерации IV издание', 'Минздрав РФ', 2018, NULL, 'https://pharmacopoeia.ru', 'PHARMACOPEIA', 'Государственный стандарт качества лекарственных средств'),
+    ('Государственный реестр лекарственных средств Республики Казахстан', 'Минздрав РК', 2022, NULL, 'https://drugregister.kz', 'REGISTRY', 'Официальный реестр лекарственных средств РК'),
+    ('Фитотерапевтический справочник: лекарственные растения Центральной Азии', 'А.К. Айтбаев, К.Д. Рахимов', 2018, NULL, 'https://www.researchgate.net', 'MONOGRAPH', 'Научно-практическое руководство по фитотерапии'),
+    ('Европейская фармакопея (European Pharmacopoeia 10th ed.)', 'EDQM', 2020, NULL, 'https://www.edqm.eu', 'PHARMACOPEIA', 'Official standards for medicines in Europe')
 ON CONFLICT (title) DO NOTHING;
 
 -- 2. Insert / Update 65 Key Medicinal Plants
 INSERT INTO plants (scientific_name, display_name, family, name_ru, name_kk, synonyms, used_parts, distribution_regions, review_status)
 VALUES
-    ('Valeriana officinalis', 'Valeriana officinalis L.', 'Caprifoliaceae', 'Р’Р°Р»РµСЂРёР°РЅР° Р»РµРєР°СЂСЃС‚РІРµРЅРЅР°СЏ', 'Р’Р°Р»РµСЂРёР°РЅР° РґУ™СЂС–Р»С–Рє', 'РљРѕС€Р°С‡СЊСЏ С‚СЂР°РІР°, РјР°СѓРЅ, РѕРґРѕР»СЏРЅ', 'РљРѕСЂРЅРµРІРёС‰Р° СЃ РєРѕСЂРЅСЏРјРё', 'РљР°Р·Р°С…СЃС‚Р°РЅ, Р Р¤, Р•РІСЂРѕРїР°, РљР°РІРєР°Р·', 'VERIFIED'),
-    ('Hypericum perforatum', 'Hypericum perforatum L.', 'Hypericaceae', 'Р—РІРµСЂРѕР±РѕР№ РїСЂРѕРґС‹СЂСЏРІР»РµРЅРЅС‹Р№', 'РЁС‹Р±С‹РЅР¶Р°СѓС‹СЂС‚', 'Р—РІРµСЂРѕР±РѕР№ РѕР±С‹РєРЅРѕРІРµРЅРЅС‹Р№, РєСЂРѕРІР°РІРЅРёРє', 'РўСЂР°РІР°', 'РљР°Р·Р°С…СЃС‚Р°РЅ, РђР»С‚Р°Р№, РЎРёР±РёСЂСЊ, Р•РІСЂРѕРїР°', 'VERIFIED'),
-    ('Matricaria chamomilla', 'Matricaria chamomilla L.', 'Asteraceae', 'Р РѕРјР°С€РєР° Р°РїС‚РµС‡РЅР°СЏ', 'Р”У™СЂС–Р»С–Рє С‚ТЇР№РјРµРґР°Т›', 'Р РѕРјР°С€РєР° РѕР±РѕРґСЂР°РЅРЅР°СЏ, РјР°С‚РѕС‡РЅР°СЏ С‚СЂР°РІР°', 'Р¦РІРµС‚РєРё', 'РљР°Р·Р°С…СЃС‚Р°РЅ, Р Р¤, Р•РІСЂРѕРїР°', 'VERIFIED'),
-    ('Mentha piperita', 'Mentha piperita L.', 'Lamiaceae', 'РњСЏС‚Р° РїРµСЂРµС‡РЅР°СЏ', 'Р‘Т±СЂС‹С€ Р¶Р°Р»Р±С‹Р·', 'РђРЅРіР»РёР№СЃРєР°СЏ РјСЏС‚Р°, С…РѕР»РѕРґРЅР°СЏ РјСЏС‚Р°', 'Р›РёСЃС‚СЊСЏ', 'РљСѓР»СЊС‚РёРІРёСЂСѓРµС‚СЃСЏ РїРѕРІСЃРµРјРµСЃС‚РЅРѕ', 'VERIFIED'),
-    ('Echinacea purpurea', 'Echinacea purpurea (L.) Moench', 'Asteraceae', 'Р­С…РёРЅР°С†РµСЏ РїСѓСЂРїСѓСЂРЅР°СЏ', 'РљТЇР»РіС–РЅ СЌС…РёРЅР°С†РµСЏ', 'Р СѓРґР±РµРєРёСЏ РїСѓСЂРїСѓСЂРЅР°СЏ', 'РўСЂР°РІР°, РєРѕСЂРЅРµРІРёС‰Р°', 'Р•РІСЂР°Р·РёСЏ, РЎРµРІРµСЂРЅР°СЏ РђРјРµСЂРёРєР°', 'VERIFIED'),
-    ('Ginkgo biloba', 'Ginkgo biloba L.', 'Ginkgoaceae', 'Р“РёРЅРєРіРѕ Р±РёР»РѕР±Р°', 'ТљРѕСЃ Т›Р°Р»Р°Т›С‚С‹ РіРёРЅРєРіРѕ', 'РҐСЂР°РјРѕРІРѕРµ РґРµСЂРµРІРѕ', 'Р›РёСЃС‚СЊСЏ', 'Р’РѕСЃС‚РѕС‡РЅР°СЏ РђР·РёСЏ, РєСѓР»СЊС‚РёРІРёСЂСѓРµС‚СЃСЏ РІ Р Рљ/Р Р¤', 'VERIFIED'),
-    ('Glycyrrhiza glabra', 'Glycyrrhiza glabra L.', 'Fabaceae', 'РЎРѕР»РѕРґРєР° РіРѕР»Р°СЏ', 'Р–Р°С‚Р°Т“Р°РЅ РјРёСЏ', 'Р›Р°РєСЂРёС‡РЅРёРє, Р»Р°РєСЂРёС†Р°', 'РљРѕСЂРЅРё Рё РєРѕСЂРЅРµРІРёС‰Р°', 'Р®Р¶РЅС‹Р№ Рё Р—Р°РїР°РґРЅС‹Р№ РљР°Р·Р°С…СЃС‚Р°РЅ, Р¦РµРЅС‚СЂР°Р»СЊРЅР°СЏ РђР·РёСЏ', 'VERIFIED'),
-    ('Thymus vulgaris', 'Thymus vulgaris L.', 'Lamiaceae', 'РўРёРјСЊСЏРЅ РѕР±С‹РєРЅРѕРІРµРЅРЅС‹Р№ (Р§Р°Р±СЂРµС†)', 'РљУ™РґС–РјРіС– Р¶РµР±С–СЂ (РљУ©РєРµРјР°СЂР°Р»)', 'Р§Р°Р±СЂРµС† РїРѕР»Р·СѓС‡РёР№, Р±РѕРіРѕСЂРѕРґСЃРєР°СЏ С‚СЂР°РІР°', 'РўСЂР°РІР°', 'РЎС‚РµРїРё РљР°Р·Р°С…СЃС‚Р°РЅР°, Р®Р¶РЅР°СЏ Р•РІСЂРѕРїР°', 'VERIFIED'),
-    ('Salvia officinalis', 'Salvia officinalis L.', 'Lamiaceae', 'РЁР°Р»С„РµР№ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹Р№', 'Р”У™СЂС–Р»С–Рє СЃУ™Р»Р±РµРЅ', 'РЁР°Р»С„РµР№, СЃРІСЏС‰РµРЅРЅР°СЏ С‚СЂР°РІР°', 'Р›РёСЃС‚СЊСЏ', 'Р®Р¶РЅР°СЏ Р•РІСЂРѕРїР°, РєСѓР»СЊС‚РёРІРёСЂСѓРµС‚СЃСЏ РІ РљР°Р·Р°С…СЃС‚Р°РЅРµ', 'VERIFIED'),
-    ('Urtica dioica', 'Urtica dioica L.', 'Urticaceae', 'РљСЂР°РїРёРІР° РґРІСѓРґРѕРјРЅР°СЏ', 'ТљРѕСЃТЇР№Р»С– Т›Р°Р»Р°Т›Р°Р№', 'Р–РіСѓС‡РєР°, СЃС‚СЂРµРєР°РІР°', 'Р›РёСЃС‚СЊСЏ', 'РљР°Р·Р°С…СЃС‚Р°РЅ, РЎРёР±РёСЂСЊ, Р•РІСЂРѕРїР°', 'VERIFIED'),
-    ('Achillea millefolium', 'Achillea millefolium L.', 'Asteraceae', 'РўС‹СЃСЏС‡РµР»РёСЃС‚РЅРёРє РѕР±С‹РєРЅРѕРІРµРЅРЅС‹Р№', 'РљУ™РґС–РјРіС– РјС‹ТЈР¶Р°РїС‹СЂР°Т›', 'РџРѕСЂРµР·РЅРёРє, СЃРѕР»РґР°С‚СЃРєР°СЏ С‚СЂР°РІР°', 'РўСЂР°РІР° Рё С†РІРµС‚РєРё', 'РџРѕРІСЃРµРјРµСЃС‚РЅРѕ РІ РљР°Р·Р°С…СЃС‚Р°РЅРµ Рё Р Р¤', 'VERIFIED'),
-    ('Leonurus cardiaca', 'Leonurus cardiaca L.', 'Lamiaceae', 'РџСѓСЃС‚С‹СЂРЅРёРє СЃРµСЂРґРµС‡РЅС‹Р№', 'Р–ТЇСЂРµРє СЃР°СЃС‹Т›С€У©Рї', 'РЎРµСЂРґРµС‡РЅРёРє, РіР»СѓС…Р°СЏ РєСЂР°РїРёРІР°', 'РўСЂР°РІР°', 'РљР°Р·Р°С…СЃС‚Р°РЅ, Р Р¤, Р•РІСЂРѕРїР°', 'VERIFIED'),
-    ('Crataegus oxyacantha', 'Crataegus oxyacantha L.', 'Rosaceae', 'Р‘РѕСЏСЂС‹С€РЅРёРє РєРѕР»СЋС‡РёР№', 'РўС–РєРµРЅРµРєС‚С– РґРѕР»Р°РЅР°', 'Р‘РѕСЏСЂРєР°, Р±Р°СЂС‹РЅСЏ', 'РџР»РѕРґС‹ Рё С†РІРµС‚РєРё', 'Р›РµСЃРѕСЃС‚РµРїРё РљР°Р·Р°С…СЃС‚Р°РЅР° Рё Р Р¤', 'VERIFIED'),
-    ('Calendula officinalis', 'Calendula officinalis L.', 'Asteraceae', 'РљР°Р»РµРЅРґСѓР»Р° Р»РµРєР°СЂСЃС‚РІРµРЅРЅР°СЏ', 'Р”У™СЂС–Р»С–Рє Т›С‹СЂРјС‹Р·С‹РіТЇР»', 'РќРѕРіРѕС‚РєРё Р°РїС‚РµС‡РЅС‹Рµ', 'Р¦РІРµС‚РєРё', 'РљСѓР»СЊС‚РёРІРёСЂСѓРµС‚СЃСЏ РїРѕРІСЃРµРјРµСЃС‚РЅРѕ', 'VERIFIED'),
-    ('Plantago major', 'Plantago major L.', 'Plantaginaceae', 'РџРѕРґРѕСЂРѕР¶РЅРёРє Р±РѕР»СЊС€РѕР№', 'Т®Р»РєРµРЅ Р¶РѕР»Р¶РµР»РєРµРЅ', 'РџРѕРїСѓС‚С‡РёРє, С‡РёСЂСЊРµРІР°СЏ С‚СЂР°РІР°', 'Р›РёСЃС‚СЊСЏ', 'РџРѕРІСЃРµРјРµСЃС‚РЅРѕ', 'VERIFIED'),
-    ('Artemisia absinthium', 'Artemisia absinthium L.', 'Asteraceae', 'РџРѕР»С‹РЅСЊ РіРѕСЂСЊРєР°СЏ', 'РђС‰С‹ Р¶СѓСЃР°РЅ', 'Р‘РµР»Р°СЏ РїРѕР»С‹РЅСЊ, РІРґРѕРІСЊСЏ С‚СЂР°РІР°', 'РўСЂР°РІР° Рё Р»РёСЃС‚СЊСЏ', 'РЎС‚РµРїРё РљР°Р·Р°С…СЃС‚Р°РЅР°, РЎРёР±РёСЂСЊ, РљР°РІРєР°Р·', 'VERIFIED'),
-    ('Tussilago farfara', 'Tussilago farfara L.', 'Asteraceae', 'РњР°С‚СЊ-Рё-РјР°С‡РµС…Р° РѕР±С‹РєРЅРѕРІРµРЅРЅР°СЏ', 'УЁРіРµР№С€У©Рї', 'РљРѕРЅСЃРєРѕРµ РєРѕРїС‹С‚Рѕ, РєР°РјС‡СѓР¶РЅР°СЏ С‚СЂР°РІР°', 'Р›РёСЃС‚СЊСЏ', 'РљР°Р·Р°С…СЃС‚Р°РЅ, РђР»С‚Р°Р№, Р•РІСЂРѕРїР°', 'VERIFIED'),
-    ('Althaea officinalis', 'Althaea officinalis L.', 'Malvaceae', 'РђР»С‚РµР№ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹Р№', 'Р”У™СЂС–Р»С–Рє Р¶Р°Р»Р±С‹Р·С‚С–РєРµРЅРµ', 'РџСЂРѕСЃРєСѓСЂРЅСЏРє, СЃР»РёР·СЊ-С‚СЂР°РІР°', 'РљРѕСЂРЅРё Рё С‚СЂР°РІР°', 'РџРѕР№РјС‹ СЂРµРє РљР°Р·Р°С…СЃС‚Р°РЅР°, Р¦РµРЅС‚СЂР°Р»СЊРЅР°СЏ РђР·РёСЏ', 'VERIFIED'),
-    ('Origanum vulgare', 'Origanum vulgare L.', 'Lamiaceae', 'Р”СѓС€РёС†Р° РѕР±С‹РєРЅРѕРІРµРЅРЅР°СЏ', 'РљУ™РґС–РјРіС– РєРёС–РєРѕС‚С‹', 'РњР°С‚РµСЂРёРЅРєР°, Р»РµР±РµРґРєР°, РѕСЂРµРіР°РЅРѕ', 'РўСЂР°РІР°', 'РљР°Р·Р°С…СЃС‚Р°РЅ, РЎРёР±РёСЂСЊ, Р•РІСЂРѕРїР°', 'VERIFIED'),
-    ('Tilia cordata', 'Tilia cordata Mill.', 'Malvaceae', 'Р›РёРїР° СЃРµСЂРґС†РµРІРёРґРЅР°СЏ', 'Р–ТЇСЂРµРєР¶Р°РїС‹СЂР°Т›С‚С‹ Р¶У©РєРµ', 'Р›РёРїР° РјРµР»РєРѕР»РёСЃС‚РЅР°СЏ', 'Р¦РІРµС‚РєРё (Р»РёРїРѕРІС‹Р№ С†РІРµС‚)', 'Р•РІСЂРѕРїРµР№СЃРєР°СЏ С‡Р°СЃС‚СЊ, РЈСЂР°Р», РљР°Р·Р°С…СЃС‚Р°РЅ', 'VERIFIED'),
-    ('Helichrysum arenarium', 'Helichrysum arenarium (L.) Moench', 'Asteraceae', 'Р‘РµСЃСЃРјРµСЂС‚РЅРёРє РїРµСЃС‡Р°РЅС‹Р№', 'ТљТ±РјРґС‹ СЃР°Р»Р°СѓР±Р°СЃ', 'Р¦РјРёРЅ РїРµСЃС‡Р°РЅС‹Р№, Р·Р»Р°С‚РѕС†РІРµС‚', 'РЎРѕС†РІРµС‚РёСЏ', 'РџРµСЃС‡Р°РЅС‹Рµ СЃС‚РµРїРё РљР°Р·Р°С…СЃС‚Р°РЅР° Рё Р Р¤', 'VERIFIED'),
-    ('Silybum marianum', 'Silybum marianum (L.) Gaertn.', 'Asteraceae', 'Р Р°СЃС‚РѕСЂРѕРїС€Р° РїСЏС‚РЅРёСЃС‚Р°СЏ', 'РЁТ±Р±Р°СЂ Р°Р»Р°С‚С–РєРµРЅ', 'РњР°СЂСЊРёРЅ С‡РµСЂС‚РѕРїРѕР»РѕС…, РѕСЃС‚СЂРѕ-РїС‘СЃС‚СЂРѕ', 'РџР»РѕРґС‹ (СЃРµРјРµРЅР°)', 'Р®Рі РљР°Р·Р°С…СЃС‚Р°РЅР°, РљР°РІРєР°Р·, РЎСЂРµРґРёР·РµРјРЅРѕРјРѕСЂСЊРµ', 'VERIFIED'),
-    ('Cynara scolymus', 'Cynara scolymus L.', 'Asteraceae', 'РђСЂС‚РёС€РѕРє РїРѕСЃРµРІРЅРѕР№', 'Р•РіС–СЃС‚С–Рє Р°СЂС‚РёС€РѕРє', 'РђСЂС‚РёС€РѕРє РєРѕР»СЋС‡РёР№', 'Р›РёСЃС‚СЊСЏ Рё СЃРѕС†РІРµС‚РёСЏ', 'РљСѓР»СЊС‚РёРІРёСЂСѓРµС‚СЃСЏ РІ РЎСЂРµРґРЅРµР№ РђР·РёРё', 'VERIFIED'),
-    ('Arctostaphylos uva-ursi', 'Arctostaphylos uva-ursi (L.) Spreng.', 'Ericaceae', 'РўРѕР»РѕРєРЅСЏРЅРєР° РѕР±С‹РєРЅРѕРІРµРЅРЅР°СЏ', 'РђСЋР±Р°РґР°Рј', 'РњРµРґРІРµР¶СЊРµ СѓС€РєРѕ, РјРµРґРІРµР¶СЊСЏ СЏРіРѕРґР°', 'Р›РёСЃС‚СЊСЏ', 'РҐРІРѕР№РЅС‹Рµ Р»РµСЃР°, РЎРµРІРµСЂРЅС‹Р№ РљР°Р·Р°С…СЃС‚Р°РЅ', 'VERIFIED'),
-    ('Vaccinium vitis-idaea', 'Vaccinium vitis-idaea L.', 'Ericaceae', 'Р‘СЂСѓСЃРЅРёРєР° РѕР±С‹РєРЅРѕРІРµРЅРЅР°СЏ', 'РЎРёС‹СЂР±ТЇР»РґС–СЂРіРµРЅ', 'Р‘РѕСЂРѕРІРёРєР°', 'Р›РёСЃС‚СЊСЏ Рё РїРѕР±РµРіРё', 'Р›РµСЃРЅР°СЏ Р·РѕРЅР° РЎРёР±РёСЂРё, РђР»С‚Р°Р№', 'VERIFIED'),
-    ('Betula pendula', 'Betula pendula Roth', 'Betulaceae', 'Р‘РµСЂС‘Р·Р° РїРѕРІРёСЃР»Р°СЏ', 'ТљР°Р№С‹ТЈ', 'Р‘РµСЂС‘Р·Р° Р±РѕСЂРѕРґР°РІС‡Р°С‚Р°СЏ', 'РџРѕС‡РєРё Рё Р»РёСЃС‚СЊСЏ', 'Р›РµСЃРѕСЃС‚РµРїРё РљР°Р·Р°С…СЃС‚Р°РЅР°, РЎРёР±РёСЂСЊ', 'VERIFIED'),
-    ('Equisetum arvense', 'Equisetum arvense L.', 'Equisetaceae', 'РҐРІРѕС‰ РїРѕР»РµРІРѕР№', 'Р”Р°Р»Р°Р»С‹Т› Т›С‹СЂС‹Т›Р±СѓС‹РЅ', 'РџРµСЃС‚РѕРІРЅРёРє, Р·РµРјР»СЏРЅС‹Рµ РѕСЂРµС…Рё', 'РўСЂР°РІР°', 'Р’Р»Р°Р¶РЅС‹Рµ Р»СѓРіР° РљР°Р·Р°С…СЃС‚Р°РЅР° Рё РЎРёР±РёСЂРё', 'VERIFIED'),
-    ('Rosa canina', 'Rosa canina L.', 'Rosaceae', 'РЁРёРїРѕРІРЅРёРє СЃРѕР±Р°С‡РёР№', 'РС‚РјТ±СЂС‹РЅ', 'Р”РёРєР°СЏ СЂРѕР·Р°, С€РёРїС€РёРЅР°', 'РџР»РѕРґС‹', 'РџРѕРІСЃРµРјРµСЃС‚РЅРѕ РІ РљР°Р·Р°С…СЃС‚Р°РЅРµ Рё Р Р¤', 'VERIFIED'),
-    ('Hippophae rhamnoides', 'Hippophae rhamnoides L.', 'Elaeagnaceae', 'РћР±Р»РµРїРёС…Р° РєСЂСѓС€РёРЅРѕРІРёРґРЅР°СЏ', 'РЁС‹СЂТ“Р°РЅР°Т›', 'Р—РѕР»РѕС‚РѕРµ РґРµСЂРµРІРѕ, РІРѕСЃРєРѕРІСѓС…Р°', 'РџР»РѕРґС‹ Рё СЃРµРјРµРЅР°', 'РџРѕР№РјС‹ СЂРµРє РљР°Р·Р°С…СЃС‚Р°РЅР°, РђР»С‚Р°Р№, РЎРёР±РёСЂСЊ', 'VERIFIED'),
-    ('Eleutherococcus senticosus', 'Eleutherococcus senticosus (Rupr. & Maxim.) Maxim.', 'Araliaceae', 'Р­Р»РµСѓС‚РµСЂРѕРєРѕРєРє РєРѕР»СЋС‡РёР№', 'РўС–РєРµРЅРµРєС‚С– СЌР»РµСѓС‚РµСЂРѕРєРѕРєРє', 'РЎРёР±РёСЂСЃРєРёР№ Р¶РµРЅСЊС€РµРЅСЊ, РґРёРєРёР№ РїРµСЂРµС†', 'РљРѕСЂРЅРµРІРёС‰Р° Рё РєРѕСЂРЅРё', 'Р”Р°Р»СЊРЅРёР№ Р’РѕСЃС‚РѕРє, РёРЅС‚СЂРѕРґСѓС†РёСЂРѕРІР°РЅ РІ РЎРќР“', 'VERIFIED'),
-    ('Rhodiola rosea', 'Rhodiola rosea L.', 'Crassulaceae', 'Р РѕРґРёРѕР»Р° СЂРѕР·РѕРІР°СЏ (Р—РѕР»РѕС‚РѕР№ РєРѕСЂРµРЅСЊ)', 'РђР»С‚С‹РЅ С‚Р°РјС‹СЂ', 'РўРёР±РµС‚СЃРєРёР№ Р¶РµРЅСЊС€РµРЅСЊ', 'РљРѕСЂРЅРµРІРёС‰Р° Рё РєРѕСЂРЅРё', 'РђР»С‚Р°Р№, РўСЏРЅСЊ-РЁР°РЅСЊ, РўР°СЂР±Р°РіР°С‚Р°Р№', 'VERIFIED'),
-    ('Panax ginseng', 'Panax ginseng C.A. Mey.', 'Araliaceae', 'Р–РµРЅСЊС€РµРЅСЊ РѕР±С‹РєРЅРѕРІРµРЅРЅС‹Р№', 'РђРґР°РјС‚Р°РјС‹СЂ', 'РљРѕСЂРµРЅСЊ Р¶РёР·РЅРё', 'РљРѕСЂРЅРё', 'Р”Р°Р»СЊРЅРёР№ Р’РѕСЃС‚РѕРє, РєСѓР»СЊС‚РёРІРёСЂСѓРµС‚СЃСЏ', 'VERIFIED'),
-    ('Schisandra chinensis', 'Schisandra chinensis (Turcz.) Baill.', 'Schisandraceae', 'Р›РёРјРѕРЅРЅРёРє РєРёС‚Р°Р№СЃРєРёР№', 'ТљС‹С‚Р°Р№ СЃРµСЂРјРµРЅРµСЃС–', 'РЇРіРѕРґР° РїСЏС‚Рё РІРєСѓСЃРѕРІ', 'РџР»РѕРґС‹ Рё СЃРµРјРµРЅР°', 'Р”Р°Р»СЊРЅРёР№ Р’РѕСЃС‚РѕРє', 'VERIFIED'),
-    ('Melilotus officinalis', 'Melilotus officinalis (L.) Lam.', 'Fabaceae', 'Р”РѕРЅРЅРёРє Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹Р№', 'Р”У™СЂС–Р»С–Рє С‚ТЇР№РµР¶РѕТЈС‹С€Т›Р°', 'Р“СЂРµС‡Р° РґРёРєР°СЏ, РґРѕРЅРЅР°СЏ С‚СЂР°РІР°', 'РўСЂР°РІР°', 'РЎС‚РµРїРё РљР°Р·Р°С…СЃС‚Р°РЅР° Рё Р Р¤', 'VERIFIED'),
-    ('Melissa officinalis', 'Melissa officinalis L.', 'Lamiaceae', 'РњРµР»РёСЃСЃР° Р»РµРєР°СЂСЃС‚РІРµРЅРЅР°СЏ', 'Р”У™СЂС–Р»С–Рє Р±Р°Р»СЊР·Р°РјР¶Р°Р»Р±С‹Р·', 'Р›РёРјРѕРЅРЅР°СЏ РјСЏС‚Р°, РјР°С‚РѕС‡РЅРёРє', 'РўСЂР°РІР° Рё Р»РёСЃС‚СЊСЏ', 'РљР°РІРєР°Р·, СЋРі РљР°Р·Р°С…СЃС‚Р°РЅР°, Р•РІСЂРѕРїР°', 'VERIFIED'),
-    ('Humulus lupulus', 'Humulus lupulus L.', 'Cannabaceae', 'РҐРјРµР»СЊ РѕР±С‹РєРЅРѕРІРµРЅРЅС‹Р№', 'РљУ™РґС–РјРіС– Т›Т±Р»РјР°Т›', 'Р“РѕСЂРєР°С‡, С…РјРµР»РёС†Р°', 'РЎРѕРїР»РѕРґРёСЏ (С€РёС€РєРё)', 'РљР°Р·Р°С…СЃС‚Р°РЅ, Р Р¤, Р•РІСЂРѕРїР°', 'VERIFIED'),
-    ('Passiflora incarnata', 'Passiflora incarnata L.', 'Passifloraceae', 'РџР°СЃСЃРёС„Р»РѕСЂР° РёРЅРєР°СЂРЅР°С‚РЅР°СЏ', 'РџР°СЃСЃРёС„Р»РѕСЂР°', 'РЎС‚СЂР°СЃС‚РѕС†РІРµС‚ РјСЏСЃРѕ-РєСЂР°СЃРЅС‹Р№', 'РўСЂР°РІР°', 'РЎСѓР±С‚СЂРѕРїРёРєРё, РєСѓР»СЊС‚РёРІРёСЂСѓРµС‚СЃСЏ', 'VERIFIED'),
-    ('Sambucus nigra', 'Sambucus nigra L.', 'Adoxaceae', 'Р‘СѓР·РёРЅР° С‡С‘СЂРЅР°СЏ', 'ТљР°СЂР° Р°СЋР±Р°РґР°Рј', 'Р‘Р°Р·, СЃР°РјР±СѓРє', 'Р¦РІРµС‚РєРё Рё РїР»РѕРґС‹', 'Р•РІСЂРѕРїРµР№СЃРєР°СЏ С‡Р°СЃС‚СЊ, СЋРі РљР°Р·Р°С…СЃС‚Р°РЅР°', 'VERIFIED'),
-    ('Allium sativum', 'Allium sativum L.', 'Amaryllidaceae', 'Р§РµСЃРЅРѕРє РїРѕСЃРµРІРЅРѕР№', 'РЎР°СЂС‹РјСЃР°Т›', 'Р§РµСЃРЅРѕРє РѕР±С‹РєРЅРѕРІРµРЅРЅС‹Р№', 'Р›СѓРєРѕРІРёС†С‹', 'РљСѓР»СЊС‚РёРІРёСЂСѓРµС‚СЃСЏ РїРѕРІСЃРµРјРµСЃС‚РЅРѕ', 'VERIFIED'),
-    ('Zingiber officinale', 'Zingiber officinale Roscoe', 'Zingiberaceae', 'РРјР±РёСЂСЊ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹Р№', 'Р”У™СЂС–Р»С–Рє Р·С–РјР±С–СЂ', 'Р‘РµР»С‹Р№ РєРѕСЂРµРЅСЊ', 'РљРѕСЂРЅРµРІРёС‰Р°', 'Р®Р¶РЅР°СЏ РђР·РёСЏ, РєСѓР»СЊС‚РёРІРёСЂСѓРµС‚СЃСЏ', 'VERIFIED'),
-    ('Curcuma longa', 'Curcuma longa L.', 'Zingiberaceae', 'РљСѓСЂРєСѓРјР° РґР»РёРЅРЅР°СЏ', 'Т°Р·С‹РЅ РєСѓСЂРєСѓРјР°', 'Р–С‘Р»С‚С‹Р№ РёРјР±РёСЂСЊ, С‚СѓСЂРјРµСЂРёРє', 'РљРѕСЂРЅРµРІРёС‰Р°', 'РРЅРґРёСЏ, Р®РіРѕ-Р’РѕСЃС‚РѕС‡РЅР°СЏ РђР·РёСЏ', 'VERIFIED'),
-    ('Foeniculum vulgare', 'Foeniculum vulgare Mill.', 'Apiaceae', 'Р¤РµРЅС…РµР»СЊ РѕР±С‹РєРЅРѕРІРµРЅРЅС‹Р№', 'РљУ™РґС–РјРіС– Р°СЃРєУ©Рє', 'РђРїС‚РµС‡РЅС‹Р№ СѓРєСЂРѕРї, СЃР»Р°РґРєРёР№ СѓРєСЂРѕРї', 'РџР»РѕРґС‹', 'РљР°РІРєР°Р·, РЎСЂРµРґРЅСЏСЏ РђР·РёСЏ', 'VERIFIED'),
-    ('Anethum graveolens', 'Anethum graveolens L.', 'Apiaceae', 'РЈРєСЂРѕРї РїР°С…СѓС‡РёР№', 'РС–СЃС‚С– Р°СЃРєУ©Рє', 'РћРіРѕСЂРѕРґРЅС‹Р№ СѓРєСЂРѕРї', 'РџР»РѕРґС‹', 'РџРѕРІСЃРµРјРµСЃС‚РЅРѕ', 'VERIFIED'),
-    ('Pimpinella anisum', 'Pimpinella anisum L.', 'Apiaceae', 'РђРЅРёСЃ РѕР±С‹РєРЅРѕРІРµРЅРЅС‹Р№', 'РљУ™РґС–РјРіС– Р°РЅРёСЃ', 'Р“Р°РЅСѓСЃ, СЃР»Р°РґРєРёР№ С‚РјРёРЅ', 'РџР»РѕРґС‹', 'РљСѓР»СЊС‚РёРІРёСЂСѓРµС‚СЃСЏ РІ РЎРќР“', 'VERIFIED'),
-    ('Carum carvi', 'Carum carvi L.', 'Apiaceae', 'РўРјРёРЅ РѕР±С‹РєРЅРѕРІРµРЅРЅС‹Р№', 'Р—РёСЂРµ', 'РџРѕР»РµРІРѕР№ Р°РЅРёСЃ, РґРёРєРёР№ С‚РјРёРЅ', 'РџР»РѕРґС‹', 'РљР°Р·Р°С…СЃС‚Р°РЅ, РђР»С‚Р°Р№, РЎРёР±РёСЂСЊ', 'VERIFIED'),
-    ('Eucalyptus globulus', 'Eucalyptus globulus Labill.', 'Myrtaceae', 'Р­РІРєР°Р»РёРїС‚ С€Р°СЂРѕРІРёРґРЅС‹Р№', 'РЁР°СЂ С‚У™СЂС–Р·РґС– СЌРІРєР°Р»РёРїС‚', 'Р”РёРІРЅРѕРµ РґРµСЂРµРІРѕ', 'Р›РёСЃС‚СЊСЏ', 'РЎСѓР±С‚СЂРѕРїРёРєРё, РљР°РІРєР°Р·, РљСЂС‹Рј', 'VERIFIED'),
-    ('Inula helenium', 'Inula helenium L.', 'Asteraceae', 'Р”РµРІСЏСЃРёР» РІС‹СЃРѕРєРёР№', 'Р‘РёС–Рє Р°РЅРґС‹Р·', 'Р”РµРІСЏС‚РёСЃРёР», РґРёРІРѕСЃРёР»', 'РљРѕСЂРЅРµРІРёС‰Р° Рё РєРѕСЂРЅРё', 'РљР°Р·Р°С…СЃС‚Р°РЅ, РљР°РІРєР°Р·, РЎРёР±РёСЂСЊ', 'VERIFIED'),
-    ('Tanacetum vulgare', 'Tanacetum vulgare L.', 'Asteraceae', 'РџРёР¶РјР° РѕР±С‹РєРЅРѕРІРµРЅРЅР°СЏ', 'РљУ™РґС–РјРіС– С‚ТЇР№РјРµС€РµС‚', 'Р”РёРєР°СЏ СЂСЏР±РёРЅРєР°, РіР»РёСЃС‚РЅРёРє', 'РЎРѕС†РІРµС‚РёСЏ', 'РџРѕРІСЃРµРјРµСЃС‚РЅРѕ РІ РљР°Р·Р°С…СЃС‚Р°РЅРµ Рё Р Р¤', 'VERIFIED'),
-    ('Bidens tripartita', 'Bidens tripartita L.', 'Asteraceae', 'Р§РµСЂРµРґР° С‚СЂС‘С…СЂР°Р·РґРµР»СЊРЅР°СЏ', 'Т®С€Р±У©Р»С–РєС‚С– РёС‚РѕС€Р°Т“Р°РЅ', 'Р—РѕР»РѕС‚СѓС€РЅР°СЏ С‚СЂР°РІР°, РїСЂРёС‡РµРїР°', 'РўСЂР°РІР°', 'Р‘РµСЂРµРіР° РІРѕРґРѕС‘РјРѕРІ РљР°Р·Р°С…СЃС‚Р°РЅР° Рё Р Р¤', 'VERIFIED'),
-    ('Chelidonium majus', 'Chelidonium majus L.', 'Papaveraceae', 'Р§РёСЃС‚РѕС‚РµР» Р±РѕР»СЊС€РѕР№', 'Т®Р»РєРµРЅ СЃТЇР№РµР»С€У©Рї', 'Р‘РѕСЂРѕРґР°РІРѕС‡РЅРёРє, Р¶РµР»С‚СѓС€РЅРёРє', 'РўСЂР°РІР°', 'РџРѕРІСЃРµРјРµСЃС‚РЅРѕ', 'VERIFIED'),
-    ('Taraxacum officinale', 'Taraxacum officinale F.H. Wigg.', 'Asteraceae', 'РћРґСѓРІР°РЅС‡РёРє Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹Р№', 'Р”У™СЂС–Р»С–Рє Р±Р°Т›Р±Р°Т›', 'РџСѓС…РѕРІРєР°, РјРѕР»РѕС‡РЅРёРє', 'РљРѕСЂРЅРё', 'РџРѕРІСЃРµРјРµСЃС‚РЅРѕ', 'VERIFIED'),
-    ('Senna alexandrina', 'Senna alexandrina Mill.', 'Fabaceae', 'РЎРµРЅРЅР° Р°Р»РµРєСЃР°РЅРґСЂРёР№СЃРєР°СЏ (РљР°СЃСЃРёСЏ)', 'РђР»РµРєСЃР°РЅРґСЂРёСЏР»С‹Т› СЃРµРЅРЅР°', 'РђР»РµРєСЃР°РЅРґСЂРёР№СЃРєРёР№ Р»РёСЃС‚', 'Р›РёСЃС‚СЊСЏ Рё РїР»РѕРґС‹', 'РЎРµРІРµСЂРЅР°СЏ РђС„СЂРёРєР°, РєСѓР»СЊС‚РёРІРёСЂСѓРµС‚СЃСЏ', 'VERIFIED'),
-    ('Frangula alnus', 'Frangula alnus Mill.', 'Rhamnaceae', 'РљСЂСѓС€РёРЅР° Р»РѕРјРєР°СЏ', 'РњРѕСЂС‚ Т›Р°СЂР°Р¶РµРјС–СЃ', 'Р’РѕР»С‡СЊРё СЏРіРѕРґС‹, РєСЂСѓС€РёРЅРЅРёРє', 'РљРѕСЂР°', 'Р›РµСЃРѕСЃС‚РµРїРё РљР°Р·Р°С…СЃС‚Р°РЅР° Рё Р Р¤', 'VERIFIED'),
-    ('Digitalis purpurea', 'Digitalis purpurea L.', 'Plantaginaceae', 'РќР°РїРµСЂСЃС‚СЏРЅРєР° РїСѓСЂРїСѓСЂРЅР°СЏ', 'РљТЇР»РіС–РЅ РѕР№РјР°Т›РіТЇР»', 'РќР°РїРµСЂСЃС‚РѕС‡РЅР°СЏ С‚СЂР°РІР°', 'Р›РёСЃС‚СЊСЏ', 'Р•РІСЂРѕРїР°, РєСѓР»СЊС‚РёРІРёСЂСѓРµС‚СЃСЏ РІ РЎРќР“', 'VERIFIED'),
-    ('Convallaria majalis', 'Convallaria majalis L.', 'Asparagaceae', 'Р›Р°РЅРґС‹С€ РјР°Р№СЃРєРёР№', 'РњР°РјС‹СЂ РјРµСЂСѓРµСЂС‚РіТЇР»С–', 'РњР°Р№СЃРєР°СЏ Р»РёР»РёСЏ', 'РўСЂР°РІР°, Р»РёСЃС‚СЊСЏ, С†РІРµС‚РєРё', 'Р›РµСЃР° РљР°Р·Р°С…СЃС‚Р°РЅР° Рё Р Р¤', 'VERIFIED'),
-    ('Adonis vernalis', 'Adonis vernalis L.', 'Ranunculaceae', 'Р“РѕСЂРёС†РІРµС‚ РІРµСЃРµРЅРЅРёР№ (РђРґРѕРЅРёСЃ)', 'РљУ©РєС‚РµРјРіС– Р¶Р°РЅР°СЂРіТЇР»', 'Р§РµСЂРЅРѕРіРѕСЂРєР°, СЃС‚Р°СЂРѕРґСѓР±РєР°', 'РўСЂР°РІР°', 'РЎС‚РµРїРё РљР°Р·Р°С…СЃС‚Р°РЅР°, РђР»С‚Р°Р№, РЈСЂР°Р»', 'VERIFIED'),
-    ('Capsella bursa-pastoris', 'Capsella bursa-pastoris (L.) Medik.', 'Brassicaceae', 'РџР°СЃС‚СѓС€СЊСЏ СЃСѓРјРєР° РѕР±С‹РєРЅРѕРІРµРЅРЅР°СЏ', 'РљУ™РґС–РјРіС– Р¶Т±РјС‹СЂС€Р°Т›', 'РЎСѓРјРѕС‡РЅРёРє, СЃРµСЂРґРµС‡РЅР°СЏ С‚СЂР°РІР°', 'РўСЂР°РІР°', 'РџРѕРІСЃРµРјРµСЃС‚РЅРѕ', 'VERIFIED'),
-    ('Sanguisorba officinalis', 'Sanguisorba officinalis L.', 'Rosaceae', 'РљСЂРѕРІРѕС…Р»С‘Р±РєР° Р»РµРєР°СЂСЃС‚РІРµРЅРЅР°СЏ', 'Р”У™СЂС–Р»С–Рє Т›Р°РЅРґР°СѓС‹СЂС€У©Рї', 'РљСЂР°СЃРЅРѕРіРѕР»РѕРІРЅРёРє, СЃРѕРІСЊСЏ С‚СЂР°РІР°', 'РљРѕСЂРЅРµРІРёС‰Р° Рё РєРѕСЂРЅРё', 'Р›СѓРіР° РљР°Р·Р°С…СЃС‚Р°РЅР°, РЎРёР±РёСЂСЊ', 'VERIFIED'),
-    ('Potentilla erecta', 'Potentilla erecta (L.) Raeusch.', 'Rosaceae', 'Р›Р°РїС‡Р°С‚РєР° РїСЂСЏРјРѕСЃС‚РѕСЏС‡Р°СЏ (РљР°Р»РіР°РЅ)', 'РўС–Рє Т›Р°Р·С‚Р°Р±Р°РЅ', 'РЈР·РёРє, Р·Р°РІСЏР·РЅС‹Р№ РєРѕСЂРµРЅСЊ', 'РљРѕСЂРЅРµРІРёС‰Р°', 'Р›РµСЃРЅР°СЏ Р·РѕРЅР°, РІР»Р°Р¶РЅС‹Рµ Р»СѓРіР°', 'VERIFIED'),
-    ('Quercus robur', 'Quercus robur L.', 'Fagaceae', 'Р”СѓР± С‡РµСЂРµС€С‡Р°С‚С‹Р№', 'РЎР°Р±Р°Т›С‚С‹ РµРјРµРЅ', 'РћР±С‹РєРЅРѕРІРµРЅРЅС‹Р№ РґСѓР±', 'РљРѕСЂР° РјРѕР»РѕРґС‹С… РІРµС‚РІРµР№', 'Р›РµСЃРѕСЃС‚РµРїРё, РљР°Р·Р°С…СЃС‚Р°РЅ, Р•РІСЂРѕРїР°', 'VERIFIED'),
-    ('Pinus sylvestris', 'Pinus sylvestris L.', 'Pinaceae', 'РЎРѕСЃРЅР° РѕР±С‹РєРЅРѕРІРµРЅРЅР°СЏ', 'РљУ™РґС–РјРіС– Т›Р°СЂР°Т“Р°Р№', 'РҐРІРѕР№РЅРѕРµ РґРµСЂРµРІРѕ', 'РџРѕС‡РєРё, С…РІРѕСЏ, Р¶РёРІРёС†Р°', 'Р‘РѕСЂС‹ РљР°Р·Р°С…СЃС‚Р°РЅР°, РЎРёР±РёСЂСЊ, Р•РІСЂРѕРїР°', 'VERIFIED'),
-    ('Juniperus communis', 'Juniperus communis L.', 'Cupressaceae', 'РњРѕР¶Р¶РµРІРµР»СЊРЅРёРє РѕР±С‹РєРЅРѕРІРµРЅРЅС‹Р№', 'РљУ™РґС–РјРіС– Р°СЂС€Р°', 'Р’РµСЂРµСЃ, Р°СЂС‡Р°', 'РЁРёС€РєРѕСЏРіРѕРґС‹', 'Р“РѕСЂС‹ Рё Р»РµСЃР° РљР°Р·Р°С…СЃС‚Р°РЅР° Рё Р Р¤', 'VERIFIED'),
-    ('Lavandula angustifolia', 'Lavandula angustifolia Mill.', 'Lamiaceae', 'Р›Р°РІР°РЅРґР° СѓР·РєРѕР»РёСЃС‚РЅР°СЏ', 'Р–С–ТЈС–С€РєРµ Р¶Р°РїС‹СЂР°Т›С‚С‹ Р»Р°РІР°РЅРґР°', 'Р›Р°РІР°РЅРґР° РЅР°СЃС‚РѕСЏС‰Р°СЏ', 'Р¦РІРµС‚РєРё', 'РЎСЂРµРґРёР·РµРјРЅРѕРјРѕСЂСЊРµ, РљСЂС‹Рј, СЋРі РљР°Р·Р°С…СЃС‚Р°РЅР°', 'VERIFIED'),
-    ('Rosmarinus officinalis', 'Rosmarinus officinalis L.', 'Lamiaceae', 'Р РѕР·РјР°СЂРёРЅ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹Р№', 'Р”У™СЂС–Р»С–Рє СЂРѕР·РјР°СЂРёРЅ', 'РњРѕСЂСЃРєР°СЏ СЂРѕСЃР°', 'Р›РёСЃС‚СЊСЏ', 'РЎСЂРµРґРёР·РµРјРЅРѕРјРѕСЂСЊРµ, РєСѓР»СЊС‚РёРІРёСЂСѓРµС‚СЃСЏ', 'VERIFIED'),
-    ('Pelargonium sidoides', 'Pelargonium sidoides DC.', 'Geraniaceae', 'РџРµР»Р°СЂРіРѕРЅРёСЏ СЃРёРґРѕРІРёРґРЅР°СЏ', 'РЎРёРґРѕ С‚У™СЂС–Р·РґС– РіРµСЂР°РЅСЊ', 'РђС„СЂРёРєР°РЅСЃРєР°СЏ РіРµСЂР°РЅСЊ, РЈРјРєР°Р»РѕР°Р±Рѕ', 'РљРѕСЂРЅРё', 'Р®Р¶РЅР°СЏ РђС„СЂРёРєР°, РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РІ Р Рљ/Р Р¤', 'VERIFIED')
+    ('Valeriana officinalis', 'Valeriana officinalis L.', 'Caprifoliaceae', 'Валериана лекарственная', 'Валериана дәрілік', 'Кошачья трава, маун, одолян', 'Корневища с корнями', 'Казахстан, РФ, Европа, Кавказ', 'VERIFIED'),
+    ('Hypericum perforatum', 'Hypericum perforatum L.', 'Hypericaceae', 'Зверобой продырявленный', 'Шыбынжауырт', 'Зверобой обыкновенный, кровавник', 'Трава', 'Казахстан, Алтай, Сибирь, Европа', 'VERIFIED'),
+    ('Matricaria chamomilla', 'Matricaria chamomilla L.', 'Asteraceae', 'Ромашка аптечная', 'Дәрілік түймедақ', 'Ромашка ободранная, маточная трава', 'Цветки', 'Казахстан, РФ, Европа', 'VERIFIED'),
+    ('Mentha piperita', 'Mentha piperita L.', 'Lamiaceae', 'Мята перечная', 'Бұрыш жалбыз', 'Английская мята, холодная мята', 'Листья', 'Культивируется повсеместно', 'VERIFIED'),
+    ('Echinacea purpurea', 'Echinacea purpurea (L.) Moench', 'Asteraceae', 'Эхинацея пурпурная', 'Күлгін эхинацея', 'Рудбекия пурпурная', 'Трава, корневища', 'Евразия, Северная Америка', 'VERIFIED'),
+    ('Ginkgo biloba', 'Ginkgo biloba L.', 'Ginkgoaceae', 'Гинкго билоба', 'Қос қалақты гинкго', 'Храмовое дерево', 'Листья', 'Восточная Азия, культивируется в РК/РФ', 'VERIFIED'),
+    ('Glycyrrhiza glabra', 'Glycyrrhiza glabra L.', 'Fabaceae', 'Солодка голая', 'Жатаған мия', 'Лакричник, лакрица', 'Корни и корневища', 'Южный и Западный Казахстан, Центральная Азия', 'VERIFIED'),
+    ('Thymus vulgaris', 'Thymus vulgaris L.', 'Lamiaceae', 'Тимьян обыкновенный (Чабрец)', 'Кәдімгі жебір (Көкемарал)', 'Чабрец ползучий, богородская трава', 'Трава', 'Степи Казахстана, Южная Европа', 'VERIFIED'),
+    ('Salvia officinalis', 'Salvia officinalis L.', 'Lamiaceae', 'Шалфей лекарственный', 'Дәрілік сәлбен', 'Шалфей, священная трава', 'Листья', 'Южная Европа, культивируется в Казахстане', 'VERIFIED'),
+    ('Urtica dioica', 'Urtica dioica L.', 'Urticaceae', 'Крапива двудомная', 'Қосүйлі қалақай', 'Жгучка, стрекава', 'Листья', 'Казахстан, Сибирь, Европа', 'VERIFIED'),
+    ('Achillea millefolium', 'Achillea millefolium L.', 'Asteraceae', 'Тысячелистник обыкновенный', 'Кәдімгі мыңжапырақ', 'Порезник, солдатская трава', 'Трава и цветки', 'Повсеместно в Казахстане и РФ', 'VERIFIED'),
+    ('Leonurus cardiaca', 'Leonurus cardiaca L.', 'Lamiaceae', 'Пустырник сердечный', 'Жүрек сасықшөп', 'Сердечник, глухая крапива', 'Трава', 'Казахстан, РФ, Европа', 'VERIFIED'),
+    ('Crataegus oxyacantha', 'Crataegus oxyacantha L.', 'Rosaceae', 'Боярышник колючий', 'Тікенекті долана', 'Боярка, барыня', 'Плоды и цветки', 'Лесостепи Казахстана и РФ', 'VERIFIED'),
+    ('Calendula officinalis', 'Calendula officinalis L.', 'Asteraceae', 'Календула лекарственная', 'Дәрілік қырмызыгүл', 'Ноготки аптечные', 'Цветки', 'Культивируется повсеместно', 'VERIFIED'),
+    ('Plantago major', 'Plantago major L.', 'Plantaginaceae', 'Подорожник большой', 'Үлкен жолжелкен', 'Попутчик, чирьевая трава', 'Листья', 'Повсеместно', 'VERIFIED'),
+    ('Artemisia absinthium', 'Artemisia absinthium L.', 'Asteraceae', 'Полынь горькая', 'Ащы жусан', 'Белая полынь, вдовья трава', 'Трава и листья', 'Степи Казахстана, Сибирь, Кавказ', 'VERIFIED'),
+    ('Tussilago farfara', 'Tussilago farfara L.', 'Asteraceae', 'Мать-и-мачеха обыкновенная', 'Өгейшөп', 'Конское копыто, камчужная трава', 'Листья', 'Казахстан, Алтай, Европа', 'VERIFIED'),
+    ('Althaea officinalis', 'Althaea officinalis L.', 'Malvaceae', 'Алтей лекарственный', 'Дәрілік жалбызтікене', 'Проскурняк, слизь-трава', 'Корни и трава', 'Поймы рек Казахстана, Центральная Азия', 'VERIFIED'),
+    ('Origanum vulgare', 'Origanum vulgare L.', 'Lamiaceae', 'Душица обыкновенная', 'Кәдімгі киікоты', 'Материнка, лебедка, орегано', 'Трава', 'Казахстан, Сибирь, Европа', 'VERIFIED'),
+    ('Tilia cordata', 'Tilia cordata Mill.', 'Malvaceae', 'Липа сердцевидная', 'Жүрекжапырақты жөке', 'Липа мелколистная', 'Цветки (липовый цвет)', 'Европейская часть, Урал, Казахстан', 'VERIFIED'),
+    ('Helichrysum arenarium', 'Helichrysum arenarium (L.) Moench', 'Asteraceae', 'Бессмертник песчаный', 'Құмды салаубас', 'Цмин песчаный, златоцвет', 'Соцветия', 'Песчаные степи Казахстана и РФ', 'VERIFIED'),
+    ('Silybum marianum', 'Silybum marianum (L.) Gaertn.', 'Asteraceae', 'Расторопша пятнистая', 'Шұбар алатікен', 'Марьин чертополох, остро-пёстро', 'Плоды (семена)', 'Юг Казахстана, Кавказ, Средиземноморье', 'VERIFIED'),
+    ('Cynara scolymus', 'Cynara scolymus L.', 'Asteraceae', 'Артишок посевной', 'Егістік артишок', 'Артишок колючий', 'Листья и соцветия', 'Культивируется в Средней Азии', 'VERIFIED'),
+    ('Arctostaphylos uva-ursi', 'Arctostaphylos uva-ursi (L.) Spreng.', 'Ericaceae', 'Толокнянка обыкновенная', 'Аюбадам', 'Медвежье ушко, медвежья ягода', 'Листья', 'Хвойные леса, Северный Казахстан', 'VERIFIED'),
+    ('Vaccinium vitis-idaea', 'Vaccinium vitis-idaea L.', 'Ericaceae', 'Брусника обыкновенная', 'Сиырбүлдірген', 'Боровика', 'Листья и побеги', 'Лесная зона Сибири, Алтай', 'VERIFIED'),
+    ('Betula pendula', 'Betula pendula Roth', 'Betulaceae', 'Берёза повислая', 'Қайың', 'Берёза бородавчатая', 'Почки и листья', 'Лесостепи Казахстана, Сибирь', 'VERIFIED'),
+    ('Equisetum arvense', 'Equisetum arvense L.', 'Equisetaceae', 'Хвощ полевой', 'Далалық қырықбуын', 'Пестовник, земляные орехи', 'Трава', 'Влажные луга Казахстана и Сибири', 'VERIFIED'),
+    ('Rosa canina', 'Rosa canina L.', 'Rosaceae', 'Шиповник собачий', 'Итмұрын', 'Дикая роза, шипшина', 'Плоды', 'Повсеместно в Казахстане и РФ', 'VERIFIED'),
+    ('Hippophae rhamnoides', 'Hippophae rhamnoides L.', 'Elaeagnaceae', 'Облепиха крушиновидная', 'Шырғанақ', 'Золотое дерево, восковуха', 'Плоды и семена', 'Поймы рек Казахстана, Алтай, Сибирь', 'VERIFIED'),
+    ('Eleutherococcus senticosus', 'Eleutherococcus senticosus (Rupr. & Maxim.) Maxim.', 'Araliaceae', 'Элеутерококк колючий', 'Тікенекті элеутерококк', 'Сибирский женьшень, дикий перец', 'Корневища и корни', 'Дальний Восток, интродуцирован в СНГ', 'VERIFIED'),
+    ('Rhodiola rosea', 'Rhodiola rosea L.', 'Crassulaceae', 'Родиола розовая (Золотой корень)', 'Алтын тамыр', 'Тибетский женьшень', 'Корневища и корни', 'Алтай, Тянь-Шань, Тарбагатай', 'VERIFIED'),
+    ('Panax ginseng', 'Panax ginseng C.A. Mey.', 'Araliaceae', 'Женьшень обыкновенный', 'Адамтамыр', 'Корень жизни', 'Корни', 'Дальний Восток, культивируется', 'VERIFIED'),
+    ('Schisandra chinensis', 'Schisandra chinensis (Turcz.) Baill.', 'Schisandraceae', 'Лимонник китайский', 'Қытай серменесі', 'Ягода пяти вкусов', 'Плоды и семена', 'Дальний Восток', 'VERIFIED'),
+    ('Melilotus officinalis', 'Melilotus officinalis (L.) Lam.', 'Fabaceae', 'Донник лекарственный', 'Дәрілік түйежоңышқа', 'Греча дикая, донная трава', 'Трава', 'Степи Казахстана и РФ', 'VERIFIED'),
+    ('Melissa officinalis', 'Melissa officinalis L.', 'Lamiaceae', 'Мелисса лекарственная', 'Дәрілік бальзамжалбыз', 'Лимонная мята, маточник', 'Трава и листья', 'Кавказ, юг Казахстана, Европа', 'VERIFIED'),
+    ('Humulus lupulus', 'Humulus lupulus L.', 'Cannabaceae', 'Хмель обыкновенный', 'Кәдімгі құлмақ', 'Горкач, хмелица', 'Соплодия (шишки)', 'Казахстан, РФ, Европа', 'VERIFIED'),
+    ('Passiflora incarnata', 'Passiflora incarnata L.', 'Passifloraceae', 'Пассифлора инкарнатная', 'Пассифлора', 'Страстоцвет мясо-красный', 'Трава', 'Субтропики, культивируется', 'VERIFIED'),
+    ('Sambucus nigra', 'Sambucus nigra L.', 'Adoxaceae', 'Бузина чёрная', 'Қара аюбадам', 'Баз, самбук', 'Цветки и плоды', 'Европейская часть, юг Казахстана', 'VERIFIED'),
+    ('Allium sativum', 'Allium sativum L.', 'Amaryllidaceae', 'Чеснок посевной', 'Сарымсақ', 'Чеснок обыкновенный', 'Луковицы', 'Культивируется повсеместно', 'VERIFIED'),
+    ('Zingiber officinale', 'Zingiber officinale Roscoe', 'Zingiberaceae', 'Имбирь лекарственный', 'Дәрілік зімбір', 'Белый корень', 'Корневища', 'Южная Азия, культивируется', 'VERIFIED'),
+    ('Curcuma longa', 'Curcuma longa L.', 'Zingiberaceae', 'Куркума длинная', 'Ұзын куркума', 'Жёлтый имбирь, турмерик', 'Корневища', 'Индия, Юго-Восточная Азия', 'VERIFIED'),
+    ('Foeniculum vulgare', 'Foeniculum vulgare Mill.', 'Apiaceae', 'Фенхель обыкновенный', 'Кәдімгі аскөк', 'Аптечный укроп, сладкий укроп', 'Плоды', 'Кавказ, Средняя Азия', 'VERIFIED'),
+    ('Anethum graveolens', 'Anethum graveolens L.', 'Apiaceae', 'Укроп пахучий', 'Иісті аскөк', 'Огородный укроп', 'Плоды', 'Повсеместно', 'VERIFIED'),
+    ('Pimpinella anisum', 'Pimpinella anisum L.', 'Apiaceae', 'Анис обыкновенный', 'Кәдімгі анис', 'Ганус, сладкий тмин', 'Плоды', 'Культивируется в СНГ', 'VERIFIED'),
+    ('Carum carvi', 'Carum carvi L.', 'Apiaceae', 'Тмин обыкновенный', 'Зире', 'Полевой анис, дикий тмин', 'Плоды', 'Казахстан, Алтай, Сибирь', 'VERIFIED'),
+    ('Eucalyptus globulus', 'Eucalyptus globulus Labill.', 'Myrtaceae', 'Эвкалипт шаровидный', 'Шар тәрізді эвкалипт', 'Дивное дерево', 'Листья', 'Субтропики, Кавказ, Крым', 'VERIFIED'),
+    ('Inula helenium', 'Inula helenium L.', 'Asteraceae', 'Девясил высокий', 'Биік андыз', 'Девятисил, дивосил', 'Корневища и корни', 'Казахстан, Кавказ, Сибирь', 'VERIFIED'),
+    ('Tanacetum vulgare', 'Tanacetum vulgare L.', 'Asteraceae', 'Пижма обыкновенная', 'Кәдімгі түймешет', 'Дикая рябинка, глистник', 'Соцветия', 'Повсеместно в Казахстане и РФ', 'VERIFIED'),
+    ('Bidens tripartita', 'Bidens tripartita L.', 'Asteraceae', 'Череда трёхраздельная', 'Үшбөлікті итошаған', 'Золотушная трава, причепа', 'Трава', 'Берега водоёмов Казахстана и РФ', 'VERIFIED'),
+    ('Chelidonium majus', 'Chelidonium majus L.', 'Papaveraceae', 'Чистотел большой', 'Үлкен сүйелшөп', 'Бородавочник, желтушник', 'Трава', 'Повсеместно', 'VERIFIED'),
+    ('Taraxacum officinale', 'Taraxacum officinale F.H. Wigg.', 'Asteraceae', 'Одуванчик лекарственный', 'Дәрілік бақбақ', 'Пуховка, молочник', 'Корни', 'Повсеместно', 'VERIFIED'),
+    ('Senna alexandrina', 'Senna alexandrina Mill.', 'Fabaceae', 'Сенна александрийская (Кассия)', 'Александриялық сенна', 'Александрийский лист', 'Листья и плоды', 'Северная Африка, культивируется', 'VERIFIED'),
+    ('Frangula alnus', 'Frangula alnus Mill.', 'Rhamnaceae', 'Крушина ломкая', 'Морт қаражеміс', 'Волчьи ягоды, крушинник', 'Кора', 'Лесостепи Казахстана и РФ', 'VERIFIED'),
+    ('Digitalis purpurea', 'Digitalis purpurea L.', 'Plantaginaceae', 'Наперстянка пурпурная', 'Күлгін оймақгүл', 'Наперсточная трава', 'Листья', 'Европа, культивируется в СНГ', 'VERIFIED'),
+    ('Convallaria majalis', 'Convallaria majalis L.', 'Asparagaceae', 'Ландыш майский', 'Мамыр меруертгүлі', 'Майская лилия', 'Трава, листья, цветки', 'Леса Казахстана и РФ', 'VERIFIED'),
+    ('Adonis vernalis', 'Adonis vernalis L.', 'Ranunculaceae', 'Горицвет весенний (Адонис)', 'Көктемгі жанаргүл', 'Черногорка, стародубка', 'Трава', 'Степи Казахстана, Алтай, Урал', 'VERIFIED'),
+    ('Capsella bursa-pastoris', 'Capsella bursa-pastoris (L.) Medik.', 'Brassicaceae', 'Пастушья сумка обыкновенная', 'Кәдімгі жұмыршақ', 'Сумочник, сердечная трава', 'Трава', 'Повсеместно', 'VERIFIED'),
+    ('Sanguisorba officinalis', 'Sanguisorba officinalis L.', 'Rosaceae', 'Кровохлёбка лекарственная', 'Дәрілік қандауыршөп', 'Красноголовник, совья трава', 'Корневища и корни', 'Луга Казахстана, Сибирь', 'VERIFIED'),
+    ('Potentilla erecta', 'Potentilla erecta (L.) Raeusch.', 'Rosaceae', 'Лапчатка прямостоячая (Калган)', 'Тік қазтабан', 'Узик, завязный корень', 'Корневища', 'Лесная зона, влажные луга', 'VERIFIED'),
+    ('Quercus robur', 'Quercus robur L.', 'Fagaceae', 'Дуб черешчатый', 'Сабақты емен', 'Обыкновенный дуб', 'Кора молодых ветвей', 'Лесостепи, Казахстан, Европа', 'VERIFIED'),
+    ('Pinus sylvestris', 'Pinus sylvestris L.', 'Pinaceae', 'Сосна обыкновенная', 'Кәдімгі қарағай', 'Хвойное дерево', 'Почки, хвоя, живица', 'Боры Казахстана, Сибирь, Европа', 'VERIFIED'),
+    ('Juniperus communis', 'Juniperus communis L.', 'Cupressaceae', 'Можжевельник обыкновенный', 'Кәдімгі арша', 'Верес, арча', 'Шишкоягоды', 'Горы и леса Казахстана и РФ', 'VERIFIED'),
+    ('Lavandula angustifolia', 'Lavandula angustifolia Mill.', 'Lamiaceae', 'Лаванда узколистная', 'Жіңішке жапырақты лаванда', 'Лаванда настоящая', 'Цветки', 'Средиземноморье, Крым, юг Казахстана', 'VERIFIED'),
+    ('Rosmarinus officinalis', 'Rosmarinus officinalis L.', 'Lamiaceae', 'Розмарин лекарственный', 'Дәрілік розмарин', 'Морская роса', 'Листья', 'Средиземноморье, культивируется', 'VERIFIED'),
+    ('Pelargonium sidoides', 'Pelargonium sidoides DC.', 'Geraniaceae', 'Пеларгония сидовидная', 'Сидо тәрізді герань', 'Африканская герань, Умкалоабо', 'Корни', 'Южная Африка, используется в РК/РФ', 'VERIFIED')
 ON CONFLICT (scientific_name) DO UPDATE SET
     display_name = EXCLUDED.display_name,
     family = EXCLUDED.family,
@@ -97,46 +97,46 @@ ON CONFLICT (scientific_name) DO UPDATE SET
 -- 3. Insert 60 Active Chemical Compounds
 INSERT INTO compounds (name, canonical_smiles, inchi_key, molecular_formula, structure_status)
 VALUES
-    ('Р’Р°Р»РµСЂРёР°РЅРѕРІР°СЏ РєРёСЃР»РѕС‚Р° (Valerenic acid)', 'CC1=CC2C(C1)C(CCC2=C(C)C(=O)O)C', 'InChIKey_VALERENIC_01', 'C15H22O2', 'VERIFIED'),
-    ('Р“РёРїРµСЂРёС†РёРЅ (Hypericin)', 'CC1=CC2=C(C3=C1C(=O)C4=C(C=C(C5=C4C(=C3O)C6=C(C5=O)C(=CC(=C6O)C)O)O)O)O', 'InChIKey_HYPERICIN_01', 'C30H16O8', 'VERIFIED'),
-    ('Р“РёРїРµСЂС„РѕСЂРёРЅ (Hyperforin)', 'CC(=CCC1(C(=O)C2=C(C(=O)C1(CC=C(C)C)CC=C(C)C)C(CC(C2=O)(C)CC=C(C)C)C(C)C)C)C', 'InChIKey_HYPERFORIN_01', 'C35H52O4', 'VERIFIED'),
-    ('РҐР°РјР°Р·СѓР»РµРЅ (Chamazulene)', 'CC1=CC2=C(C=C1)C(=CC=C2C)C(C)C', 'InChIKey_CHAMAZULENE_01', 'C14H16', 'VERIFIED'),
-    ('РђР»СЊС„Р°-Р‘РёСЃР°Р±РѕР»РѕР» (alpha-Bisabolol)', 'CC1=CCC(CC1)(C(C)CCCC(=C)C)O', 'InChIKey_BISABOLOL_01', 'C15H26O', 'VERIFIED'),
-    ('РњРµРЅС‚РѕР» (Menthol)', 'CC1CCC(C(C1)O)C(C)C', 'InChIKey_MENTHOL_01', 'C10H20O', 'VERIFIED'),
-    ('Р¦РёРЅРµРѕР» (1,8-Cineole / Eucalyptol)', 'CC12CCC(O1)(CC2)C(C)(C)O', 'InChIKey_CINEOLE_01', 'C10H18O', 'VERIFIED'),
-    ('Р­С…РёРЅР°РєРѕР·РёРґ (Echinacoside)', 'CC1C(C(C(C(O1)OCC2C(C(C(C(O2)OC3=C(C=C(C=C3)CCO)O)O)OC(=O)C=CC4=CC(=C(C=C4)O)O)O)O)O)O', 'InChIKey_ECHINACOSIDE_01', 'C35H46O20', 'VERIFIED'),
-    ('Р“Р»РёС†РёСЂСЂРёР·РёРЅ (Glycyrrhizin)', 'CC1(C2CCC3(C(C2(CCC1O)C)C(=O)C=C4C3(CCC5(C4CC(CC5)(C)C(=O)O)C)C)C)C', 'InChIKey_GLYCYRRHIZIN_01', 'C42H62O16', 'VERIFIED'),
-    ('РўРёРјРѕР» (Thymol)', 'CC1=CC(=C(C=C1)C(C)C)O', 'InChIKey_THYMOL_01', 'C10H14O', 'VERIFIED'),
-    ('РљР°СЂРІР°РєСЂРѕР» (Carvacrol)', 'CC1=CC(=C(C=C1)O)C(C)C', 'InChIKey_CARVACROL_01', 'C10H14O', 'VERIFIED'),
-    ('РЎРёР»РёРјР°СЂРёРЅ (Silymarin / Silybin)', 'COC1=C(C=CC(=C1)C2C(OC3=C(O2)C=C(C=C3)C4C(C(=O)C5=C(C=C(C=C5O4)O)O)O)CO)O', 'InChIKey_SILYBIN_01', 'C25H22O10', 'VERIFIED'),
-    ('РљРІРµСЂС†РµС‚РёРЅ (Quercetin)', 'C1=CC(=C(C=C1C2=C(C(=O)C3=C(C=C(C=C3O2)O)O)O)O)O', 'InChIKey_QUERCETIN_01', 'C15H10O7', 'VERIFIED'),
-    ('Р СѓС‚РёРЅ (Rutoside / Rutin)', 'CC1C(C(C(C(O1)OCC2C(C(C(C(O2)OC3=C(OC4=CC(=CC(=C4C3=O)O)O)C5=CC(=C(C=C5)O)O)O)O)O)O)O)O', 'InChIKey_RUTIN_01', 'C27H30O16', 'VERIFIED'),
-    ('Р›СЋС‚РµРѕР»РёРЅ (Luteolin)', 'C1=CC(=C(C=C1C2=CC(=O)C3=C(C=C(C=C3O2)O)O)O)O', 'InChIKey_LUTEOLIN_01', 'C15H10O6', 'VERIFIED'),
-    ('РђРїРёРіРµРЅРёРЅ (Apigenin)', 'C1=CC(=CC=C1C2=CC(=O)C3=C(C=C(C=C3O2)O)O)O', 'InChIKey_APIGENIN_01', 'C15H10O5', 'VERIFIED'),
-    ('РђСЂР±СѓС‚РёРЅ (Arbutin)', 'C1=CC(=CC=C1O)OC2C(C(C(C(O2)CO)O)O)O', 'InChIKey_ARBUTIN_01', 'C12H16O7', 'VERIFIED'),
-    ('Р”РёРіРѕРєСЃРёРЅ (Digoxin)', 'CC1C(C(C(C(O1)OC2C(C(C(C(O2)OC3C(C(C(C(O3)OC4CCC5(C(C4)CCC6C5CC(C7(C6(CCC7C8=CC(=O)OC8)O)C)O)C)O)O)O)O)O)O)O)O)O', 'InChIKey_DIGOXIN_01', 'C41H64O14', 'VERIFIED'),
-    ('РђС‚СЂРѕРїРёРЅ (Atropine)', 'CN1C2CCC1CC(C2)OC(=O)C(CO)C3=CC=CC=C3', 'InChIKey_ATROPINE_01', 'C17H23NO3', 'VERIFIED'),
-    ('Р‘РµСЂР±РµСЂРёРЅ (Berberine)', 'COC1=C(C2=C[N+]3=C(C=C2C=C1)C4=CC5=C(C=C4CC3)OCO5)OC', 'InChIKey_BERBERINE_01', 'C20H18NO4+', 'VERIFIED'),
-    ('РљСѓСЂРєСѓРјРёРЅ (Curcumin)', 'COC1=C(C=CC(=C1)C=CC(=O)CC(=O)C=CC2=CC(=C(C=C2)O)OC)O', 'InChIKey_CURCUMIN_01', 'C21H20O6', 'VERIFIED'),
-    ('Р“РёРЅРіРµСЂРѕР» (6-Gingerol)', 'CCCCCC(CC(=O)CCC1=CC(=C(C=C1)O)OC)O', 'InChIKey_GINGEROL_01', 'C17H26O4', 'VERIFIED'),
-    ('РђР»Р»РёС†РёРЅ (Allicin)', 'C=CCSS(=O)CC=C', 'InChIKey_ALLICIN_01', 'C6H10OS2', 'VERIFIED'),
-    ('РЎР°Р»РёС†РёРЅ (Salicin)', 'C1=CC=C(C(=C1)CO)OC2C(C(C(C(O2)CO)O)O)O', 'InChIKey_SALICIN_01', 'C13H18O7', 'VERIFIED'),
-    ('Р РµСЃРІРµСЂР°С‚СЂРѕР» (Resveratrol)', 'C1=CC(=CC=C1C=CC2=CC(=CC(=C2)O)O)O', 'InChIKey_RESVERATROL_01', 'C14H12O3', 'VERIFIED'),
-    ('Р“РёРЅРєРіРѕР»РёРґ A (Ginkgolide A)', 'CC(C)(C)C1C2C3C4(C(O2)(C(=O)OC4C(=O)O3)C5(C1OC(=O)C5)C)O', 'InChIKey_GINKGOLIDE_A_01', 'C20H24O9', 'VERIFIED'),
-    ('Р‘РёР»РѕР±Р°Р»РёРґ (Bilobalide)', 'CC(C)(C)C1C2C3(C(O2)(C(=O)OC3C(=O)O)C)C(=O)OC1', 'InChIKey_BILOBALIDE_01', 'C15H18O8', 'VERIFIED'),
-    ('Р­Р»РµСѓС‚РµСЂРѕР·РёРґ B (Eleutheroside B / Syringin)', 'COC1=CC(=CC(=C1OC2C(C(C(C(O2)CO)O)O)O)OC)C=CCO', 'InChIKey_SYRINGIN_01', 'C17H24O9', 'VERIFIED'),
-    ('РЎР°Р»РёРґСЂРѕР·РёРґ (Salidroside / Rhodioloside)', 'C1=CC(=CC=C1CCOC2C(C(C(C(O2)CO)O)O)O)O', 'InChIKey_SALIDROSIDE_01', 'C14H20O7', 'VERIFIED'),
-    ('Р РѕР·РјР°СЂРёРЅРѕРІР°СЏ РєРёСЃР»РѕС‚Р° (Rosmarinic acid)', 'C1=CC(=C(C=C1CC(C(=O)O)OC(=O)C=CC2=CC(=C(C=C2)O)O)O)O', 'InChIKey_ROSMARINIC_01', 'C18H16O8', 'VERIFIED'),
-    ('РҐР»РѕСЂРѕРіРµРЅРѕРІР°СЏ РєРёСЃР»РѕС‚Р° (Chlorogenic acid)', 'C1C(CC(C(C1OC(=O)C=CC2=CC(=C(C=C2)O)O)O)(C(=O)O)O)O', 'InChIKey_CHLOROGENIC_01', 'C16H18O9', 'VERIFIED'),
-    ('РЈСЂСЃРѕР»РѕРІР°СЏ РєРёСЃР»РѕС‚Р° (Ursolic acid)', 'CC1CCC2(CCC3(C(=CCC4C3(CCC5C4(CCC(C5(C)C)O)C)C)C2C1C)C)C(=O)O', 'InChIKey_URSOLIC_01', 'C30H48O3', 'VERIFIED'),
-    ('РЎРµРЅРЅРѕР·РёРґ A (Sennoside A)', 'CC1=C(C=C(C2=C1C(=O)C3=C(C=CC(=C3C2C4C5=C(C=CC(=C5C(=O)C6=C4C(=CC(=C6)O)C)O)C(=O)O)O)C(=O)O)O)O', 'InChIKey_SENNOSIDE_A_01', 'C42H38O20', 'VERIFIED'),
-    ('Р¤СЂР°РЅРіСѓР»РёРЅ A (Frangulin A)', 'CC1C(C(C(C(O1)OC2=CC3=C(C(=C2)O)C(=O)C4=C(C3=O)C=C(C=C4O)C)O)O)O', 'InChIKey_FRANGULIN_A_01', 'C21H20O9', 'VERIFIED'),
-    ('Р­РјРѕРґРёРЅ (Emodin)', 'CC1=CC2=C(C(=C1)O)C(=O)C3=C(C2=O)C=C(C=C3O)O', 'InChIKey_EMODIN_01', 'C15H10O5', 'VERIFIED'),
-    ('Р¦РёРЅР°СЂРёРЅ (Cynarin)', 'C1C(CC(C(C1OC(=O)C=CC2=CC(=C(C=C2)O)O)OC(=O)C=CC3=CC(=C(C=C3)O)O)(C(=O)O)O)O', 'InChIKey_CYNARIN_01', 'C25H24O12', 'VERIFIED'),
-    ('РђРЅРµС‚РѕР» (trans-Anethole)', 'CCC=CC1=CC=C(C=C1)OC', 'InChIKey_ANETHOLE_01', 'C10H12O', 'VERIFIED'),
-    ('Р­РІРіРµРЅРѕР» (Eugenol)', 'CC=CCC1=CC(=C(C=C1)O)OC', 'InChIKey_EUGENOL_01', 'C10H12O2', 'VERIFIED'),
-    ('РљР°РїСЃР°РёС†РёРЅ (Capsaicin)', 'CC(C)C=CCCCCC(=O)NCC1=CC(=C(C=C1)O)OC', 'InChIKey_CAPSAICIN_01', 'C18H27NO3', 'VERIFIED'),
-    ('РђСЃРєРѕСЂР±РёРЅРѕРІР°СЏ РєРёСЃР»РѕС‚Р° (Vitamin C)', 'C(C(C1C(=O)C(=C(O1)O)O)O)O', 'InChIKey_ASCORBIC_01', 'C6H8O6', 'VERIFIED')
+    ('Валериановая кислота (Valerenic acid)', 'CC1=CC2C(C1)C(CCC2=C(C)C(=O)O)C', 'InChIKey_VALERENIC_01', 'C15H22O2', 'VERIFIED'),
+    ('Гиперицин (Hypericin)', 'CC1=CC2=C(C3=C1C(=O)C4=C(C=C(C5=C4C(=C3O)C6=C(C5=O)C(=CC(=C6O)C)O)O)O)O', 'InChIKey_HYPERICIN_01', 'C30H16O8', 'VERIFIED'),
+    ('Гиперфорин (Hyperforin)', 'CC(=CCC1(C(=O)C2=C(C(=O)C1(CC=C(C)C)CC=C(C)C)C(CC(C2=O)(C)CC=C(C)C)C(C)C)C)C', 'InChIKey_HYPERFORIN_01', 'C35H52O4', 'VERIFIED'),
+    ('Хамазулен (Chamazulene)', 'CC1=CC2=C(C=C1)C(=CC=C2C)C(C)C', 'InChIKey_CHAMAZULENE_01', 'C14H16', 'VERIFIED'),
+    ('Альфа-Бисаболол (alpha-Bisabolol)', 'CC1=CCC(CC1)(C(C)CCCC(=C)C)O', 'InChIKey_BISABOLOL_01', 'C15H26O', 'VERIFIED'),
+    ('Ментол (Menthol)', 'CC1CCC(C(C1)O)C(C)C', 'InChIKey_MENTHOL_01', 'C10H20O', 'VERIFIED'),
+    ('Цинеол (1,8-Cineole / Eucalyptol)', 'CC12CCC(O1)(CC2)C(C)(C)O', 'InChIKey_CINEOLE_01', 'C10H18O', 'VERIFIED'),
+    ('Эхинакозид (Echinacoside)', 'CC1C(C(C(C(O1)OCC2C(C(C(C(O2)OC3=C(C=C(C=C3)CCO)O)O)OC(=O)C=CC4=CC(=C(C=C4)O)O)O)O)O)O', 'InChIKey_ECHINACOSIDE_01', 'C35H46O20', 'VERIFIED'),
+    ('Глицирризин (Glycyrrhizin)', 'CC1(C2CCC3(C(C2(CCC1O)C)C(=O)C=C4C3(CCC5(C4CC(CC5)(C)C(=O)O)C)C)C)C', 'InChIKey_GLYCYRRHIZIN_01', 'C42H62O16', 'VERIFIED'),
+    ('Тимол (Thymol)', 'CC1=CC(=C(C=C1)C(C)C)O', 'InChIKey_THYMOL_01', 'C10H14O', 'VERIFIED'),
+    ('Карвакрол (Carvacrol)', 'CC1=CC(=C(C=C1)O)C(C)C', 'InChIKey_CARVACROL_01', 'C10H14O', 'VERIFIED'),
+    ('Силимарин (Silymarin / Silybin)', 'COC1=C(C=CC(=C1)C2C(OC3=C(O2)C=C(C=C3)C4C(C(=O)C5=C(C=C(C=C5O4)O)O)O)CO)O', 'InChIKey_SILYBIN_01', 'C25H22O10', 'VERIFIED'),
+    ('Кверцетин (Quercetin)', 'C1=CC(=C(C=C1C2=C(C(=O)C3=C(C=C(C=C3O2)O)O)O)O)O', 'InChIKey_QUERCETIN_01', 'C15H10O7', 'VERIFIED'),
+    ('Рутин (Rutoside / Rutin)', 'CC1C(C(C(C(O1)OCC2C(C(C(C(O2)OC3=C(OC4=CC(=CC(=C4C3=O)O)O)C5=CC(=C(C=C5)O)O)O)O)O)O)O)O', 'InChIKey_RUTIN_01', 'C27H30O16', 'VERIFIED'),
+    ('Лютеолин (Luteolin)', 'C1=CC(=C(C=C1C2=CC(=O)C3=C(C=C(C=C3O2)O)O)O)O', 'InChIKey_LUTEOLIN_01', 'C15H10O6', 'VERIFIED'),
+    ('Апигенин (Apigenin)', 'C1=CC(=CC=C1C2=CC(=O)C3=C(C=C(C=C3O2)O)O)O', 'InChIKey_APIGENIN_01', 'C15H10O5', 'VERIFIED'),
+    ('Арбутин (Arbutin)', 'C1=CC(=CC=C1O)OC2C(C(C(C(O2)CO)O)O)O', 'InChIKey_ARBUTIN_01', 'C12H16O7', 'VERIFIED'),
+    ('Дигоксин (Digoxin)', 'CC1C(C(C(C(O1)OC2C(C(C(C(O2)OC3C(C(C(C(O3)OC4CCC5(C(C4)CCC6C5CC(C7(C6(CCC7C8=CC(=O)OC8)O)C)O)C)O)O)O)O)O)O)O)O)O', 'InChIKey_DIGOXIN_01', 'C41H64O14', 'VERIFIED'),
+    ('Атропин (Atropine)', 'CN1C2CCC1CC(C2)OC(=O)C(CO)C3=CC=CC=C3', 'InChIKey_ATROPINE_01', 'C17H23NO3', 'VERIFIED'),
+    ('Берберин (Berberine)', 'COC1=C(C2=C[N+]3=C(C=C2C=C1)C4=CC5=C(C=C4CC3)OCO5)OC', 'InChIKey_BERBERINE_01', 'C20H18NO4+', 'VERIFIED'),
+    ('Куркумин (Curcumin)', 'COC1=C(C=CC(=C1)C=CC(=O)CC(=O)C=CC2=CC(=C(C=C2)O)OC)O', 'InChIKey_CURCUMIN_01', 'C21H20O6', 'VERIFIED'),
+    ('Гингерол (6-Gingerol)', 'CCCCCC(CC(=O)CCC1=CC(=C(C=C1)O)OC)O', 'InChIKey_GINGEROL_01', 'C17H26O4', 'VERIFIED'),
+    ('Аллицин (Allicin)', 'C=CCSS(=O)CC=C', 'InChIKey_ALLICIN_01', 'C6H10OS2', 'VERIFIED'),
+    ('Салицин (Salicin)', 'C1=CC=C(C(=C1)CO)OC2C(C(C(C(O2)CO)O)O)O', 'InChIKey_SALICIN_01', 'C13H18O7', 'VERIFIED'),
+    ('Ресвератрол (Resveratrol)', 'C1=CC(=CC=C1C=CC2=CC(=CC(=C2)O)O)O', 'InChIKey_RESVERATROL_01', 'C14H12O3', 'VERIFIED'),
+    ('Гинкголид A (Ginkgolide A)', 'CC(C)(C)C1C2C3C4(C(O2)(C(=O)OC4C(=O)O3)C5(C1OC(=O)C5)C)O', 'InChIKey_GINKGOLIDE_A_01', 'C20H24O9', 'VERIFIED'),
+    ('Билобалид (Bilobalide)', 'CC(C)(C)C1C2C3(C(O2)(C(=O)OC3C(=O)O)C)C(=O)OC1', 'InChIKey_BILOBALIDE_01', 'C15H18O8', 'VERIFIED'),
+    ('Элеутерозид B (Eleutheroside B / Syringin)', 'COC1=CC(=CC(=C1OC2C(C(C(C(O2)CO)O)O)O)OC)C=CCO', 'InChIKey_SYRINGIN_01', 'C17H24O9', 'VERIFIED'),
+    ('Салидрозид (Salidroside / Rhodioloside)', 'C1=CC(=CC=C1CCOC2C(C(C(C(O2)CO)O)O)O)O', 'InChIKey_SALIDROSIDE_01', 'C14H20O7', 'VERIFIED'),
+    ('Розмариновая кислота (Rosmarinic acid)', 'C1=CC(=C(C=C1CC(C(=O)O)OC(=O)C=CC2=CC(=C(C=C2)O)O)O)O', 'InChIKey_ROSMARINIC_01', 'C18H16O8', 'VERIFIED'),
+    ('Хлорогеновая кислота (Chlorogenic acid)', 'C1C(CC(C(C1OC(=O)C=CC2=CC(=C(C=C2)O)O)O)(C(=O)O)O)O', 'InChIKey_CHLOROGENIC_01', 'C16H18O9', 'VERIFIED'),
+    ('Урсоловая кислота (Ursolic acid)', 'CC1CCC2(CCC3(C(=CCC4C3(CCC5C4(CCC(C5(C)C)O)C)C)C2C1C)C)C(=O)O', 'InChIKey_URSOLIC_01', 'C30H48O3', 'VERIFIED'),
+    ('Сеннозид A (Sennoside A)', 'CC1=C(C=C(C2=C1C(=O)C3=C(C=CC(=C3C2C4C5=C(C=CC(=C5C(=O)C6=C4C(=CC(=C6)O)C)O)C(=O)O)O)C(=O)O)O)O', 'InChIKey_SENNOSIDE_A_01', 'C42H38O20', 'VERIFIED'),
+    ('Франгулин A (Frangulin A)', 'CC1C(C(C(C(O1)OC2=CC3=C(C(=C2)O)C(=O)C4=C(C3=O)C=C(C=C4O)C)O)O)O', 'InChIKey_FRANGULIN_A_01', 'C21H20O9', 'VERIFIED'),
+    ('Эмодин (Emodin)', 'CC1=CC2=C(C(=C1)O)C(=O)C3=C(C2=O)C=C(C=C3O)O', 'InChIKey_EMODIN_01', 'C15H10O5', 'VERIFIED'),
+    ('Цинарин (Cynarin)', 'C1C(CC(C(C1OC(=O)C=CC2=CC(=C(C=C2)O)O)OC(=O)C=CC3=CC(=C(C=C3)O)O)(C(=O)O)O)O', 'InChIKey_CYNARIN_01', 'C25H24O12', 'VERIFIED'),
+    ('Анетол (trans-Anethole)', 'CCC=CC1=CC=C(C=C1)OC', 'InChIKey_ANETHOLE_01', 'C10H12O', 'VERIFIED'),
+    ('Эвгенол (Eugenol)', 'CC=CCC1=CC(=C(C=C1)O)OC', 'InChIKey_EUGENOL_01', 'C10H12O2', 'VERIFIED'),
+    ('Капсаицин (Capsaicin)', 'CC(C)C=CCCCCC(=O)NCC1=CC(=C(C=C1)O)OC', 'InChIKey_CAPSAICIN_01', 'C18H27NO3', 'VERIFIED'),
+    ('Аскорбиновая кислота (Vitamin C)', 'C(C(C1C(=O)C(=C(O1)O)O)O)O', 'InChIKey_ASCORBIC_01', 'C6H8O6', 'VERIFIED')
 ON CONFLICT (inchi_key) DO NOTHING;
 
 -- 4. Insert 35 Key Finished Pharmaceutical Preparations
@@ -144,135 +144,135 @@ INSERT INTO preparations (name, dosage_form, manufacturer, registration_number, 
 SELECT
     v.name, v.form, v.mfg, v.reg, v.country, v.descr, s.id, 'VERIFIED'
 FROM (VALUES
-    ('Р’Р°Р»РµСЂРёР°РЅС‹ РЅР°СЃС‚РѕР№РєР°', 'РќР°СЃС‚РѕР№РєР° РґР»СЏ РїСЂРёРµРјР° РІРЅСѓС‚СЂСЊ (С„Р»Р°РєРѕРЅ 50 РјР»)', 'Р¤Р°СЂРјР°С†РёСЏ Р Рљ / Р“Р°Р»РёС‡С„Р°СЂРј', 'Р Рљ-Р›РЎ-5в„–014231', 'РљР°Р·Р°С…СЃС‚Р°РЅ', 'РЎРµРґР°С‚РёРІРЅРѕРµ СЂР°СЃС‚РёС‚РµР»СЊРЅРѕРµ СЃСЂРµРґСЃС‚РІРѕ РїСЂРё РЅРµРІСЂРѕР·Р°С…, РЅР°СЂСѓС€РµРЅРёСЏС… СЃРЅР° Рё СЃРїР°Р·РјР°С… Р–РљРў.', 'Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р РµСЃРїСѓР±Р»РёРєРё РљР°Р·Р°С…СЃС‚Р°РЅ'),
-    ('РџРµСЂСЃРµРЅ (Persen)', 'РўР°Р±Р»РµС‚РєРё, РїРѕРєСЂС‹С‚С‹Рµ РѕР±РѕР»РѕС‡РєРѕР№', 'Sandoz / Lek d.d.', 'Р Рљ-Р›РЎ-5в„–009841', 'РЎР»РѕРІРµРЅРёСЏ', 'РљРѕРјР±РёРЅРёСЂРѕРІР°РЅРЅС‹Р№ СЃРµРґР°С‚РёРІРЅС‹Р№ СЂР°СЃС‚РёС‚РµР»СЊРЅС‹Р№ С„РёС‚РѕРїСЂРµРїР°СЂР°С‚: РІР°Р»РµСЂРёР°РЅР°, РјРµР»РёСЃСЃР°, РјСЏС‚Р° РїРµСЂРµС‡РЅР°СЏ.', 'Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р РµСЃРїСѓР±Р»РёРєРё РљР°Р·Р°С…СЃС‚Р°РЅ'),
-    ('РќРѕРІРѕ-РџР°СЃСЃРёС‚ (Novo-Passit)', 'Р Р°СЃС‚РІРѕСЂ РґР»СЏ РїСЂРёРµРјР° РІРЅСѓС‚СЂСЊ / С‚Р°Р±Р»РµС‚РєРё', 'Teva / Ivax Pharmaceuticals', 'Р Рљ-Р›РЎ-5в„–015672', 'Р§РµС…РёСЏ', 'РљРѕРјРїР»РµРєСЃРЅС‹Р№ СЃРµРґР°С‚РёРІРЅС‹Р№ С„РёС‚РѕРїСЂРµРїР°СЂР°С‚ РЅР° РѕСЃРЅРѕРІРµ РІР°Р»РµСЂРёР°РЅС‹, Р·РІРµСЂРѕР±РѕСЏ, Р±РѕСЏСЂС‹С€РЅРёРєР°, С…РјРµР»СЏ, РјРµР»РёСЃСЃС‹ Рё РіРІР°Р№С„РµРЅРµР·РёРЅР°.', 'Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р РµСЃРїСѓР±Р»РёРєРё РљР°Р·Р°С…СЃС‚Р°РЅ'),
-    ('РџСѓСЃС‚С‹СЂРЅРёРєР° РЅР°СЃС‚РѕР№РєР°', 'РќР°СЃС‚РѕР№РєР° С„Р»Р°РєРѕРЅ 25/50 РјР»', 'Р’РёС„РёС‚РµС… / Р¤Р°СЂРјР°С†РёСЏ Р Рљ', 'Р Рљ-Р›РЎ-5в„–003412', 'РљР°Р·Р°С…СЃС‚Р°РЅ', 'РЈСЃРїРѕРєР°РёРІР°СЋС‰РµРµ СЃСЂРµРґСЃС‚РІРѕ СЂР°СЃС‚РёС‚РµР»СЊРЅРѕРіРѕ РїСЂРѕРёСЃС…РѕР¶РґРµРЅРёСЏ РїСЂРё С„СѓРЅРєС†РёРѕРЅР°Р»СЊРЅС‹С… СЂР°СЃСЃС‚СЂРѕР№СЃС‚РІР°С… СЃРµСЂРґРµС‡РЅРѕ-СЃРѕСЃСѓРґРёСЃС‚РѕР№ СЃРёСЃС‚РµРјС‹.', 'Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р РµСЃРїСѓР±Р»РёРєРё РљР°Р·Р°С…СЃС‚Р°РЅ'),
-    ('Р‘РѕСЏСЂС‹С€РЅРёРєР° РЅР°СЃС‚РѕР№РєР°', 'РќР°СЃС‚РѕР№РєР° С„Р»Р°РєРѕРЅ 50 РјР»', 'РўР°С‚С…РёРјС„Р°СЂРјРїСЂРµРїР°СЂР°С‚С‹ / РЁР°Р»РєР°СЂ-Р¤Р°СЂРј', 'Р Рљ-Р›РЎ-5в„–011245', 'РљР°Р·Р°С…СЃС‚Р°РЅ', 'РљР°СЂРґРёРѕС‚РѕРЅРёС‡РµСЃРєРѕРµ СЃСЂРµРґСЃС‚РІРѕ СЂР°СЃС‚РёС‚РµР»СЊРЅРѕРіРѕ РїСЂРѕРёСЃС…РѕР¶РґРµРЅРёСЏ РїСЂРё Р»РµРіРєРёС… С„РѕСЂРјР°С… СЃРµСЂРґРµС‡РЅРѕР№ РЅРµРґРѕСЃС‚Р°С‚РѕС‡РЅРѕСЃС‚Рё.', 'Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р РµСЃРїСѓР±Р»РёРєРё РљР°Р·Р°С…СЃС‚Р°РЅ'),
-    ('РЎРёРЅСѓРїСЂРµС‚ (Sinupret)', 'РљР°РїР»Рё РґР»СЏ РїСЂРёРµРјР° РІРЅСѓС‚СЂСЊ / С‚Р°Р±Р»РµС‚РєРё', 'Bionorica SE', 'Р Рљ-Р›РЎ-5в„–016789', 'Р“РµСЂРјР°РЅРёСЏ', 'РЎРµРєСЂРµС‚РѕР»РёС‚РёС‡РµСЃРєРѕРµ РїСЂРѕС‚РёРІРѕРІРѕСЃРїР°Р»РёС‚РµР»СЊРЅРѕРµ СЂР°СЃС‚РёС‚РµР»СЊРЅРѕРµ СЃСЂРµРґСЃС‚РІРѕ РїСЂРё РѕСЃС‚СЂС‹С… Рё С…СЂРѕРЅРёС‡РµСЃРєРёС… СЃРёРЅСѓСЃРёС‚Р°С….', 'Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р РµСЃРїСѓР±Р»РёРєРё РљР°Р·Р°С…СЃС‚Р°РЅ'),
-    ('Р‘СЂРѕРЅС…РёРїСЂРµС‚ (Bronchipret)', 'РЎРёСЂРѕРї / С‚Р°Р±Р»РµС‚РєРё', 'Bionorica SE', 'Р Рљ-Р›РЎ-5в„–018934', 'Р“РµСЂРјР°РЅРёСЏ', 'РћС‚С…Р°СЂРєРёРІР°СЋС‰РµРµ РїСЂРѕС‚РёРІРѕРІРѕСЃРїР°Р»РёС‚РµР»СЊРЅРѕРµ СЃСЂРµРґСЃС‚РІРѕ РЅР° РѕСЃРЅРѕРІРµ С‚РёРјСЊСЏРЅР° (С‡Р°Р±СЂРµС†Р°) Рё РїР»СЋС‰Р°/РїРµСЂРІРѕС†РІРµС‚Р°.', 'Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р РµСЃРїСѓР±Р»РёРєРё РљР°Р·Р°С…СЃС‚Р°РЅ'),
-    ('РљР°РЅРµС„СЂРѕРЅ H (Canephron N)', 'РљР°РїР»Рё / С‚Р°Р±Р»РµС‚РєРё', 'Bionorica SE', 'Р Рљ-Р›РЎ-5в„–017843', 'Р“РµСЂРјР°РЅРёСЏ', 'Р Р°СЃС‚РёС‚РµР»СЊРЅРѕРµ СЃСЂРµРґСЃС‚РІРѕ РґР»СЏ Р»РµС‡РµРЅРёСЏ РІРѕСЃРїР°Р»РёС‚РµР»СЊРЅС‹С… Р·Р°Р±РѕР»РµРІР°РЅРёР№ РїРѕС‡РµРє Рё РјРѕС‡РµРІС‹РІРѕРґСЏС‰РёС… РїСѓС‚РµР№.', 'Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р РµСЃРїСѓР±Р»РёРєРё РљР°Р·Р°С…СЃС‚Р°РЅ'),
-    ('Р¦РёСЃС‚РѕРЅ (Cystone)', 'РўР°Р±Р»РµС‚РєРё', 'Himalaya Drug Company', 'Р Рљ-Р›РЎ-5в„–008745', 'РРЅРґРёСЏ', 'РљРѕРјРїР»РµРєСЃРЅС‹Р№ СѓСЂРѕР°РЅС‚РёСЃРµРїС‚РёС‡РµСЃРєРёР№ Р»РёС‚РѕР»РёС‚РёС‡РµСЃРєРёР№ РїСЂРµРїР°СЂР°С‚ РЅР° РѕСЃРЅРѕРІРµ СЌРєСЃС‚СЂР°РєС‚РѕРІ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЂР°СЃС‚РµРЅРёР№.', 'Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р РµСЃРїСѓР±Р»РёРєРё РљР°Р·Р°С…СЃС‚Р°РЅ'),
-    ('РҐРѕС„РёС‚РѕР» (Chophytol)', 'Р Р°СЃС‚РІРѕСЂ РґР»СЏ РїСЂРёРµРјР° РІРЅСѓС‚СЂСЊ / С‚Р°Р±Р»РµС‚РєРё', 'Laboratoires Rosa-Phytopharma', 'Р Рљ-Р›РЎ-5в„–013456', 'Р¤СЂР°РЅС†РёСЏ', 'Р–РµР»С‡РµРіРѕРЅРЅРѕРµ Рё РіРµРїР°С‚РѕРїСЂРѕС‚РµРєС‚РѕСЂРЅРѕРµ СЃСЂРµРґСЃС‚РІРѕ РЅР° РѕСЃРЅРѕРІРµ СЃСѓС…РѕРіРѕ РІРѕРґРЅРѕРіРѕ СЌРєСЃС‚СЂР°РєС‚Р° Р»РёСЃС‚СЊРµРІ Р°СЂС‚РёС€РѕРєР° РїРѕР»РµРІРѕРіРѕ.', 'Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р РµСЃРїСѓР±Р»РёРєРё РљР°Р·Р°С…СЃС‚Р°РЅ'),
-    ('РљР°СЂСЃРёР» (Carsil)', 'Р”СЂР°Р¶Рµ 22.5 РјРі / РєР°РїСЃСѓР»С‹', 'Sopharma AD', 'Р Рљ-Р›РЎ-5в„–004561', 'Р‘РѕР»РіР°СЂРёСЏ', 'Р“РµРїР°С‚РѕРїСЂРѕС‚РµРєС‚РѕСЂРЅРѕРµ СЃСЂРµРґСЃС‚РІРѕ СЂР°СЃС‚РёС‚РµР»СЊРЅРѕРіРѕ РїСЂРѕРёСЃС…РѕР¶РґРµРЅРёСЏ РЅР° РѕСЃРЅРѕРІРµ СЃРёР»РёРјР°СЂРёРЅР° РїР»РѕРґРѕРІ СЂР°СЃС‚РѕСЂРѕРїС€Рё РїСЏС‚РЅРёСЃС‚РѕР№.', 'Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р РµСЃРїСѓР±Р»РёРєРё РљР°Р·Р°С…СЃС‚Р°РЅ'),
-    ('Р“РµРґРµР»РёРєСЃ (Hedelix)', 'РЎРёСЂРѕРї РѕС‚ РєР°С€Р»СЏ / РєР°РїР»Рё', 'Krewel Meuselbach GmbH', 'Р Рљ-Р›РЎ-5в„–012398', 'Р“РµСЂРјР°РЅРёСЏ', 'РћС‚С…Р°СЂРєРёРІР°СЋС‰РµРµ СЂР°СЃС‚РёС‚РµР»СЊРЅРѕРµ СЃСЂРµРґСЃС‚РІРѕ РЅР° РѕСЃРЅРѕРІРµ РіСѓСЃС‚РѕРіРѕ СЌРєСЃС‚СЂР°РєС‚Р° Р»РёСЃС‚СЊРµРІ РїР»СЋС‰Р° РїСЂРё Р±СЂРѕРЅС…РёС‚Р°С….', 'Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р РµСЃРїСѓР±Р»РёРєРё РљР°Р·Р°С…СЃС‚Р°РЅ'),
-    ('РџСЂРѕСЃРїР°РЅ (Prospan)', 'РЎРёСЂРѕРї / С€РёРїСѓС‡РёРµ С‚Р°Р±Р»РµС‚РєРё', 'Engelhard Arzneimittel GmbH', 'Р Рљ-Р›РЎ-5в„–015521', 'Р“РµСЂРјР°РЅРёСЏ', 'РћСЂРёРіРёРЅР°Р»СЊРЅС‹Р№ РјСѓРєРѕР»РёС‚РёС‡РµСЃРєРёР№ СЃРїР°Р·РјРѕР»РёС‚РёС‡РµСЃРєРёР№ РїСЂРµРїР°СЂР°С‚ РЅР° РѕСЃРЅРѕРІРµ СЌРєСЃС‚СЂР°РєС‚Р° РїР»СЋС‰Р°.', 'Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р РµСЃРїСѓР±Р»РёРєРё РљР°Р·Р°С…СЃС‚Р°РЅ'),
-    ('РЎС‚РѕРїС‚СѓСЃСЃРёРЅ-Р¤РёС‚Рѕ', 'РЎРёСЂРѕРї РґР»СЏ РїСЂРёРµРјР° РІРЅСѓС‚СЂСЊ', 'Teva Czech Industries', 'Р Рљ-Р›РЎ-5в„–019234', 'Р§РµС…РёСЏ', 'РћС‚С…Р°СЂРєРёРІР°СЋС‰РµРµ СЃСЂРµРґСЃС‚РІРѕ СЂР°СЃС‚РёС‚РµР»СЊРЅРѕРіРѕ РїСЂРѕРёСЃС…РѕР¶РґРµРЅРёСЏ: СЌРєСЃС‚СЂР°РєС‚С‹ С‚РёРјСЊСЏРЅР°, С‡Р°Р±СЂРµС†Р° Рё РїРѕРґРѕСЂРѕР¶РЅРёРєР°.', 'Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р РµСЃРїСѓР±Р»РёРєРё РљР°Р·Р°С…СЃС‚Р°РЅ'),
-    ('РўРѕРЅР·РёР»РіРѕРЅ N (Tonsilgon N)', 'РљР°РїР»Рё / РґСЂР°Р¶Рµ', 'Bionorica SE', 'Р Рљ-Р›РЎ-5в„–014562', 'Р“РµСЂРјР°РЅРёСЏ', 'РђРЅС‚РёСЃРµРїС‚РёС‡РµСЃРєРёР№ РїСЂРѕС‚РёРІРѕРІРѕСЃРїР°Р»РёС‚РµР»СЊРЅС‹Р№ С„РёС‚РѕРїСЂРµРїР°СЂР°С‚ РїСЂРё РёРЅС„РµРєС†РёСЏС… СЂРѕС‚РѕРіР»РѕС‚РєРё (СЂРѕРјР°С€РєР°, Р°Р»С‚РµР№, С…РІРѕС‰, РєРѕСЂР° РґСѓР±Р°).', 'Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р РµСЃРїСѓР±Р»РёРєРё РљР°Р·Р°С…СЃС‚Р°РЅ'),
-    ('РўР°РЅР°РєР°РЅ (Tanakan)', 'Р Р°СЃС‚РІРѕСЂ РґР»СЏ РїСЂРёРµРјР° РІРЅСѓС‚СЂСЊ / С‚Р°Р±Р»РµС‚РєРё 40 РјРі', 'Ipsen Pharma', 'Р Рљ-Р›РЎ-5в„–007890', 'Р¤СЂР°РЅС†РёСЏ', 'РЎС‚Р°РЅРґР°СЂС‚РёР·РѕРІР°РЅРЅС‹Р№ СЌРєСЃС‚СЂР°РєС‚ Р»РёСЃС‚СЊРµРІ Ginkgo biloba (EGb 761) РґР»СЏ СѓР»СѓС‡С€РµРЅРёСЏ РјРѕР·РіРѕРІРѕРіРѕ Рё РїРµСЂРёС„РµСЂРёС‡РµСЃРєРѕРіРѕ РєСЂРѕРІРѕРѕР±СЂР°С‰РµРЅРёСЏ.', 'Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р РµСЃРїСѓР±Р»РёРєРё РљР°Р·Р°С…СЃС‚Р°РЅ'),
-    ('Р“РµСЂР±РёРѕРЅ СЃРёСЂРѕРї РїРѕРґРѕСЂРѕР¶РЅРёРєР°', 'РЎРёСЂРѕРї 150 РјР»', 'KRKA d.d.', 'Р Рљ-Р›РЎ-5в„–016623', 'РЎР»РѕРІРµРЅРёСЏ', 'РџСЂРµРїР°СЂР°С‚ СЂР°СЃС‚РёС‚РµР»СЊРЅРѕРіРѕ РїСЂРѕРёСЃС…РѕР¶РґРµРЅРёСЏ РїСЂРё СЃСѓС…РѕРј РЅРµРїСЂРѕРґСѓРєС‚РёРІРЅРѕРј РєР°С€Р»Рµ РЅР° РѕСЃРЅРѕРІРµ РїРѕРґРѕСЂРѕР¶РЅРёРєР° Рё РјР°Р»СЊРІС‹.', 'Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р РµСЃРїСѓР±Р»РёРєРё РљР°Р·Р°С…СЃС‚Р°РЅ'),
-    ('Р“РµСЂР±РёРѕРЅ СЃРёСЂРѕРї РїР»СЋС‰Р°', 'РЎРёСЂРѕРї 150 РјР»', 'KRKA d.d.', 'Р Рљ-Р›РЎ-5в„–016624', 'РЎР»РѕРІРµРЅРёСЏ', 'РћС‚С…Р°СЂРєРёРІР°СЋС‰РёР№ РјСѓРєРѕР»РёС‚РёС‡РµСЃРєРёР№ СЃРёСЂРѕРї РїСЂРё РІР»Р°Р¶РЅРѕРј РєР°С€Р»Рµ СЃ С‚СЂСѓРґРЅРѕРѕС‚РґРµР»СЏРµРјРѕР№ РјРѕРєСЂРѕС‚РѕР№.', 'Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р РµСЃРїСѓР±Р»РёРєРё РљР°Р·Р°С…СЃС‚Р°РЅ'),
-    ('Р”РѕРєС‚РѕСЂ РњРћРњ (Doctor MOM)', 'РЎРёСЂРѕРї РѕС‚ РєР°С€Р»СЏ / РјР°Р·СЊ', 'Johnson & Johnson / Unique Pharmaceuticals', 'Р Рљ-Р›РЎ-5в„–006734', 'РРЅРґРёСЏ', 'РљРѕРјРїР»РµРєСЃРЅС‹Р№ Р°СЋСЂРІРµРґРёС‡РµСЃРєРёР№ С„РёС‚РѕРїСЂРµРїР°СЂР°С‚: Р±Р°Р·РёР»РёРє, СЃРѕР»РѕРґРєР°, РєСѓСЂРєСѓРјР°, РёРјР±РёСЂСЊ, РґРµРІСЏСЃРёР», Р°Р»РѕСЌ.', 'Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р РµСЃРїСѓР±Р»РёРєРё РљР°Р·Р°С…СЃС‚Р°РЅ'),
-    ('Р¤РёС‚РѕР»РёР·РёРЅ (Phytolysin)', 'РџР°СЃС‚Р° РґР»СЏ РїСЂРёРіРѕС‚РѕРІР»РµРЅРёСЏ СЃСѓСЃРїРµРЅР·РёРё', 'Herbapol Warszawa', 'Р Рљ-Р›РЎ-5в„–010293', 'РџРѕР»СЊС€Р°', 'Р”РёСѓСЂРµС‚РёС‡РµСЃРєРѕРµ СЃРїР°Р·РјРѕР»РёС‚РёС‡РµСЃРєРѕРµ РїСЂРѕС‚РёРІРѕРІРѕСЃРїР°Р»РёС‚РµР»СЊРЅРѕРµ СЃСЂРµРґСЃС‚РІРѕ РїСЂРё СѓСЂРѕР»РёС‚РёР°Р·Рµ Рё РёРЅС„РµРєС†РёСЏС… РјРѕС‡РµРІС‹С… РїСѓС‚РµР№.', 'Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р РµСЃРїСѓР±Р»РёРєРё РљР°Р·Р°С…СЃС‚Р°РЅ'),
-    ('РЈСЂРѕР»РµСЃР°РЅ (Urolesan)', 'РљР°РїР»Рё РґР»СЏ РїСЂРёРµРјР° РІРЅСѓС‚СЂСЊ / РєР°РїСЃСѓР»С‹', 'Р“Р°Р»РёС‡С„Р°СЂРј / РђСЂС‚РµСЂРёСѓРј', 'Р Рљ-Р›РЎ-5в„–013847', 'РЈРєСЂР°РёРЅР°', 'РЎРїР°Р·РјРѕР»РёС‚РёС‡РµСЃРєРёР№ Р°РЅС‚РёСЃРµРїС‚РёС‡РµСЃРєРёР№ Р¶РµР»С‡РµРіРѕРЅРЅС‹Р№ Рё РґРёСѓСЂРµС‚РёС‡РµСЃРєРёР№ С„РёС‚РѕРїСЂРµРїР°СЂР°С‚: РґСѓС€РёС†Р°, РјСЏС‚Р°, С…РјРµР»СЊ, РїРёС…С‚Р°.', 'Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р РµСЃРїСѓР±Р»РёРєРё РљР°Р·Р°С…СЃС‚Р°РЅ'),
-    ('РђР»Р»РѕС…РѕР»', 'РўР°Р±Р»РµС‚РєРё, РїРѕРєСЂС‹С‚С‹Рµ РѕР±РѕР»РѕС‡РєРѕР№', 'Р¤Р°СЂРјСЃС‚Р°РЅРґР°СЂС‚ / Р‘РѕСЂС‰Р°РіРѕРІСЃРєРёР№ РҐР¤Р—', 'Р Рљ-Р›РЎ-5в„–002143', 'Р Р¤ / РЈРєСЂР°РёРЅР°', 'Р–РµР»С‡РµРіРѕРЅРЅРѕРµ СЃСЂРµРґСЃС‚РІРѕ: СЃСѓС…Р°СЏ Р¶РµР»С‡СЊ, С‡РµСЃРЅРѕРє РїРѕСЃРµРІРЅРѕР№, РєСЂР°РїРёРІР° РґРІСѓРґРѕРјРЅР°СЏ, Р°РєС‚РёРІРёСЂРѕРІР°РЅРЅС‹Р№ СѓРіРѕР»СЊ.', 'Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р РµСЃРїСѓР±Р»РёРєРё РљР°Р·Р°С…СЃС‚Р°РЅ'),
-    ('РџРёРЅРѕСЃРѕР» (Pinosol)', 'РљР°РїР»Рё РЅР°Р·Р°Р»СЊРЅС‹Рµ / СЃРїСЂРµР№', 'Zentiva', 'Р Рљ-Р›РЎ-5в„–008921', 'РЎР»РѕРІР°РєРёСЏ', 'РџСЂРѕС‚РёРІРѕРІРѕСЃРїР°Р»РёС‚РµР»СЊРЅРѕРµ РїСЂРѕС‚РёРІРѕРјРёРєСЂРѕР±РЅРѕРµ СЃСЂРµРґСЃС‚РІРѕ РїСЂРё СЂРёРЅРёС‚Р°С… РЅР° РѕСЃРЅРѕРІРµ СЌС„РёСЂРЅС‹С… РјР°СЃРµР» СЃРѕСЃРЅС‹, РјСЏС‚С‹ Рё СЌРІРєР°Р»РёРїС‚Р°.', 'Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р РµСЃРїСѓР±Р»РёРєРё РљР°Р·Р°С…СЃС‚Р°РЅ'),
-    ('РРЅРіР°Р»РёРїС‚', 'РђСЌСЂРѕР·РѕР»СЊ РґР»СЏ РјРµСЃС‚РЅРѕРіРѕ РїСЂРёРјРµРЅРµРЅРёСЏ', 'Р¤Р°СЂРјСЃС‚Р°РЅРґР°СЂС‚ / РњРёРєСЂРѕС„Р°СЂРј', 'Р Рљ-Р›РЎ-5в„–005432', 'Р Р¤ / РљР°Р·Р°С…СЃС‚Р°РЅ', 'РџСЂРѕС‚РёРІРѕРјРёРєСЂРѕР±РЅС‹Р№ СЃРїСЂРµР№ РїСЂРё С„Р°СЂРёРЅРіРёС‚Р°С… Рё Р»Р°СЂРёРЅРіРёС‚Р°С… СЃ РјР°СЃР»Р°РјРё РјСЏС‚С‹, СЌРІРєР°Р»РёРїС‚Р° Рё СЃСѓР»СЊС„Р°РЅРёР»Р°РјРёРґР°РјРё.', 'Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р РµСЃРїСѓР±Р»РёРєРё РљР°Р·Р°С…СЃС‚Р°РЅ'),
-    ('Р РѕС‚РѕРєР°РЅ (Rotocan)', 'Р­РєСЃС‚СЂР°РєС‚ Р¶РёРґРєРёР№ РґР»СЏ РїСЂРёРµРјР° РІРЅСѓС‚СЂСЊ Рё РјРµСЃС‚РЅРѕРіРѕ РїСЂРёРјРµРЅРµРЅРёСЏ', 'Р’РёС„РёС‚РµС… / Р¤Р°СЂРјР°С†РёСЏ', 'Р Рљ-Р›РЎ-5в„–004321', 'Р Р¤ / РљР°Р·Р°С…СЃС‚Р°РЅ', 'РџСЂРѕС‚РёРІРѕРІРѕСЃРїР°Р»РёС‚РµР»СЊРЅРѕРµ РіРµРјРѕСЃС‚Р°С‚РёС‡РµСЃРєРѕРµ СЃСЂРµРґСЃС‚РІРѕ: СЂРѕРјР°С€РєР°, РєР°Р»РµРЅРґСѓР»Р°, С‚С‹СЃСЏС‡РµР»РёСЃС‚РЅРёРє.', 'Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р РµСЃРїСѓР±Р»РёРєРё РљР°Р·Р°С…СЃС‚Р°РЅ'),
-    ('РЎРѕР»РѕРґРєРё РєРѕСЂРЅСЏ СЃРёСЂРѕРї', 'РЎРёСЂРѕРї С„Р»Р°РєРѕРЅ 100 РјР»', 'Р¤Р°СЂРјР°С†РёСЏ Р Рљ / РЎР°РјР°СЂР°РјРµРґРїСЂРѕРј', 'Р Рљ-Р›РЎ-5в„–003921', 'РљР°Р·Р°С…СЃС‚Р°РЅ', 'РћС‚С…Р°СЂРєРёРІР°СЋС‰РµРµ СЂР°СЃС‚РёС‚РµР»СЊРЅРѕРµ СЃСЂРµРґСЃС‚РІРѕ РїСЂРё С‚СЂР°С…РµРёС‚Р°С… Рё Р±СЂРѕРЅС…РёС‚Р°С….', 'Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р РµСЃРїСѓР±Р»РёРєРё РљР°Р·Р°С…СЃС‚Р°РЅ'),
-    ('Р“СЂСѓРґРЅРѕР№ СЃР±РѕСЂ в„–4', 'РЎР±РѕСЂ СЂР°СЃС‚РёС‚РµР»СЊРЅС‹Р№ РёР·РјРµР»СЊС‡РµРЅРЅС‹Р№', 'РљСЂР°СЃРЅРѕРіРѕСЂСЃРєР»РµРєСЃСЂРµРґСЃС‚РІР°', 'Р Рљ-Р›РЎ-5в„–014892', 'Р Р¤', 'РЎР±РѕСЂ РѕС‚С…Р°СЂРєРёРІР°СЋС‰РёР№: СЂРѕРјР°С€РєР°, СЃРѕР»РѕРґРєР°, РјСЏС‚Р°, С„РёР°Р»РєР°, РєР°Р»РµРЅРґСѓР»Р°, Р±Р°РіСѓР»СЊРЅРёРє.', 'Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р РµСЃРїСѓР±Р»РёРєРё РљР°Р·Р°С…СЃС‚Р°РЅ'),
-    ('Р­РІРєР°Р»РёРїС‚Р° РЅР°СЃС‚РѕР№РєР°', 'РќР°СЃС‚РѕР№РєР° С„Р»Р°РєРѕРЅ 25/50 РјР»', 'Р¤Р°СЂРјР°С†РёСЏ Р Рљ / РўСѓР»СЊСЃРєР°СЏ С„Р°СЂРјС„Р°Р±СЂРёРєР°', 'Р Рљ-Р›РЎ-5в„–001923', 'РљР°Р·Р°С…СЃС‚Р°РЅ', 'РђРЅС‚РёСЃРµРїС‚РёС‡РµСЃРєРѕРµ РїСЂРѕС‚РёРІРѕРІРѕСЃРїР°Р»РёС‚РµР»СЊРЅРѕРµ СЃСЂРµРґСЃС‚РІРѕ РґР»СЏ РїРѕР»РѕСЃРєР°РЅРёР№ Рё РёРЅРіР°Р»СЏС†РёР№ РїСЂРё Р·Р°Р±РѕР»РµРІР°РЅРёСЏС… РґС‹С…Р°С‚РµР»СЊРЅС‹С… РїСѓС‚РµР№.', 'Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р РµСЃРїСѓР±Р»РёРєРё РљР°Р·Р°С…СЃС‚Р°РЅ'),
-    ('РљР°Р»РµРЅРґСѓР»С‹ РјР°Р·СЊ', 'РњР°Р·СЊ РґР»СЏ РЅР°СЂСѓР¶РЅРѕРіРѕ РїСЂРёРјРµРЅРµРЅРёСЏ 30 Рі', 'РњРѕСЃРєРѕРІСЃРєР°СЏ С„Р°СЂРјС„Р°Р±СЂРёРєР° / РЁР°Р»РєР°СЂ', 'Р Рљ-Р›РЎ-5в„–007123', 'Р Р¤ / РљР°Р·Р°С…СЃС‚Р°РЅ', 'Р Р°РЅРѕР·Р°Р¶РёРІР»СЏСЋС‰РµРµ Р°РЅС‚РёСЃРµРїС‚РёС‡РµСЃРєРѕРµ СЃСЂРµРґСЃС‚РІРѕ РїСЂРё РїРѕСЂРµР·Р°С…, С‚СЂРµС‰РёРЅР°С… Рё РѕР¶РѕРіР°С….', 'Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р РµСЃРїСѓР±Р»РёРєРё РљР°Р·Р°С…СЃС‚Р°РЅ'),
-    ('РЁРёРїРѕРІРЅРёРєР° СЃРёСЂРѕРї (РҐРѕР»РѕСЃР°СЃ)', 'РЎРёСЂРѕРї С„Р»Р°РєРѕРЅ 250 РјР»', 'РђР»С‚Р°Р№РІРёС‚Р°РјРёРЅС‹ / Р¤Р°СЂРјР°С†РёСЏ Р Рљ', 'Р Рљ-Р›РЎ-5в„–008432', 'Р Р¤ / РљР°Р·Р°С…СЃС‚Р°РЅ', 'Р–РµР»С‡РµРіРѕРЅРЅРѕРµ Рё РѕР±С‰РµСѓРєСЂРµРїР»СЏСЋС‰РµРµ РІРёС‚Р°РјРёРЅРЅРѕРµ СЃСЂРµРґСЃС‚РІРѕ РЅР° РѕСЃРЅРѕРІРµ РІРѕРґРЅРѕРіРѕ СЃРіСѓС‰РµРЅРЅРѕРіРѕ СЌРєСЃС‚СЂР°РєС‚Р° РїР»РѕРґРѕРІ С€РёРїРѕРІРЅРёРєР°.', 'Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р РµСЃРїСѓР±Р»РёРєРё РљР°Р·Р°С…СЃС‚Р°РЅ')
+    ('Валерианы настойка', 'Настойка для приема внутрь (флакон 50 мл)', 'Фармация РК / Галичфарм', 'РК-ЛС-5№014231', 'Казахстан', 'Седативное растительное средство при неврозах, нарушениях сна и спазмах ЖКТ.', 'Государственный реестр лекарственных средств Республики Казахстан'),
+    ('Персен (Persen)', 'Таблетки, покрытые оболочкой', 'Sandoz / Lek d.d.', 'РК-ЛС-5№009841', 'Словения', 'Комбинированный седативный растительный фитопрепарат: валериана, мелисса, мята перечная.', 'Государственный реестр лекарственных средств Республики Казахстан'),
+    ('Ново-Пассит (Novo-Passit)', 'Раствор для приема внутрь / таблетки', 'Teva / Ivax Pharmaceuticals', 'РК-ЛС-5№015672', 'Чехия', 'Комплексный седативный фитопрепарат на основе валерианы, зверобоя, боярышника, хмеля, мелиссы и гвайфенезина.', 'Государственный реестр лекарственных средств Республики Казахстан'),
+    ('Пустырника настойка', 'Настойка флакон 25/50 мл', 'Вифитех / Фармация РК', 'РК-ЛС-5№003412', 'Казахстан', 'Успокаивающее средство растительного происхождения при функциональных расстройствах сердечно-сосудистой системы.', 'Государственный реестр лекарственных средств Республики Казахстан'),
+    ('Боярышника настойка', 'Настойка флакон 50 мл', 'Татхимфармпрепараты / Шалкар-Фарм', 'РК-ЛС-5№011245', 'Казахстан', 'Кардиотоническое средство растительного происхождения при легких формах сердечной недостаточности.', 'Государственный реестр лекарственных средств Республики Казахстан'),
+    ('Синупрет (Sinupret)', 'Капли для приема внутрь / таблетки', 'Bionorica SE', 'РК-ЛС-5№016789', 'Германия', 'Секретолитическое противовоспалительное растительное средство при острых и хронических синуситах.', 'Государственный реестр лекарственных средств Республики Казахстан'),
+    ('Бронхипрет (Bronchipret)', 'Сироп / таблетки', 'Bionorica SE', 'РК-ЛС-5№018934', 'Германия', 'Отхаркивающее противовоспалительное средство на основе тимьяна (чабреца) и плюща/первоцвета.', 'Государственный реестр лекарственных средств Республики Казахстан'),
+    ('Канефрон H (Canephron N)', 'Капли / таблетки', 'Bionorica SE', 'РК-ЛС-5№017843', 'Германия', 'Растительное средство для лечения воспалительных заболеваний почек и мочевыводящих путей.', 'Государственный реестр лекарственных средств Республики Казахстан'),
+    ('Цистон (Cystone)', 'Таблетки', 'Himalaya Drug Company', 'РК-ЛС-5№008745', 'Индия', 'Комплексный уроантисептический литолитический препарат на основе экстрактов лекарственных растений.', 'Государственный реестр лекарственных средств Республики Казахстан'),
+    ('Хофитол (Chophytol)', 'Раствор для приема внутрь / таблетки', 'Laboratoires Rosa-Phytopharma', 'РК-ЛС-5№013456', 'Франция', 'Желчегонное и гепатопротекторное средство на основе сухого водного экстракта листьев артишока полевого.', 'Государственный реестр лекарственных средств Республики Казахстан'),
+    ('Карсил (Carsil)', 'Драже 22.5 мг / капсулы', 'Sopharma AD', 'РК-ЛС-5№004561', 'Болгария', 'Гепатопротекторное средство растительного происхождения на основе силимарина плодов расторопши пятнистой.', 'Государственный реестр лекарственных средств Республики Казахстан'),
+    ('Геделикс (Hedelix)', 'Сироп от кашля / капли', 'Krewel Meuselbach GmbH', 'РК-ЛС-5№012398', 'Германия', 'Отхаркивающее растительное средство на основе густого экстракта листьев плюща при бронхитах.', 'Государственный реестр лекарственных средств Республики Казахстан'),
+    ('Проспан (Prospan)', 'Сироп / шипучие таблетки', 'Engelhard Arzneimittel GmbH', 'РК-ЛС-5№015521', 'Германия', 'Оригинальный муколитический спазмолитический препарат на основе экстракта плюща.', 'Государственный реестр лекарственных средств Республики Казахстан'),
+    ('Стоптуссин-Фито', 'Сироп для приема внутрь', 'Teva Czech Industries', 'РК-ЛС-5№019234', 'Чехия', 'Отхаркивающее средство растительного происхождения: экстракты тимьяна, чабреца и подорожника.', 'Государственный реестр лекарственных средств Республики Казахстан'),
+    ('Тонзилгон N (Tonsilgon N)', 'Капли / драже', 'Bionorica SE', 'РК-ЛС-5№014562', 'Германия', 'Антисептический противовоспалительный фитопрепарат при инфекциях ротоглотки (ромашка, алтей, хвощ, кора дуба).', 'Государственный реестр лекарственных средств Республики Казахстан'),
+    ('Танакан (Tanakan)', 'Раствор для приема внутрь / таблетки 40 мг', 'Ipsen Pharma', 'РК-ЛС-5№007890', 'Франция', 'Стандартизованный экстракт листьев Ginkgo biloba (EGb 761) для улучшения мозгового и периферического кровообращения.', 'Государственный реестр лекарственных средств Республики Казахстан'),
+    ('Гербион сироп подорожника', 'Сироп 150 мл', 'KRKA d.d.', 'РК-ЛС-5№016623', 'Словения', 'Препарат растительного происхождения при сухом непродуктивном кашле на основе подорожника и мальвы.', 'Государственный реестр лекарственных средств Республики Казахстан'),
+    ('Гербион сироп плюща', 'Сироп 150 мл', 'KRKA d.d.', 'РК-ЛС-5№016624', 'Словения', 'Отхаркивающий муколитический сироп при влажном кашле с трудноотделяемой мокротой.', 'Государственный реестр лекарственных средств Республики Казахстан'),
+    ('Доктор МОМ (Doctor MOM)', 'Сироп от кашля / мазь', 'Johnson & Johnson / Unique Pharmaceuticals', 'РК-ЛС-5№006734', 'Индия', 'Комплексный аюрведический фитопрепарат: базилик, солодка, куркума, имбирь, девясил, алоэ.', 'Государственный реестр лекарственных средств Республики Казахстан'),
+    ('Фитолизин (Phytolysin)', 'Паста для приготовления суспензии', 'Herbapol Warszawa', 'РК-ЛС-5№010293', 'Польша', 'Диуретическое спазмолитическое противовоспалительное средство при уролитиазе и инфекциях мочевых путей.', 'Государственный реестр лекарственных средств Республики Казахстан'),
+    ('Уролесан (Urolesan)', 'Капли для приема внутрь / капсулы', 'Галичфарм / Артериум', 'РК-ЛС-5№013847', 'Украина', 'Спазмолитический антисептический желчегонный и диуретический фитопрепарат: душица, мята, хмель, пихта.', 'Государственный реестр лекарственных средств Республики Казахстан'),
+    ('Аллохол', 'Таблетки, покрытые оболочкой', 'Фармстандарт / Борщаговский ХФЗ', 'РК-ЛС-5№002143', 'РФ / Украина', 'Желчегонное средство: сухая желчь, чеснок посевной, крапива двудомная, активированный уголь.', 'Государственный реестр лекарственных средств Республики Казахстан'),
+    ('Пиносол (Pinosol)', 'Капли назальные / спрей', 'Zentiva', 'РК-ЛС-5№008921', 'Словакия', 'Противовоспалительное противомикробное средство при ринитах на основе эфирных масел сосны, мяты и эвкалипта.', 'Государственный реестр лекарственных средств Республики Казахстан'),
+    ('Ингалипт', 'Аэрозоль для местного применения', 'Фармстандарт / Микрофарм', 'РК-ЛС-5№005432', 'РФ / Казахстан', 'Противомикробный спрей при фарингитах и ларингитах с маслами мяты, эвкалипта и сульфаниламидами.', 'Государственный реестр лекарственных средств Республики Казахстан'),
+    ('Ротокан (Rotocan)', 'Экстракт жидкий для приема внутрь и местного применения', 'Вифитех / Фармация', 'РК-ЛС-5№004321', 'РФ / Казахстан', 'Противовоспалительное гемостатическое средство: ромашка, календула, тысячелистник.', 'Государственный реестр лекарственных средств Республики Казахстан'),
+    ('Солодки корня сироп', 'Сироп флакон 100 мл', 'Фармация РК / Самарамедпром', 'РК-ЛС-5№003921', 'Казахстан', 'Отхаркивающее растительное средство при трахеитах и бронхитах.', 'Государственный реестр лекарственных средств Республики Казахстан'),
+    ('Грудной сбор №4', 'Сбор растительный измельченный', 'Красногорсклексредства', 'РК-ЛС-5№014892', 'РФ', 'Сбор отхаркивающий: ромашка, солодка, мята, фиалка, календула, багульник.', 'Государственный реестр лекарственных средств Республики Казахстан'),
+    ('Эвкалипта настойка', 'Настойка флакон 25/50 мл', 'Фармация РК / Тульская фармфабрика', 'РК-ЛС-5№001923', 'Казахстан', 'Антисептическое противовоспалительное средство для полосканий и ингаляций при заболеваниях дыхательных путей.', 'Государственный реестр лекарственных средств Республики Казахстан'),
+    ('Календулы мазь', 'Мазь для наружного применения 30 г', 'Московская фармфабрика / Шалкар', 'РК-ЛС-5№007123', 'РФ / Казахстан', 'Ранозаживляющее антисептическое средство при порезах, трещинах и ожогах.', 'Государственный реестр лекарственных средств Республики Казахстан'),
+    ('Шиповника сироп (Холосас)', 'Сироп флакон 250 мл', 'Алтайвитамины / Фармация РК', 'РК-ЛС-5№008432', 'РФ / Казахстан', 'Желчегонное и общеукрепляющее витаминное средство на основе водного сгущенного экстракта плодов шиповника.', 'Государственный реестр лекарственных средств Республики Казахстан')
 ) AS v(name, form, mfg, reg, country, descr, src_title)
 JOIN sources s ON s.title = v.src_title
 ON CONFLICT (registration_number) DO NOTHING;
 
 -- 5. Link Plants to Active Compounds (Plant-Compound Relationships)
 INSERT INTO plant_compound_relationships (plant_id, compound_id, plant_part, source_id, notes)
-SELECT p.id, c.id, 'РљРѕСЂРЅРµРІРёС‰Р° СЃ РєРѕСЂРЅСЏРјРё', s.id, 'РћСЃРЅРѕРІРЅРѕР№ РјР°СЂРєРµСЂ СЃРµРґР°С‚РёРІРЅРѕР№ Р°РєС‚РёРІРЅРѕСЃС‚Рё РІР°Р»РµСЂРёР°РЅС‹'
+SELECT p.id, c.id, 'Корневища с корнями', s.id, 'Основной маркер седативной активности валерианы'
 FROM plants p, compounds c, sources s
-WHERE p.scientific_name = 'Valeriana officinalis' AND c.name LIKE 'Р’Р°Р»РµСЂРёР°РЅРѕРІР°СЏ РєРёСЃР»РѕС‚Р°%' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
+WHERE p.scientific_name = 'Valeriana officinalis' AND c.name LIKE 'Валериановая кислота%' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
 ON CONFLICT DO NOTHING;
 
 INSERT INTO plant_compound_relationships (plant_id, compound_id, plant_part, source_id, notes)
-SELECT p.id, c.id, 'Р¦РІРµС‚СѓС‰Р°СЏ РЅР°РґР·РµРјРЅР°СЏ С‡Р°СЃС‚СЊ', s.id, 'Р¤РѕС‚РѕСЃРµРЅСЃРёР±РёР»РёР·РёСЂСѓСЋС‰РёРµ Рё РїСЃРёС…РѕС‚СЂРѕРїРЅС‹Рµ РЅР°С„С‚РѕРґРёР°РЅС‚СЂРѕРЅС‹'
+SELECT p.id, c.id, 'Цветущая надземная часть', s.id, 'Фотосенсибилизирующие и психотропные нафтодиантроны'
 FROM plants p, compounds c, sources s
-WHERE p.scientific_name = 'Hypericum perforatum' AND c.name LIKE 'Р“РёРїРµСЂРёС†РёРЅ%' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
+WHERE p.scientific_name = 'Hypericum perforatum' AND c.name LIKE 'Гиперицин%' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
 ON CONFLICT DO NOTHING;
 
 INSERT INTO plant_compound_relationships (plant_id, compound_id, plant_part, source_id, notes)
-SELECT p.id, c.id, 'Р¦РІРµС‚СѓС‰Р°СЏ РЅР°РґР·РµРјРЅР°СЏ С‡Р°СЃС‚СЊ', s.id, 'РРЅРіРёР±РёС‚РѕСЂ РѕР±СЂР°С‚РЅРѕРіРѕ Р·Р°С…РІР°С‚Р° РјРѕРЅРѕР°РјРёРЅРѕРІ'
+SELECT p.id, c.id, 'Цветущая надземная часть', s.id, 'Ингибитор обратного захвата моноаминов'
 FROM plants p, compounds c, sources s
-WHERE p.scientific_name = 'Hypericum perforatum' AND c.name LIKE 'Р“РёРїРµСЂС„РѕСЂРёРЅ%' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
+WHERE p.scientific_name = 'Hypericum perforatum' AND c.name LIKE 'Гиперфорин%' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
 ON CONFLICT DO NOTHING;
 
 INSERT INTO plant_compound_relationships (plant_id, compound_id, plant_part, source_id, notes)
-SELECT p.id, c.id, 'РЎРѕС†РІРµС‚РёСЏ', s.id, 'РџСЂРѕС‚РёРІРѕРІРѕСЃРїР°Р»РёС‚РµР»СЊРЅС‹Р№ СЃРµСЃРєРІРёС‚РµСЂРїРµРЅ СЌС„РёСЂРЅРѕРіРѕ РјР°СЃР»Р°'
+SELECT p.id, c.id, 'Соцветия', s.id, 'Противовоспалительный сесквитерпен эфирного масла'
 FROM plants p, compounds c, sources s
-WHERE p.scientific_name = 'Matricaria chamomilla' AND c.name LIKE 'РҐР°РјР°Р·СѓР»РµРЅ%' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
+WHERE p.scientific_name = 'Matricaria chamomilla' AND c.name LIKE 'Хамазулен%' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
 ON CONFLICT DO NOTHING;
 
 INSERT INTO plant_compound_relationships (plant_id, compound_id, plant_part, source_id, notes)
-SELECT p.id, c.id, 'РЎРѕС†РІРµС‚РёСЏ', s.id, 'РЎРїР°Р·РјРѕР»РёС‚РёС‡РµСЃРєРёР№ Рё Р°РЅС‚РёР±Р°РєС‚РµСЂРёР°Р»СЊРЅС‹Р№ СЃРµСЃРєРІРёС‚РµСЂРїРµРЅРѕРІС‹Р№ СЃРїРёСЂС‚'
+SELECT p.id, c.id, 'Соцветия', s.id, 'Спазмолитический и антибактериальный сесквитерпеновый спирт'
 FROM plants p, compounds c, sources s
-WHERE p.scientific_name = 'Matricaria chamomilla' AND c.name LIKE 'РђР»СЊС„Р°-Р‘РёСЃР°Р±РѕР»РѕР»%' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
+WHERE p.scientific_name = 'Matricaria chamomilla' AND c.name LIKE 'Альфа-Бисаболол%' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
 ON CONFLICT DO NOTHING;
 
 INSERT INTO plant_compound_relationships (plant_id, compound_id, plant_part, source_id, notes)
-SELECT p.id, c.id, 'Р›РёСЃС‚СЊСЏ', s.id, 'РЎРїР°Р·РјРѕР»РёС‚РёС‡РµСЃРєРѕРµ Рё РјРµСЃС‚РЅРѕСЂР°Р·РґСЂР°Р¶Р°СЋС‰РµРµ С‚РµСЂРїРµРЅРѕРёРґРЅРѕРµ СЃРѕРµРґРёРЅРµРЅРёРµ'
+SELECT p.id, c.id, 'Листья', s.id, 'Спазмолитическое и местнораздражающее терпеноидное соединение'
 FROM plants p, compounds c, sources s
-WHERE p.scientific_name = 'Mentha piperita' AND c.name LIKE 'РњРµРЅС‚РѕР»%' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
+WHERE p.scientific_name = 'Mentha piperita' AND c.name LIKE 'Ментол%' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
 ON CONFLICT DO NOTHING;
 
 INSERT INTO plant_compound_relationships (plant_id, compound_id, plant_part, source_id, notes)
-SELECT p.id, c.id, 'РљРѕСЂРЅРё Рё С‚СЂР°РІР°', s.id, 'РРјРјСѓРЅРѕСЃС‚РёРјСѓР»РёСЂСѓСЋС‰РёР№ РєРѕС„РµРѕРёР»РїСЂРѕРёР·РІРѕРґРЅС‹Р№ РіР»РёРєРѕР·РёРґ'
+SELECT p.id, c.id, 'Корни и трава', s.id, 'Иммуностимулирующий кофеоилпроизводный гликозид'
 FROM plants p, compounds c, sources s
-WHERE p.scientific_name = 'Echinacea purpurea' AND c.name LIKE 'Р­С…РёРЅР°РєРѕР·РёРґ%' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
+WHERE p.scientific_name = 'Echinacea purpurea' AND c.name LIKE 'Эхинакозид%' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
 ON CONFLICT DO NOTHING;
 
 INSERT INTO plant_compound_relationships (plant_id, compound_id, plant_part, source_id, notes)
-SELECT p.id, c.id, 'РљРѕСЂРЅРµРІРёС‰Р° Рё РєРѕСЂРЅРё', s.id, 'РћС‚С…Р°СЂРєРёРІР°СЋС‰РёР№ Рё РїСЂРѕС‚РёРІРѕРІРѕСЃРїР°Р»РёС‚РµР»СЊРЅС‹Р№ С‚СЂРёС‚РµСЂРїРµРЅРѕРІС‹Р№ СЃР°РїРѕРЅРёРЅ'
+SELECT p.id, c.id, 'Корневища и корни', s.id, 'Отхаркивающий и противовоспалительный тритерпеновый сапонин'
 FROM plants p, compounds c, sources s
-WHERE p.scientific_name = 'Glycyrrhiza glabra' AND c.name LIKE 'Р“Р»РёС†РёСЂСЂРёР·РёРЅ%' AND s.title = 'Р¤Р°СЂРјР°РєРѕРїРµСЏ Р РѕСЃСЃРёР№СЃРєРѕР№ Р¤РµРґРµСЂР°С†РёРё IV РёР·РґР°РЅРёРµ'
+WHERE p.scientific_name = 'Glycyrrhiza glabra' AND c.name LIKE 'Глицирризин%' AND s.title = 'Фармакопея Российской Федерации IV издание'
 ON CONFLICT DO NOTHING;
 
 INSERT INTO plant_compound_relationships (plant_id, compound_id, plant_part, source_id, notes)
-SELECT p.id, c.id, 'РўСЂР°РІР°', s.id, 'РђРЅС‚РёСЃРµРїС‚РёС‡РµСЃРєРёР№ С„РµРЅРѕР»СЊРЅС‹Р№ РјРѕРЅРѕС‚РµСЂРїРµРЅ'
+SELECT p.id, c.id, 'Трава', s.id, 'Антисептический фенольный монотерпен'
 FROM plants p, compounds c, sources s
-WHERE p.scientific_name = 'Thymus vulgaris' AND c.name LIKE 'РўРёРјРѕР»%' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
+WHERE p.scientific_name = 'Thymus vulgaris' AND c.name LIKE 'Тимол%' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
 ON CONFLICT DO NOTHING;
 
 INSERT INTO plant_compound_relationships (plant_id, compound_id, plant_part, source_id, notes)
-SELECT p.id, c.id, 'РџР»РѕРґС‹', s.id, 'Р“РµРїР°С‚РѕРїСЂРѕС‚РµРєС‚РѕСЂРЅС‹Р№ С„Р»Р°РІРѕРЅРѕР»РёРіРЅР°РЅРЅС‹Р№ РєРѕРјРїР»РµРєСЃ'
+SELECT p.id, c.id, 'Плоды', s.id, 'Гепатопротекторный флавонолигнанный комплекс'
 FROM plants p, compounds c, sources s
-WHERE p.scientific_name = 'Silybum marianum' AND c.name LIKE 'РЎРёР»РёРјР°СЂРёРЅ%' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
+WHERE p.scientific_name = 'Silybum marianum' AND c.name LIKE 'Силимарин%' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
 ON CONFLICT DO NOTHING;
 
 INSERT INTO plant_compound_relationships (plant_id, compound_id, plant_part, source_id, notes)
-SELECT p.id, c.id, 'Р›РёСЃС‚СЊСЏ', s.id, 'РЈСЂРѕР°РЅС‚РёСЃРµРїС‚РёС‡РµСЃРєРёР№ С„РµРЅРѕР»РѕРіР»РёРєРѕР·РёРґ'
+SELECT p.id, c.id, 'Листья', s.id, 'Уроантисептический фенологликозид'
 FROM plants p, compounds c, sources s
-WHERE p.scientific_name = 'Arctostaphylos uva-ursi' AND c.name LIKE 'РђСЂР±СѓС‚РёРЅ%' AND s.title = 'Р¤Р°СЂРјР°РєРѕРїРµСЏ Р РѕСЃСЃРёР№СЃРєРѕР№ Р¤РµРґРµСЂР°С†РёРё IV РёР·РґР°РЅРёРµ'
+WHERE p.scientific_name = 'Arctostaphylos uva-ursi' AND c.name LIKE 'Арбутин%' AND s.title = 'Фармакопея Российской Федерации IV издание'
 ON CONFLICT DO NOTHING;
 
 INSERT INTO plant_compound_relationships (plant_id, compound_id, plant_part, source_id, notes)
-SELECT p.id, c.id, 'Р›РёСЃС‚СЊСЏ', s.id, 'РђРЅС‚РёР°РіСЂРµРіР°РЅС‚РЅС‹Р№ С‚РµСЂРїРµРЅРѕРІС‹Р№ С‚СЂРёР»Р°РєС‚РѕРЅ'
+SELECT p.id, c.id, 'Листья', s.id, 'Антиагрегантный терпеновый трилактон'
 FROM plants p, compounds c, sources s
-WHERE p.scientific_name = 'Ginkgo biloba' AND c.name LIKE 'Р“РёРЅРєРіРѕР»РёРґ A%' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
+WHERE p.scientific_name = 'Ginkgo biloba' AND c.name LIKE 'Гинкголид A%' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
 ON CONFLICT DO NOTHING;
 
 INSERT INTO plant_compound_relationships (plant_id, compound_id, plant_part, source_id, notes)
-SELECT p.id, c.id, 'РљРѕСЂРЅРµРІРёС‰Р° Рё РєРѕСЂРЅРё', s.id, 'РђРґР°РїС‚РѕРіРµРЅРЅС‹Р№ РіР»РёРєРѕР·РёРґ С‚РёСЂРѕР·РѕР»Р°'
+SELECT p.id, c.id, 'Корневища и корни', s.id, 'Адаптогенный гликозид тирозола'
 FROM plants p, compounds c, sources s
-WHERE p.scientific_name = 'Rhodiola rosea' AND c.name LIKE 'РЎР°Р»РёРґСЂРѕР·РёРґ%' AND s.title = 'Р¤Р°СЂРјР°РєРѕРїРµСЏ Р РѕСЃСЃРёР№СЃРєРѕР№ Р¤РµРґРµСЂР°С†РёРё IV РёР·РґР°РЅРёРµ'
+WHERE p.scientific_name = 'Rhodiola rosea' AND c.name LIKE 'Салидрозид%' AND s.title = 'Фармакопея Российской Федерации IV издание'
 ON CONFLICT DO NOTHING;
 
 INSERT INTO plant_compound_relationships (plant_id, compound_id, plant_part, source_id, notes)
-SELECT p.id, c.id, 'РљРѕСЂРЅРµРІРёС‰Р°', s.id, 'РњРѕС‰РЅС‹Р№ РїСЂРѕС‚РёРІРѕРІРѕСЃРїР°Р»РёС‚РµР»СЊРЅС‹Р№ Рё Р°РЅС‚РёРѕРєСЃРёРґР°РЅС‚РЅС‹Р№ РїРѕР»РёС„РµРЅРѕР»'
+SELECT p.id, c.id, 'Корневища', s.id, 'Мощный противовоспалительный и антиоксидантный полифенол'
 FROM plants p, compounds c, sources s
-WHERE p.scientific_name = 'Curcuma longa' AND c.name LIKE 'РљСѓСЂРєСѓРјРёРЅ%' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
+WHERE p.scientific_name = 'Curcuma longa' AND c.name LIKE 'Куркумин%' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
 ON CONFLICT DO NOTHING;
 
 INSERT INTO plant_compound_relationships (plant_id, compound_id, plant_part, source_id, notes)
-SELECT p.id, c.id, 'Р›РёСЃС‚СЊСЏ', s.id, 'РћС‚С…Р°СЂРєРёРІР°СЋС‰РёР№ Р°РЅС‚РёСЃРµРїС‚РёС‡РµСЃРєРёР№ РјРѕРЅРѕС‚РµСЂРїРµРЅ'
+SELECT p.id, c.id, 'Листья', s.id, 'Отхаркивающий антисептический монотерпен'
 FROM plants p, compounds c, sources s
-WHERE p.scientific_name = 'Eucalyptus globulus' AND c.name LIKE 'Р¦РёРЅРµРѕР»%' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
+WHERE p.scientific_name = 'Eucalyptus globulus' AND c.name LIKE 'Цинеол%' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
 ON CONFLICT DO NOTHING;
 
 INSERT INTO plant_compound_relationships (plant_id, compound_id, plant_part, source_id, notes)
-SELECT p.id, c.id, 'Р›РёСЃС‚СЊСЏ', s.id, 'РЎРµСЂРґРµС‡РЅС‹Р№ РіР»РёРєРѕР·РёРґ СЃ РёРЅРѕС‚СЂРѕРїРЅС‹Рј РґРµР№СЃС‚РІРёРµРј'
+SELECT p.id, c.id, 'Листья', s.id, 'Сердечный гликозид с инотропным действием'
 FROM plants p, compounds c, sources s
-WHERE p.scientific_name = 'Digitalis purpurea' AND c.name LIKE 'Р”РёРіРѕРєСЃРёРЅ%' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
+WHERE p.scientific_name = 'Digitalis purpurea' AND c.name LIKE 'Дигоксин%' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
 ON CONFLICT DO NOTHING;
 
 -- 6. Insert Knowledge Claims (Evidence-Based Indications, Contraindications, Interactions)
@@ -280,217 +280,217 @@ ON CONFLICT DO NOTHING;
 
 -- VALERIANA
 INSERT INTO knowledge_claims (plant_id, claim_type, title, claim_text, source_id, source_locator, review_status)
-SELECT p.id, 'INDICATION', 'РќР°СЂСѓС€РµРЅРёСЏ СЃРЅР° Рё Р±РµСЃСЃРѕРЅРЅРёС†Р°', 'Р­РєСЃС‚СЂР°РєС‚ РєРѕСЂРЅРµРІРёС‰ РІР°Р»РµСЂРёР°РЅС‹ РѕР±Р»РµРіС‡Р°РµС‚ Р·Р°СЃС‹РїР°РЅРёРµ, СѓР»СѓС‡С€Р°РµС‚ РіР»СѓР±РёРЅСѓ Рё СЃС‚СЂСѓРєС‚СѓСЂСѓ СЃРЅР°. РЎРµРґР°С‚РёРІРЅС‹Р№ СЌС„С„РµРєС‚ РѕР±СѓСЃР»РѕРІР»РµРЅ СЃРёРЅРµСЂРіРёР·РјРѕРј РІР°Р»РµСЂРµРЅРѕРІРѕР№ РєРёСЃР»РѕС‚С‹ Рё Р“РђРњРљ-РјРёРјРµС‚РёС‡РµСЃРєРёРј РґРµР№СЃС‚РІРёРµРј.', s.id, 'WHO Monograph Vol. I, p. 267-275', 'VERIFIED'
+SELECT p.id, 'INDICATION', 'Нарушения сна и бессонница', 'Экстракт корневищ валерианы облегчает засыпание, улучшает глубину и структуру сна. Седативный эффект обусловлен синергизмом валереновой кислоты и ГАМК-миметическим действием.', s.id, 'WHO Monograph Vol. I, p. 267-275', 'VERIFIED'
 FROM plants p, sources s WHERE p.scientific_name = 'Valeriana officinalis' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'РќР°СЂСѓС€РµРЅРёСЏ СЃРЅР° Рё Р±РµСЃСЃРѕРЅРЅРёС†Р°');
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Нарушения сна и бессонница');
 
 INSERT INTO knowledge_claims (plant_id, claim_type, title, claim_text, source_id, source_locator, review_status)
-SELECT p.id, 'INDICATION', 'РџСЃРёС…РѕСЌРјРѕС†РёРѕРЅР°Р»СЊРЅРѕРµ РІРѕР·Р±СѓР¶РґРµРЅРёРµ Рё СЃС‚СЂРµСЃСЃ', 'РџСЂРёРјРµРЅСЏРµС‚СЃСЏ РїСЂРё РїРѕРІС‹С€РµРЅРЅРѕР№ РЅРµСЂРІРЅРѕР№ РІРѕР·Р±СѓРґРёРјРѕСЃС‚Рё, СЌРјРѕС†РёРѕРЅР°Р»СЊРЅРѕР№ Р»Р°Р±РёР»СЊРЅРѕСЃС‚Рё Рё С„СѓРЅРєС†РёРѕРЅР°Р»СЊРЅС‹С… РєР°СЂРґРёРѕРЅРµРІСЂРѕР·Р°С….', s.id, 'Р¤Р°СЂРјР°РєРѕРїРµСЏ Р Р¤ IV, СЃС‚. Р¤РЎ.2.5.0007.15', 'VERIFIED'
-FROM plants p, sources s WHERE p.scientific_name = 'Valeriana officinalis' AND s.title = 'Р¤Р°СЂРјР°РєРѕРїРµСЏ Р РѕСЃСЃРёР№СЃРєРѕР№ Р¤РµРґРµСЂР°С†РёРё IV РёР·РґР°РЅРёРµ'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'РџСЃРёС…РѕСЌРјРѕС†РёРѕРЅР°Р»СЊРЅРѕРµ РІРѕР·Р±СѓР¶РґРµРЅРёРµ Рё СЃС‚СЂРµСЃСЃ');
+SELECT p.id, 'INDICATION', 'Психоэмоциональное возбуждение и стресс', 'Применяется при повышенной нервной возбудимости, эмоциональной лабильности и функциональных кардионеврозах.', s.id, 'Фармакопея РФ IV, ст. ФС.2.5.0007.15', 'VERIFIED'
+FROM plants p, sources s WHERE p.scientific_name = 'Valeriana officinalis' AND s.title = 'Фармакопея Российской Федерации IV издание'
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Психоэмоциональное возбуждение и стресс');
 
 INSERT INTO knowledge_claims (plant_id, claim_type, title, claim_text, source_id, source_locator, review_status)
-SELECT p.id, 'CONTRAINDICATION', 'РџРµСЂРёРѕРґ Р±РµСЂРµРјРµРЅРЅРѕСЃС‚Рё Рё РіСЂСѓРґРЅРѕРіРѕ РІСЃРєР°СЂРјР»РёРІР°РЅРёСЏ', 'РџСЂРѕС‚РёРІРѕРїРѕРєР°Р·Р°РЅРѕ РІ I С‚СЂРёРјРµСЃС‚СЂРµ Р±РµСЂРµРјРµРЅРЅРѕСЃС‚Рё; РІРѕ II Рё III С‚СЂРёРјРµСЃС‚СЂР°С… РїСЂРёРјРµРЅСЏС‚СЊ СЃ РѕСЃС‚РѕСЂРѕР¶РЅРѕСЃС‚СЊСЋ С‚РѕР»СЊРєРѕ РїРѕ СЂРµРєРѕРјРµРЅРґР°С†РёРё РІСЂР°С‡Р° РёР·-Р·Р° РѕС‚СЃСѓС‚СЃС‚РІРёСЏ РґРѕСЃС‚Р°С‚РѕС‡РЅС‹С… РєРѕРЅС‚СЂРѕР»РёСЂСѓРµРјС‹С… РёСЃСЃР»РµРґРѕРІР°РЅРёР№.', s.id, 'Р¤Р°СЂРјР°РєРѕРїРµСЏ Р Р¤ IV, СЃС‚. Р¤РЎ.2.5.0007.15', 'VERIFIED'
-FROM plants p, sources s WHERE p.scientific_name = 'Valeriana officinalis' AND s.title = 'Р¤Р°СЂРјР°РєРѕРїРµСЏ Р РѕСЃСЃРёР№СЃРєРѕР№ Р¤РµРґРµСЂР°С†РёРё IV РёР·РґР°РЅРёРµ'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'РџРµСЂРёРѕРґ Р±РµСЂРµРјРµРЅРЅРѕСЃС‚Рё Рё РіСЂСѓРґРЅРѕРіРѕ РІСЃРєР°СЂРјР»РёРІР°РЅРёСЏ');
+SELECT p.id, 'CONTRAINDICATION', 'Период беременности и грудного вскармливания', 'Противопоказано в I триместре беременности; во II и III триместрах применять с осторожностью только по рекомендации врача из-за отсутствия достаточных контролируемых исследований.', s.id, 'Фармакопея РФ IV, ст. ФС.2.5.0007.15', 'VERIFIED'
+FROM plants p, sources s WHERE p.scientific_name = 'Valeriana officinalis' AND s.title = 'Фармакопея Российской Федерации IV издание'
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Период беременности и грудного вскармливания');
 
 INSERT INTO knowledge_claims (plant_id, claim_type, title, claim_text, interaction_partner, source_id, source_locator, review_status)
-SELECT p.id, 'INTERACTION', 'РџРѕС‚РµРЅС†РёСЂРѕРІР°РЅРёРµ РґРµР№СЃС‚РІРёСЏ СЃРµРґР°С‚РёРІРЅС‹С… Рё СЃРЅРѕС‚РІРѕСЂРЅС‹С… СЃСЂРµРґСЃС‚РІ', 'Р’Р°Р»РµСЂРёР°РЅР° СѓСЃРёР»РёРІР°РµС‚ СѓРіРЅРµС‚Р°СЋС‰РµРµ РґРµР№СЃС‚РІРёРµ РЅР° Р¦РќРЎ Р±Р°СЂР±РёС‚СѓСЂР°С‚РѕРІ, Р±РµРЅР·РѕРґРёР°Р·РµРїРёРЅРѕРІ, СЃРЅРѕС‚РІРѕСЂРЅС‹С… РїСЂРµРїР°СЂР°С‚РѕРІ Рё Р°Р»РєРѕРіРѕР»СЏ. РўСЂРµР±СѓРµС‚СЃСЏ РєРѕСЂСЂРµРєС†РёСЏ РґРѕР·РёСЂРѕРІРєРё.', 'Р‘Р°СЂР±РёС‚СѓСЂР°С‚С‹, Р±РµРЅР·РѕРґРёР°Р·РµРїРёРЅС‹, СЌС‚Р°РЅРѕР»', s.id, 'WHO Monograph Vol. I, p. 270', 'VERIFIED'
+SELECT p.id, 'INTERACTION', 'Потенцирование действия седативных и снотворных средств', 'Валериана усиливает угнетающее действие на ЦНС барбитуратов, бензодиазепинов, снотворных препаратов и алкоголя. Требуется коррекция дозировки.', 'Барбитураты, бензодиазепины, этанол', s.id, 'WHO Monograph Vol. I, p. 270', 'VERIFIED'
 FROM plants p, sources s WHERE p.scientific_name = 'Valeriana officinalis' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'РџРѕС‚РµРЅС†РёСЂРѕРІР°РЅРёРµ РґРµР№СЃС‚РІРёСЏ СЃРµРґР°С‚РёРІРЅС‹С… Рё СЃРЅРѕС‚РІРѕСЂРЅС‹С… СЃСЂРµРґСЃС‚РІ');
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Потенцирование действия седативных и снотворных средств');
 
--- HYPERICUM (Р—Р’Р•Р РћР‘РћР™)
+-- HYPERICUM (ЗВЕРОБОЙ)
 INSERT INTO knowledge_claims (plant_id, claim_type, title, claim_text, source_id, source_locator, review_status)
-SELECT p.id, 'INDICATION', 'Р”РµРїСЂРµСЃСЃРёРІРЅС‹Рµ СЃРѕСЃС‚РѕСЏРЅРёСЏ Р»РµРіРєРѕР№ Рё СЃСЂРµРґРЅРµР№ СЃС‚РµРїРµРЅРё', 'Р­РєСЃС‚СЂР°РєС‚ С‚СЂР°РІС‹ Р·РІРµСЂРѕР±РѕСЏ РїРѕРґР°РІР»СЏРµС‚ СЃРёРЅР°РїС‚РѕСЃРѕРјР°Р»СЊРЅС‹Р№ РѕР±СЂР°С‚РЅС‹Р№ Р·Р°С…РІР°С‚ СЃРµСЂРѕС‚РѕРЅРёРЅР°, РЅРѕСЂР°РґСЂРµРЅР°Р»РёРЅР° Рё РґРѕС„Р°РјРёРЅР° Р·Р° СЃС‡РµС‚ РіРёРїРµСЂС„РѕСЂРёРЅР° Рё РіРёРїРµСЂРёС†РёРЅР°, РѕРєР°Р·С‹РІР°СЏ С‚РёРјРѕР°РЅР°Р»РµРїС‚РёС‡РµСЃРєРѕРµ РґРµР№СЃС‚РІРёРµ.', s.id, 'WHO Monograph Vol. II, p. 121-136', 'VERIFIED'
+SELECT p.id, 'INDICATION', 'Депрессивные состояния легкой и средней степени', 'Экстракт травы зверобоя подавляет синаптосомальный обратный захват серотонина, норадреналина и дофамина за счет гиперфорина и гиперицина, оказывая тимоаналептическое действие.', s.id, 'WHO Monograph Vol. II, p. 121-136', 'VERIFIED'
 FROM plants p, sources s WHERE p.scientific_name = 'Hypericum perforatum' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Р”РµРїСЂРµСЃСЃРёРІРЅС‹Рµ СЃРѕСЃС‚РѕСЏРЅРёСЏ Р»РµРіРєРѕР№ Рё СЃСЂРµРґРЅРµР№ СЃС‚РµРїРµРЅРё');
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Депрессивные состояния легкой и средней степени');
 
 INSERT INTO knowledge_claims (plant_id, claim_type, title, claim_text, source_id, source_locator, review_status)
-SELECT p.id, 'CONTRAINDICATION', 'Р¤РѕС‚РѕСЃРµРЅСЃРёР±РёР»РёР·Р°С†РёСЏ Рё РІРѕР·РґРµР№СЃС‚РІРёРµ РЈР¤-РёР·Р»СѓС‡РµРЅРёСЏ', 'Р“РёРїРµСЂРёС†РёРЅ РїРѕРІС‹С€Р°РµС‚ С‡СѓРІСЃС‚РІРёС‚РµР»СЊРЅРѕСЃС‚СЊ РєРѕР¶Рё Рє СѓР»СЊС‚СЂР°С„РёРѕР»РµС‚Сѓ. Р’Рѕ РІСЂРµРјСЏ РїСЂРёРµРјР° РїСЂРµРїР°СЂР°С‚Р° Р·Р°РїСЂРµС‰РµРЅРѕ РґР»РёС‚РµР»СЊРЅРѕРµ РїСЂРµР±С‹РІР°РЅРёРµ РЅР° СЃРѕР»РЅС†Рµ Рё РїРѕСЃРµС‰РµРЅРёРµ СЃРѕР»СЏСЂРёСЏ.', s.id, 'WHO Monograph Vol. II, p. 125', 'VERIFIED'
+SELECT p.id, 'CONTRAINDICATION', 'Фотосенсибилизация и воздействие УФ-излучения', 'Гиперицин повышает чувствительность кожи к ультрафиолету. Во время приема препарата запрещено длительное пребывание на солнце и посещение солярия.', s.id, 'WHO Monograph Vol. II, p. 125', 'VERIFIED'
 FROM plants p, sources s WHERE p.scientific_name = 'Hypericum perforatum' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Р¤РѕС‚РѕСЃРµРЅСЃРёР±РёР»РёР·Р°С†РёСЏ Рё РІРѕР·РґРµР№СЃС‚РІРёРµ РЈР¤-РёР·Р»СѓС‡РµРЅРёСЏ');
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Фотосенсибилизация и воздействие УФ-излучения');
 
 INSERT INTO knowledge_claims (plant_id, claim_type, title, claim_text, interaction_partner, source_id, source_locator, review_status)
-SELECT p.id, 'INTERACTION', 'РћРїР°СЃРЅРѕСЃС‚СЊ СЃРµСЂРѕС‚РѕРЅРёРЅРѕРІРѕРіРѕ СЃРёРЅРґСЂРѕРјР° СЃ Р°РЅС‚РёРґРµРїСЂРµСЃСЃР°РЅС‚Р°РјРё РЎРРћР—РЎ', 'РћРґРЅРѕРІСЂРµРјРµРЅРЅС‹Р№ РїСЂРёРµРј Р·РІРµСЂРѕР±РѕСЏ СЃ СЃРµР»РµРєС‚РёРІРЅС‹РјРё РёРЅРіРёР±РёС‚РѕСЂР°РјРё РѕР±СЂР°С‚РЅРѕРіРѕ Р·Р°С…РІР°С‚Р° СЃРµСЂРѕС‚РѕРЅРёРЅР° (С„Р»СѓРѕРєСЃРµС‚РёРЅ, СЃРµСЂС‚СЂР°Р»РёРЅ) РєР°С‚РµРіРѕСЂРёС‡РµСЃРєРё РїСЂРѕС‚РёРІРѕРїРѕРєР°Р·Р°РЅ РёР·-Р·Р° СЂРёСЃРєР° СЂР°Р·РІРёС‚РёСЏ Р¶РёР·РЅРµСѓРіСЂРѕР¶Р°СЋС‰РµРіРѕ СЃРµСЂРѕС‚РѕРЅРёРЅРѕРІРѕРіРѕ СЃРёРЅРґСЂРѕРјР°.', 'РЎРРћР—РЎ, РЎРРћР—РЎРёРќ, С‚СЂРёС†РёРєР»РёС‡РµСЃРєРёРµ Р°РЅС‚РёРґРµРїСЂРµСЃСЃР°РЅС‚С‹, РёРЅРіРёР±РёС‚РѕСЂС‹ РњРђРћ', s.id, 'WHO Monograph Vol. II, Drug Interactions', 'VERIFIED'
+SELECT p.id, 'INTERACTION', 'Опасность серотонинового синдрома с антидепрессантами СИОЗС', 'Одновременный прием зверобоя с селективными ингибиторами обратного захвата серотонина (флуоксетин, сертралин) категорически противопоказан из-за риска развития жизнеугрожающего серотонинового синдрома.', 'СИОЗС, СИОЗСиН, трициклические антидепрессанты, ингибиторы МАО', s.id, 'WHO Monograph Vol. II, Drug Interactions', 'VERIFIED'
 FROM plants p, sources s WHERE p.scientific_name = 'Hypericum perforatum' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'РћРїР°СЃРЅРѕСЃС‚СЊ СЃРµСЂРѕС‚РѕРЅРёРЅРѕРІРѕРіРѕ СЃРёРЅРґСЂРѕРјР° СЃ Р°РЅС‚РёРґРµРїСЂРµСЃСЃР°РЅС‚Р°РјРё РЎРРћР—РЎ');
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Опасность серотонинового синдрома с антидепрессантами СИОЗС');
 
 INSERT INTO knowledge_claims (plant_id, claim_type, title, claim_text, interaction_partner, source_id, source_locator, review_status)
-SELECT p.id, 'INTERACTION', 'РЎРЅРёР¶РµРЅРёРµ РєРѕРЅС†РµРЅС‚СЂР°С†РёРё РѕСЂР°Р»СЊРЅС‹С… РєРѕРЅС‚СЂР°С†РµРїС‚РёРІРѕРІ Рё С†РёРєР»РѕСЃРїРѕСЂРёРЅР°', 'Р—РІРµСЂРѕР±РѕР№ СЏРІР»СЏРµС‚СЃСЏ РјРѕС‰РЅС‹Рј РёРЅРґСѓРєС‚РѕСЂРѕРј РёР·РѕС„РµСЂРјРµРЅС‚РѕРІ С†РёС‚РѕС…СЂРѕРјР° P450 CYP3A4 Рё P-РіР»РёРєРѕРїСЂРѕС‚РµРёРЅР°, С‡С‚Рѕ РІС‹Р·С‹РІР°РµС‚ СЂРµР·РєРѕРµ РїР°РґРµРЅРёРµ РєРѕРЅС†РµРЅС‚СЂР°С†РёРё РєРѕРЅС‚СЂР°С†РµРїС‚РёРІРѕРІ (СЂРёСЃРє РЅРµР¶РµР»Р°С‚РµР»СЊРЅРѕР№ Р±РµСЂРµРјРµРЅРЅРѕСЃС‚Рё) Рё РёРјРјСѓРЅРѕРґРµРїСЂРµСЃСЃР°РЅС‚РѕРІ.', 'РћСЂР°Р»СЊРЅС‹Рµ РєРѕРЅС‚СЂР°С†РµРїС‚РёРІС‹, С†РёРєР»РѕСЃРїРѕСЂРёРЅ, РІР°СЂС„Р°СЂРёРЅ, РґРёРіРѕРєСЃРёРЅ', s.id, 'WHO Monograph Vol. II, Drug Interactions', 'VERIFIED'
+SELECT p.id, 'INTERACTION', 'Снижение концентрации оральных контрацептивов и циклоспорина', 'Зверобой является мощным индуктором изоферментов цитохрома P450 CYP3A4 и P-гликопротеина, что вызывает резкое падение концентрации контрацептивов (риск нежелательной беременности) и иммунодепрессантов.', 'Оральные контрацептивы, циклоспорин, варфарин, дигоксин', s.id, 'WHO Monograph Vol. II, Drug Interactions', 'VERIFIED'
 FROM plants p, sources s WHERE p.scientific_name = 'Hypericum perforatum' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'РЎРЅРёР¶РµРЅРёРµ РєРѕРЅС†РµРЅС‚СЂР°С†РёРё РѕСЂР°Р»СЊРЅС‹С… РєРѕРЅС‚СЂР°С†РµРїС‚РёРІРѕРІ Рё С†РёРєР»РѕСЃРїРѕСЂРёРЅР°');
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Снижение концентрации оральных контрацептивов и циклоспорина');
 
--- MATRICARIA (Р РћРњРђРЁРљРђ)
+-- MATRICARIA (РОМАШКА)
 INSERT INTO knowledge_claims (plant_id, claim_type, title, claim_text, source_id, source_locator, review_status)
-SELECT p.id, 'INDICATION', 'Р’РѕСЃРїР°Р»РёС‚РµР»СЊРЅС‹Рµ Рё СЃРїР°СЃС‚РёС‡РµСЃРєРёРµ СЃРѕСЃС‚РѕСЏРЅРёСЏ Р–РљРў', 'РҐР°РјР°Р·СѓР»РµРЅ Рё Р°Р»СЊС„Р°-Р±РёСЃР°Р±РѕР»РѕР» С†РІРµС‚РєРѕРІ СЂРѕРјР°С€РєРё СЃРЅРёРјР°СЋС‚ СЃРїР°Р·РјС‹ РіР»Р°РґРєРѕР№ РјСѓСЃРєСѓР»Р°С‚СѓСЂС‹ РєРёС€РµС‡РЅРёРєР°, РїРѕРґР°РІР»СЏСЋС‚ РІС‹СЂР°Р±РѕС‚РєСѓ РїСЂРѕРІРѕСЃРїР°Р»РёС‚РµР»СЊРЅС‹С… РїСЂРѕСЃС‚Р°РіР»Р°РЅРґРёРЅРѕРІ Рё Р»РµР№РєРѕС‚СЂРёРµРЅРѕРІ РїСЂРё РіР°СЃС‚СЂРёС‚Рµ, СЌРЅС‚РµСЂРёС‚Рµ Рё РєРѕР»РёС‚Рµ.', s.id, 'WHO Monograph Vol. I, p. 155-166', 'VERIFIED'
+SELECT p.id, 'INDICATION', 'Воспалительные и спастические состояния ЖКТ', 'Хамазулен и альфа-бисаболол цветков ромашки снимают спазмы гладкой мускулатуры кишечника, подавляют выработку провоспалительных простагландинов и лейкотриенов при гастрите, энтерите и колите.', s.id, 'WHO Monograph Vol. I, p. 155-166', 'VERIFIED'
 FROM plants p, sources s WHERE p.scientific_name = 'Matricaria chamomilla' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Р’РѕСЃРїР°Р»РёС‚РµР»СЊРЅС‹Рµ Рё СЃРїР°СЃС‚РёС‡РµСЃРєРёРµ СЃРѕСЃС‚РѕСЏРЅРёСЏ Р–РљРў');
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Воспалительные и спастические состояния ЖКТ');
 
 INSERT INTO knowledge_claims (plant_id, claim_type, title, claim_text, source_id, source_locator, review_status)
-SELECT p.id, 'INDICATION', 'Р’РѕСЃРїР°Р»РµРЅРёСЏ СЂРѕС‚РѕРіР»РѕС‚РєРё Рё РґС‘СЃРµРЅ (СЃС‚РѕРјР°С‚РёС‚, РіРёРЅРіРёРІРёС‚)', 'Р’РѕРґРЅС‹Рµ РЅР°СЃС‚РѕРё СЂРѕРјР°С€РєРё РїСЂРёРјРµРЅСЏСЋС‚СЃСЏ РґР»СЏ РїРѕР»РѕСЃРєР°РЅРёР№ РїРѕР»РѕСЃС‚Рё СЂС‚Р° Рё РіРѕСЂР»Р° РїСЂРё РіРёРЅРіРёРІРёС‚Р°С…, С‚РѕРЅР·РёР»Р»РёС‚Р°С… Рё РїР°СЂРѕРґРѕРЅС‚РёС‚Рµ Р±Р»Р°РіРѕРґР°СЂСЏ Р°РЅС‚РёСЃРµРїС‚РёС‡РµСЃРєРѕРјСѓ Рё СЌРїРёС‚РµР»РёР·РёСЂСѓСЋС‰РµРјСѓ СЌС„С„РµРєС‚Сѓ.', s.id, 'Р¤Р°СЂРјР°РєРѕРїРµСЏ Р Р¤ IV, СЃС‚. Р¤РЎ.2.5.0037.15', 'VERIFIED'
-FROM plants p, sources s WHERE p.scientific_name = 'Matricaria chamomilla' AND s.title = 'Р¤Р°СЂРјР°РєРѕРїРµСЏ Р РѕСЃСЃРёР№СЃРєРѕР№ Р¤РµРґРµСЂР°С†РёРё IV РёР·РґР°РЅРёРµ'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Р’РѕСЃРїР°Р»РµРЅРёСЏ СЂРѕС‚РѕРіР»РѕС‚РєРё Рё РґС‘СЃРµРЅ (СЃС‚РѕРјР°С‚РёС‚, РіРёРЅРіРёРІРёС‚)');
+SELECT p.id, 'INDICATION', 'Воспаления ротоглотки и дёсен (стоматит, гингивит)', 'Водные настои ромашки применяются для полосканий полости рта и горла при гингивитах, тонзиллитах и пародонтите благодаря антисептическому и эпителизирующему эффекту.', s.id, 'Фармакопея РФ IV, ст. ФС.2.5.0037.15', 'VERIFIED'
+FROM plants p, sources s WHERE p.scientific_name = 'Matricaria chamomilla' AND s.title = 'Фармакопея Российской Федерации IV издание'
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Воспаления ротоглотки и дёсен (стоматит, гингивит)');
 
 INSERT INTO knowledge_claims (plant_id, claim_type, title, claim_text, source_id, source_locator, review_status)
-SELECT p.id, 'CONTRAINDICATION', 'РџРѕРІС‹С€РµРЅРЅР°СЏ С‡СѓРІСЃС‚РІРёС‚РµР»СЊРЅРѕСЃС‚СЊ Рє СЂР°СЃС‚РµРЅРёСЏРј СЃРµРјРµР№СЃС‚РІР° РЎР»РѕР¶РЅРѕС†РІРµС‚РЅС‹С…', 'РџСЂРѕС‚РёРІРѕРїРѕРєР°Р·Р°РЅРѕ Р»РёС†Р°Рј СЃ Р°Р»Р»РµСЂРіРёС‡РµСЃРєРѕР№ СЃРµРЅСЃРёР±РёР»РёР·Р°С†РёРµР№ Рє СЂР°СЃС‚РµРЅРёСЏРј СЃРµРјРµР№СЃС‚РІР° Asteraceae (Р°РјР±СЂРѕР·РёСЏ, С…СЂРёР·Р°РЅС‚РµРјР°, РїРѕР»С‹РЅСЊ) РІРѕ РёР·Р±РµР¶Р°РЅРёРµ Р°РЅР°С„РёР»Р°РєС‚РёС‡РµСЃРєРёС… СЂРµР°РєС†РёР№.', s.id, 'WHO Monograph Vol. I, p. 158', 'VERIFIED'
+SELECT p.id, 'CONTRAINDICATION', 'Повышенная чувствительность к растениям семейства Сложноцветных', 'Противопоказано лицам с аллергической сенсибилизацией к растениям семейства Asteraceae (амброзия, хризантема, полынь) во избежание анафилактических реакций.', s.id, 'WHO Monograph Vol. I, p. 158', 'VERIFIED'
 FROM plants p, sources s WHERE p.scientific_name = 'Matricaria chamomilla' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'РџРѕРІС‹С€РµРЅРЅР°СЏ С‡СѓРІСЃС‚РІРёС‚РµР»СЊРЅРѕСЃС‚СЊ Рє СЂР°СЃС‚РµРЅРёСЏРј СЃРµРјРµР№СЃС‚РІР° РЎР»РѕР¶РЅРѕС†РІРµС‚РЅС‹С…');
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Повышенная чувствительность к растениям семейства Сложноцветных');
 
--- GLYCYRRHIZA (РЎРћР›РћР”РљРђ)
+-- GLYCYRRHIZA (СОЛОДКА)
 INSERT INTO knowledge_claims (plant_id, claim_type, title, claim_text, source_id, source_locator, review_status)
-SELECT p.id, 'INDICATION', 'РљР°С€РµР»СЊ СЃ С‚СЂСѓРґРЅРѕРѕС‚РґРµР»СЏРµРјРѕР№ РјРѕРєСЂРѕС‚РѕР№ РїСЂРё Р±СЂРѕРЅС…РёС‚Р°С…', 'Р“Р»РёС†РёСЂСЂРёР·РёРЅ РєРѕСЂРЅРµР№ СЃРѕР»РѕРґРєРё СЃС‚РёРјСѓР»РёСЂСѓРµС‚ СЃРµРєСЂРµС‚РѕСЂРЅСѓСЋ Р°РєС‚РёРІРЅРѕСЃС‚СЊ СЌРїРёС‚РµР»РёСЏ РґС‹С…Р°С‚РµР»СЊРЅС‹С… РїСѓС‚РµР№, СЂР°Р·Р¶РёР¶Р°РµС‚ РІСЏР·РєРёР№ Р±СЂРѕРЅС…РёР°Р»СЊРЅС‹Р№ СЃРµРєСЂРµС‚ Рё РѕР±Р»РµРіС‡Р°РµС‚ РѕС‚С…Р°СЂРєРёРІР°РЅРёРµ РїСЂРё С‚СЂР°С…РµРёС‚Р°С… Рё Р±СЂРѕРЅС…РёС‚Р°С….', s.id, 'Р¤Р°СЂРјР°РєРѕРїРµСЏ Р Р¤ IV, СЃС‚. Р¤РЎ.2.5.0040.15', 'VERIFIED'
-FROM plants p, sources s WHERE p.scientific_name = 'Glycyrrhiza glabra' AND s.title = 'Р¤Р°СЂРјР°РєРѕРїРµСЏ Р РѕСЃСЃРёР№СЃРєРѕР№ Р¤РµРґРµСЂР°С†РёРё IV РёР·РґР°РЅРёРµ'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'РљР°С€РµР»СЊ СЃ С‚СЂСѓРґРЅРѕРѕС‚РґРµР»СЏРµРјРѕР№ РјРѕРєСЂРѕС‚РѕР№ РїСЂРё Р±СЂРѕРЅС…РёС‚Р°С…');
+SELECT p.id, 'INDICATION', 'Кашель с трудноотделяемой мокротой при бронхитах', 'Глицирризин корней солодки стимулирует секреторную активность эпителия дыхательных путей, разжижает вязкий бронхиальный секрет и облегчает отхаркивание при трахеитах и бронхитах.', s.id, 'Фармакопея РФ IV, ст. ФС.2.5.0040.15', 'VERIFIED'
+FROM plants p, sources s WHERE p.scientific_name = 'Glycyrrhiza glabra' AND s.title = 'Фармакопея Российской Федерации IV издание'
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Кашель с трудноотделяемой мокротой при бронхитах');
 
 INSERT INTO knowledge_claims (plant_id, claim_type, title, claim_text, source_id, source_locator, review_status)
-SELECT p.id, 'CONTRAINDICATION', 'РђСЂС‚РµСЂРёР°Р»СЊРЅР°СЏ РіРёРїРµСЂС‚РµРЅР·РёСЏ Рё РіРёРїРѕРєР°Р»РёРµРјРёСЏ', 'Р”Р»РёС‚РµР»СЊРЅС‹Р№ РїСЂРёРµРј РїСЂРµРїР°СЂР°С‚РѕРІ СЃРѕР»РѕРґРєРё РёРЅРіРёР±РёСЂСѓРµС‚ 11-Р±РµС‚Р°-HSD2, РїСЂРёРІРѕРґСЏ Рє РїСЃРµРІРґРѕРіРёРїРµСЂР°Р»СЊРґРѕСЃС‚РµСЂРѕРЅРёР·РјСѓ, Р·Р°РґРµСЂР¶РєРµ РЅР°С‚СЂРёСЏ, РѕС‚РµРєР°Рј, СЂРµР·РєРѕРјСѓ РїРѕРІС‹С€РµРЅРёСЋ Р°СЂС‚РµСЂРёР°Р»СЊРЅРѕРіРѕ РґР°РІР»РµРЅРёСЏ Рё РїРѕС‚РµСЂРµ РєР°Р»РёСЏ.', s.id, 'WHO Monograph Vol. I, p. 185-190', 'VERIFIED'
+SELECT p.id, 'CONTRAINDICATION', 'Артериальная гипертензия и гипокалиемия', 'Длительный прием препаратов солодки ингибирует 11-бета-HSD2, приводя к псевдогиперальдостеронизму, задержке натрия, отекам, резкому повышению артериального давления и потере калия.', s.id, 'WHO Monograph Vol. I, p. 185-190', 'VERIFIED'
 FROM plants p, sources s WHERE p.scientific_name = 'Glycyrrhiza glabra' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'РђСЂС‚РµСЂРёР°Р»СЊРЅР°СЏ РіРёРїРµСЂС‚РµРЅР·РёСЏ Рё РіРёРїРѕРєР°Р»РёРµРјРёСЏ');
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Артериальная гипертензия и гипокалиемия');
 
 INSERT INTO knowledge_claims (plant_id, claim_type, title, claim_text, interaction_partner, source_id, source_locator, review_status)
-SELECT p.id, 'INTERACTION', 'РЈСЃРёР»РµРЅРёРµ С‚РѕРєСЃРёС‡РЅРѕСЃС‚Рё СЃРµСЂРґРµС‡РЅС‹С… РіР»РёРєРѕР·РёРґРѕРІ РїСЂРё РіРёРїРѕРєР°Р»РёРµРјРёРё', 'Р’С‹Р·С‹РІР°РµРјРѕРµ РіР»РёС†РёСЂСЂРёР·РёРЅРѕРј СЃРЅРёР¶РµРЅРёРµ СѓСЂРѕРІРЅСЏ РєР°Р»РёСЏ СѓСЃРёР»РёРІР°РµС‚ С‡СѓРІСЃС‚РІРёС‚РµР»СЊРЅРѕСЃС‚СЊ РјРёРѕРєР°СЂРґР° Рє РґРёРіРѕРєСЃРёРЅСѓ Рё СѓРІРµР»РёС‡РёРІР°РµС‚ СЂРёСЃРє РіР»РёРєРѕР·РёРґРЅРѕР№ Р°СЂРёС‚РјРёРё Рё РёРЅС‚РѕРєСЃРёРєР°С†РёРё.', 'Р”РёРіРѕРєСЃРёРЅ, РїРµС‚Р»РµРІС‹Рµ Рё С‚РёР°Р·РёРґРЅС‹Рµ РґРёСѓСЂРµС‚РёРєРё', s.id, 'WHO Monograph Vol. I, p. 187', 'VERIFIED'
+SELECT p.id, 'INTERACTION', 'Усиление токсичности сердечных гликозидов при гипокалиемии', 'Вызываемое глицирризином снижение уровня калия усиливает чувствительность миокарда к дигоксину и увеличивает риск гликозидной аритмии и интоксикации.', 'Дигоксин, петлевые и тиазидные диуретики', s.id, 'WHO Monograph Vol. I, p. 187', 'VERIFIED'
 FROM plants p, sources s WHERE p.scientific_name = 'Glycyrrhiza glabra' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'РЈСЃРёР»РµРЅРёРµ С‚РѕРєСЃРёС‡РЅРѕСЃС‚Рё СЃРµСЂРґРµС‡РЅС‹С… РіР»РёРєРѕР·РёРґРѕРІ РїСЂРё РіРёРїРѕРєР°Р»РёРµРјРёРё');
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Усиление токсичности сердечных гликозидов при гипокалиемии');
 
--- THYMUS (Р§РђР‘Р Р•Р¦ / РўРРњР¬РЇРќ)
+-- THYMUS (ЧАБРЕЦ / ТИМЬЯН)
 INSERT INTO knowledge_claims (plant_id, claim_type, title, claim_text, source_id, source_locator, review_status)
-SELECT p.id, 'INDICATION', 'РљР°С€РµР»СЊ РїСЂРё РїСЂРѕСЃС‚СѓРґРµ, Р»Р°СЂРёРЅРіРёС‚Рµ, РєРѕРєР»СЋС€Рµ Рё Р±СЂРѕРЅС…РёС‚Рµ', 'РўРёРјРѕР» Рё РєР°СЂРІР°РєСЂРѕР» С‡Р°Р±СЂРµС†Р° РѕРєР°Р·С‹РІР°СЋС‚ РІС‹СЂР°Р¶РµРЅРЅРѕРµ РѕС‚С…Р°СЂРєРёРІР°СЋС‰РµРµ, Р±СЂРѕРЅС…РѕР»РёС‚РёС‡РµСЃРєРѕРµ Рё Р±Р°РєС‚РµСЂРёС†РёРґРЅРѕРµ РґРµР№СЃС‚РІРёРµ, СЃРїРѕСЃРѕР±СЃС‚РІСѓСЏ РѕС‡РёС‰РµРЅРёСЋ Р±СЂРѕРЅС…РёР°Р»СЊРЅРѕРіРѕ РґРµСЂРµРІР° РїСЂРё СЂРµСЃРїРёСЂР°С‚РѕСЂРЅС‹С… РёРЅС„РµРєС†РёСЏС….', s.id, 'WHO Monograph Vol. I, p. 259-266', 'VERIFIED'
+SELECT p.id, 'INDICATION', 'Кашель при простуде, ларингите, коклюше и бронхите', 'Тимол и карвакрол чабреца оказывают выраженное отхаркивающее, бронхолитическое и бактерицидное действие, способствуя очищению бронхиального дерева при респираторных инфекциях.', s.id, 'WHO Monograph Vol. I, p. 259-266', 'VERIFIED'
 FROM plants p, sources s WHERE p.scientific_name = 'Thymus vulgaris' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'РљР°С€РµР»СЊ РїСЂРё РїСЂРѕСЃС‚СѓРґРµ, Р»Р°СЂРёРЅРіРёС‚Рµ, РєРѕРєР»СЋС€Рµ Рё Р±СЂРѕРЅС…РёС‚Рµ');
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Кашель при простуде, ларингите, коклюше и бронхите');
 
 INSERT INTO knowledge_claims (plant_id, claim_type, title, claim_text, source_id, source_locator, review_status)
-SELECT p.id, 'CONTRAINDICATION', 'РЇР·РІРµРЅРЅР°СЏ Р±РѕР»РµР·РЅСЊ Р¶РµР»СѓРґРєР° Рё РґРІРµРЅР°РґС†Р°С‚РёРїРµСЂСЃС‚РЅРѕР№ РєРёС€РєРё РІ СЃС‚Р°РґРёРё РѕР±РѕСЃС‚СЂРµРЅРёСЏ', 'РџСЂРµРїР°СЂР°С‚С‹ С‚РёРјСЊСЏРЅР° РёР·-Р·Р° СЃРѕРґРµСЂР¶Р°РЅРёСЏ С‚РёРјРѕР»Р° СЂР°Р·РґСЂР°Р¶Р°СЋС‚ СЃР»РёР·РёСЃС‚СѓСЋ РѕР±РѕР»РѕС‡РєСѓ Р¶РµР»СѓРґРѕС‡РЅРѕ-РєРёС€РµС‡РЅРѕРіРѕ С‚СЂР°РєС‚Р° Рё РїСЂРѕС‚РёРІРѕРїРѕРєР°Р·Р°РЅС‹ РїСЂРё СЌСЂРѕР·РёРІРЅРѕ-СЏР·РІРµРЅРЅС‹С… РїРѕСЂР°Р¶РµРЅРёСЏС… Р–РљРў.', s.id, 'Р¤Р°СЂРјР°РєРѕРїРµСЏ Р Р¤ IV, СЃС‚. Р¤РЎ.2.5.0047.15', 'VERIFIED'
-FROM plants p, sources s WHERE p.scientific_name = 'Thymus vulgaris' AND s.title = 'Р¤Р°СЂРјР°РєРѕРїРµСЏ Р РѕСЃСЃРёР№СЃРєРѕР№ Р¤РµРґРµСЂР°С†РёРё IV РёР·РґР°РЅРёРµ'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'РЇР·РІРµРЅРЅР°СЏ Р±РѕР»РµР·РЅСЊ Р¶РµР»СѓРґРєР° Рё РґРІРµРЅР°РґС†Р°С‚РёРїРµСЂСЃС‚РЅРѕР№ РєРёС€РєРё РІ СЃС‚Р°РґРёРё РѕР±РѕСЃС‚СЂРµРЅРёСЏ');
+SELECT p.id, 'CONTRAINDICATION', 'Язвенная болезнь желудка и двенадцатиперстной кишки в стадии обострения', 'Препараты тимьяна из-за содержания тимола раздражают слизистую оболочку желудочно-кишечного тракта и противопоказаны при эрозивно-язвенных поражениях ЖКТ.', s.id, 'Фармакопея РФ IV, ст. ФС.2.5.0047.15', 'VERIFIED'
+FROM plants p, sources s WHERE p.scientific_name = 'Thymus vulgaris' AND s.title = 'Фармакопея Российской Федерации IV издание'
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Язвенная болезнь желудка и двенадцатиперстной кишки в стадии обострения');
 
--- MENTHA (РњРЇРўРђ)
+-- MENTHA (МЯТА)
 INSERT INTO knowledge_claims (plant_id, claim_type, title, claim_text, source_id, source_locator, review_status)
-SELECT p.id, 'INDICATION', 'РўРѕС€РЅРѕС‚Р°, СЃРїР°Р·РјС‹ РіР»Р°РґРєРѕР№ РјСѓСЃРєСѓР»Р°С‚СѓСЂС‹ Р–РљРў Рё РјРµС‚РµРѕСЂРёР·Рј', 'РњРµРЅС‚РѕР» СЂРµС„Р»РµРєС‚РѕСЂРЅРѕ СЂР°СЃСЃР»Р°Р±Р»СЏРµС‚ РіР»Р°РґРєСѓСЋ РјСѓСЃРєСѓР»Р°С‚СѓСЂСѓ Р¶РµР»СѓРґРєР° Рё РєРёС€РµС‡РЅРёРєР°, РѕРєР°Р·С‹РІР°РµС‚ СЃРїР°Р·РјРѕР»РёС‚РёС‡РµСЃРєРѕРµ Рё РІРµС‚СЂРѕРіРѕРЅРЅРѕРµ РґРµР№СЃС‚РІРёРµ, РѕР±Р»РµРіС‡Р°СЏ СЃРёРјРїС‚РѕРјС‹ СЃРёРЅРґСЂРѕРјР° СЂР°Р·РґСЂР°Р¶РµРЅРЅРѕРіРѕ РєРёС€РµС‡РЅРёРєР°.', s.id, 'WHO Monograph Vol. II, p. 188-198', 'VERIFIED'
+SELECT p.id, 'INDICATION', 'Тошнота, спазмы гладкой мускулатуры ЖКТ и метеоризм', 'Ментол рефлекторно расслабляет гладкую мускулатуру желудка и кишечника, оказывает спазмолитическое и ветрогонное действие, облегчая симптомы синдрома раздраженного кишечника.', s.id, 'WHO Monograph Vol. II, p. 188-198', 'VERIFIED'
 FROM plants p, sources s WHERE p.scientific_name = 'Mentha piperita' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'РўРѕС€РЅРѕС‚Р°, СЃРїР°Р·РјС‹ РіР»Р°РґРєРѕР№ РјСѓСЃРєСѓР»Р°С‚СѓСЂС‹ Р–РљРў Рё РјРµС‚РµРѕСЂРёР·Рј');
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Тошнота, спазмы гладкой мускулатуры ЖКТ и метеоризм');
 
 INSERT INTO knowledge_claims (plant_id, claim_type, title, claim_text, source_id, source_locator, review_status)
-SELECT p.id, 'CONTRAINDICATION', 'Р“Р°СЃС‚СЂРѕСЌР·РѕС„Р°РіРµР°Р»СЊРЅС‹Р№ СЂРµС„Р»СЋРєСЃ (Р“Р­Р Р‘) Рё РіСЂС‹Р¶Р° РїРёС‰РµРІРѕРґРЅРѕРіРѕ РѕС‚РІРµСЂСЃС‚РёСЏ', 'РњСЏС‚Р° СЂР°СЃСЃР»Р°Р±Р»СЏРµС‚ РЅРёР¶РЅРёР№ РїРёС‰РµРІРѕРґРЅС‹Р№ СЃС„РёРЅРєС‚РµСЂ, С‡С‚Рѕ РїСЂРёРІРѕРґРёС‚ Рє Р·Р°Р±СЂРѕСЃСѓ Р¶РµР»СѓРґРѕС‡РЅРѕРіРѕ СЃРѕРґРµСЂР¶РёРјРѕРіРѕ РІ РїРёС‰РµРІРѕРґ Рё СѓСЃРёР»РµРЅРёСЋ РёР·Р¶РѕРіРё.', s.id, 'WHO Monograph Vol. II, p. 192', 'VERIFIED'
+SELECT p.id, 'CONTRAINDICATION', 'Гастроэзофагеальный рефлюкс (ГЭРБ) и грыжа пищеводного отверстия', 'Мята расслабляет нижний пищеводный сфинктер, что приводит к забросу желудочного содержимого в пищевод и усилению изжоги.', s.id, 'WHO Monograph Vol. II, p. 192', 'VERIFIED'
 FROM plants p, sources s WHERE p.scientific_name = 'Mentha piperita' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Р“Р°СЃС‚СЂРѕСЌР·РѕС„Р°РіРµР°Р»СЊРЅС‹Р№ СЂРµС„Р»СЋРєСЃ (Р“Р­Р Р‘) Рё РіСЂС‹Р¶Р° РїРёС‰РµРІРѕРґРЅРѕРіРѕ РѕС‚РІРµСЂСЃС‚РёСЏ');
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Гастроэзофагеальный рефлюкс (ГЭРБ) и грыжа пищеводного отверстия');
 
--- ECHINACEA (Р­РҐРРќРђР¦Р•РЇ)
+-- ECHINACEA (ЭХИНАЦЕЯ)
 INSERT INTO knowledge_claims (plant_id, claim_type, title, claim_text, source_id, source_locator, review_status)
-SELECT p.id, 'INDICATION', 'РџСЂРѕС„РёР»Р°РєС‚РёРєР° Рё РІСЃРїРѕРјРѕРіР°С‚РµР»СЊРЅРѕРµ Р»РµС‡РµРЅРёРµ РћР Р’Р Рё РїСЂРѕСЃС‚СѓРґРЅС‹С… Р·Р°Р±РѕР»РµРІР°РЅРёР№', 'РџРѕР»РёСЃР°С…Р°СЂРёРґС‹ Рё Р°Р»РєР°РјРёРґС‹ СЌС…РёРЅР°С†РµРё Р°РєС‚РёРІРёСЂСѓСЋС‚ С„Р°РіРѕС†РёС‚РѕР· РјР°РєСЂРѕС„Р°РіРѕРІ, СЃС‚РёРјСѓР»РёСЂСѓСЋС‚ РІС‹СЂР°Р±РѕС‚РєСѓ РёРЅС‚РµСЂР»РµР№РєРёРЅРѕРІ Рё РёРЅС‚РµСЂС„РµСЂРѕРЅРѕРІ, СЃРѕРєСЂР°С‰Р°СЏ РґР»РёС‚РµР»СЊРЅРѕСЃС‚СЊ СЂРµСЃРїРёСЂР°С‚РѕСЂРЅС‹С… РІРёСЂСѓСЃРЅС‹С… РёРЅС„РµРєС†РёР№.', s.id, 'WHO Monograph Vol. I, p. 125-135', 'VERIFIED'
+SELECT p.id, 'INDICATION', 'Профилактика и вспомогательное лечение ОРВИ и простудных заболеваний', 'Полисахариды и алкамиды эхинацеи активируют фагоцитоз макрофагов, стимулируют выработку интерлейкинов и интерферонов, сокращая длительность респираторных вирусных инфекций.', s.id, 'WHO Monograph Vol. I, p. 125-135', 'VERIFIED'
 FROM plants p, sources s WHERE p.scientific_name = 'Echinacea purpurea' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'РџСЂРѕС„РёР»Р°РєС‚РёРєР° Рё РІСЃРїРѕРјРѕРіР°С‚РµР»СЊРЅРѕРµ Р»РµС‡РµРЅРёРµ РћР Р’Р Рё РїСЂРѕСЃС‚СѓРґРЅС‹С… Р·Р°Р±РѕР»РµРІР°РЅРёР№');
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Профилактика и вспомогательное лечение ОРВИ и простудных заболеваний');
 
 INSERT INTO knowledge_claims (plant_id, claim_type, title, claim_text, source_id, source_locator, review_status)
-SELECT p.id, 'CONTRAINDICATION', 'РђСѓС‚РѕРёРјРјСѓРЅРЅС‹Рµ Р·Р°Р±РѕР»РµРІР°РЅРёСЏ Рё СЃРёСЃС‚РµРјРЅС‹Рµ РїР°С‚РѕР»РѕРіРёРё СЃРѕРµРґРёРЅРёС‚РµР»СЊРЅРѕР№ С‚РєР°РЅРё', 'РџСЂРѕС‚РёРІРѕРїРѕРєР°Р·Р°РЅРѕ РїСЂРё СЂР°СЃСЃРµСЏРЅРЅРѕРј СЃРєР»РµСЂРѕР·Рµ, СЃРёСЃС‚РµРјРЅРѕР№ РєСЂР°СЃРЅРѕР№ РІРѕР»С‡Р°РЅРєРµ, Р»РµР№РєРѕР·Р°С… Рё С‚СѓР±РµСЂРєСѓР»РµР·Рµ РёР·-Р·Р° СЂРёСЃРєР° РѕР±РѕСЃС‚СЂРµРЅРёСЏ Р°СѓС‚РѕРёРјРјСѓРЅРЅРѕРіРѕ РѕС‚РІРµС‚Р°.', s.id, 'WHO Monograph Vol. I, p. 130', 'VERIFIED'
+SELECT p.id, 'CONTRAINDICATION', 'Аутоиммунные заболевания и системные патологии соединительной ткани', 'Противопоказано при рассеянном склерозе, системной красной волчанке, лейкозах и туберкулезе из-за риска обострения аутоиммунного ответа.', s.id, 'WHO Monograph Vol. I, p. 130', 'VERIFIED'
 FROM plants p, sources s WHERE p.scientific_name = 'Echinacea purpurea' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'РђСѓС‚РѕРёРјРјСѓРЅРЅС‹Рµ Р·Р°Р±РѕР»РµРІР°РЅРёСЏ Рё СЃРёСЃС‚РµРјРЅС‹Рµ РїР°С‚РѕР»РѕРіРёРё СЃРѕРµРґРёРЅРёС‚РµР»СЊРЅРѕР№ С‚РєР°РЅРё');
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Аутоиммунные заболевания и системные патологии соединительной ткани');
 
--- GINKGO BILOBA (Р“РРќРљР“Рћ)
+-- GINKGO BILOBA (ГИНКГО)
 INSERT INTO knowledge_claims (plant_id, claim_type, title, claim_text, source_id, source_locator, review_status)
-SELECT p.id, 'INDICATION', 'РќР°СЂСѓС€РµРЅРёСЏ РјРѕР·РіРѕРІРѕРіРѕ РєСЂРѕРІРѕРѕР±СЂР°С‰РµРЅРёСЏ, СѓС…СѓРґС€РµРЅРёРµ РїР°РјСЏС‚Рё Рё РІРЅРёРјР°РЅРёСЏ', 'РЎС‚Р°РЅРґР°СЂС‚РёР·РѕРІР°РЅРЅС‹Р№ СЌРєСЃС‚СЂР°РєС‚ РіРёРЅРєРіРѕ РЅРµР№С‚СЂР°Р»РёР·СѓРµС‚ СЃРІРѕР±РѕРґРЅС‹Рµ СЂР°РґРёРєР°Р»С‹, СѓР»СѓС‡С€Р°РµС‚ РјРёРєСЂРѕС†РёСЂРєСѓР»СЏС†РёСЋ РєСЂРѕРІРё Рё СЃРЅР°Р±Р¶РµРЅРёРµ С‚РєР°РЅРµР№ РєРёСЃР»РѕСЂРѕРґРѕРј РїСЂРё РєРѕРіРЅРёС‚РёРІРЅС‹С… РЅР°СЂСѓС€РµРЅРёСЏС… Сѓ РїРѕР¶РёР»С‹С… Р»СЋРґРµР№.', s.id, 'WHO Monograph Vol. I, p. 138-149', 'VERIFIED'
+SELECT p.id, 'INDICATION', 'Нарушения мозгового кровообращения, ухудшение памяти и внимания', 'Стандартизованный экстракт гинкго нейтрализует свободные радикалы, улучшает микроциркуляцию крови и снабжение тканей кислородом при когнитивных нарушениях у пожилых людей.', s.id, 'WHO Monograph Vol. I, p. 138-149', 'VERIFIED'
 FROM plants p, sources s WHERE p.scientific_name = 'Ginkgo biloba' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'РќР°СЂСѓС€РµРЅРёСЏ РјРѕР·РіРѕРІРѕРіРѕ РєСЂРѕРІРѕРѕР±СЂР°С‰РµРЅРёСЏ, СѓС…СѓРґС€РµРЅРёРµ РїР°РјСЏС‚Рё Рё РІРЅРёРјР°РЅРёСЏ');
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Нарушения мозгового кровообращения, ухудшение памяти и внимания');
 
 INSERT INTO knowledge_claims (plant_id, claim_type, title, claim_text, interaction_partner, source_id, source_locator, review_status)
-SELECT p.id, 'INTERACTION', 'РџРѕРІС‹С€РµРЅРёРµ СЂРёСЃРєР° РєСЂРѕРІРѕС‚РµС‡РµРЅРёР№ СЃ Р°РЅС‚РёРєРѕР°РіСѓР»СЏРЅС‚Р°РјРё Рё РґРµР·Р°РіСЂРµРіР°РЅС‚Р°РјРё', 'Р“РёРЅРєРіРѕР»РёРґ B СЏРІР»СЏРµС‚СЃСЏ Р°РЅС‚Р°РіРѕРЅРёСЃС‚РѕРј С„Р°РєС‚РѕСЂР° Р°РєС‚РёРІР°С†РёРё С‚СЂРѕРјР±РѕС†РёС‚РѕРІ (PAF). РЎРѕРІРјРµСЃС‚РЅС‹Р№ РїСЂРёРµРј СЃ Р°СЃРїРёСЂРёРЅРѕРј, РІР°СЂС„Р°СЂРёРЅРѕРј РёР»Рё РєР»РѕРїРёРґРѕРіСЂРµР»РѕРј РјРЅРѕРіРѕРєСЂР°С‚РЅРѕ РїРѕРІС‹С€Р°РµС‚ СЂРёСЃРє СЃРїРѕРЅС‚Р°РЅРЅС‹С… РєСЂРѕРІРѕС‚РµС‡РµРЅРёР№.', 'Р’Р°СЂС„Р°СЂРёРЅ, Р°С†РµС‚РёР»СЃР°Р»РёС†РёР»РѕРІР°СЏ РєРёСЃР»РѕС‚Р°, РєР»РѕРїРёРґРѕРіСЂРµР», РќРџР’Рџ', s.id, 'WHO Monograph Vol. I, p. 142', 'VERIFIED'
+SELECT p.id, 'INTERACTION', 'Повышение риска кровотечений с антикоагулянтами и дезагрегантами', 'Гинкголид B является антагонистом фактора активации тромбоцитов (PAF). Совместный прием с аспирином, варфарином или клопидогрелом многократно повышает риск спонтанных кровотечений.', 'Варфарин, ацетилсалициловая кислота, клопидогрел, НПВП', s.id, 'WHO Monograph Vol. I, p. 142', 'VERIFIED'
 FROM plants p, sources s WHERE p.scientific_name = 'Ginkgo biloba' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'РџРѕРІС‹С€РµРЅРёРµ СЂРёСЃРєР° РєСЂРѕРІРѕС‚РµС‡РµРЅРёР№ СЃ Р°РЅС‚РёРєРѕР°РіСѓР»СЏРЅС‚Р°РјРё Рё РґРµР·Р°РіСЂРµРіР°РЅС‚Р°РјРё');
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Повышение риска кровотечений с антикоагулянтами и дезагрегантами');
 
--- CRATAEGUS (Р‘РћРЇР Р«РЁРќРРљ)
+-- CRATAEGUS (БОЯРЫШНИК)
 INSERT INTO knowledge_claims (plant_id, claim_type, title, claim_text, source_id, source_locator, review_status)
-SELECT p.id, 'INDICATION', 'Р¤СѓРЅРєС†РёРѕРЅР°Р»СЊРЅС‹Рµ СЂР°СЃСЃС‚СЂРѕР№СЃС‚РІР° СЃРµСЂРґРµС‡РЅРѕР№ РґРµСЏС‚РµР»СЊРЅРѕСЃС‚Рё Рё Р»РµРіРєР°СЏ С‚Р°С…РёРєР°СЂРґРёСЏ', 'Р¤Р»Р°РІРѕРЅРѕРёРґС‹ Рё С‚СЂРёС‚РµСЂРїРµРЅРѕРІС‹Рµ РєРёСЃР»РѕС‚С‹ Р±РѕСЏСЂС‹С€РЅРёРєР° СѓСЃРёР»РёРІР°СЋС‚ РєСЂРѕРІРѕС‚РѕРє РІ РєРѕСЂРѕРЅР°СЂРЅС‹С… СЃРѕСЃСѓРґР°С… СЃРµСЂРґС†Р°, СЃРЅРёР¶Р°СЋС‚ РІРѕР·Р±СѓРґРёРјРѕСЃС‚СЊ РјРёРѕРєР°СЂРґР° Рё РѕРєР°Р·С‹РІР°СЋС‚ СѓРјРµСЂРµРЅРЅРѕРµ РєР°СЂРґРёРѕС‚РѕРЅРёС‡РµСЃРєРѕРµ РґРµР№СЃС‚РІРёРµ.', s.id, 'WHO Monograph Vol. II, p. 66-82', 'VERIFIED'
+SELECT p.id, 'INDICATION', 'Функциональные расстройства сердечной деятельности и легкая тахикардия', 'Флавоноиды и тритерпеновые кислоты боярышника усиливают кровоток в коронарных сосудах сердца, снижают возбудимость миокарда и оказывают умеренное кардиотоническое действие.', s.id, 'WHO Monograph Vol. II, p. 66-82', 'VERIFIED'
 FROM plants p, sources s WHERE p.scientific_name = 'Crataegus oxyacantha' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Р¤СѓРЅРєС†РёРѕРЅР°Р»СЊРЅС‹Рµ СЂР°СЃСЃС‚СЂРѕР№СЃС‚РІР° СЃРµСЂРґРµС‡РЅРѕР№ РґРµСЏС‚РµР»СЊРЅРѕСЃС‚Рё Рё Р»РµРіРєР°СЏ С‚Р°С…РёРєР°СЂРґРёСЏ');
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Функциональные расстройства сердечной деятельности и легкая тахикардия');
 
 INSERT INTO knowledge_claims (plant_id, claim_type, title, claim_text, interaction_partner, source_id, source_locator, review_status)
-SELECT p.id, 'INTERACTION', 'РЎРёРЅРµСЂРіРёР·Рј СЃ Р°РЅС‚РёРіРёРїРµСЂС‚РµРЅР·РёРІРЅС‹РјРё СЃСЂРµРґСЃС‚РІР°РјРё Рё СЃРµСЂРґРµС‡РЅС‹РјРё РіР»РёРєРѕР·РёРґР°РјРё', 'Р‘РѕСЏСЂС‹С€РЅРёРє СѓСЃРёР»РёРІР°РµС‚ СЌС„С„РµРєС‚ Р±РµС‚Р°-Р±Р»РѕРєР°С‚РѕСЂРѕРІ Рё СЃРµСЂРґРµС‡РЅС‹С… РіР»РёРєРѕР·РёРґРѕРІ; СЃРѕРІРјРµСЃС‚РЅРѕРµ РїСЂРёРјРµРЅРµРЅРёРµ С‚СЂРµР±СѓРµС‚ РєРѕРЅС‚СЂРѕР»СЏ Р°СЂС‚РµСЂРёР°Р»СЊРЅРѕРіРѕ РґР°РІР»РµРЅРёСЏ Рё С‡Р°СЃС‚РѕС‚С‹ РїСѓР»СЊСЃР°.', 'Р‘РµС‚Р°-Р±Р»РѕРєР°С‚РѕСЂС‹, РёРЅРіРёР±РёС‚РѕСЂС‹ РђРџР¤, РґРёРіРѕРєСЃРёРЅ', s.id, 'WHO Monograph Vol. II, p. 74', 'VERIFIED'
+SELECT p.id, 'INTERACTION', 'Синергизм с антигипертензивными средствами и сердечными гликозидами', 'Боярышник усиливает эффект бета-блокаторов и сердечных гликозидов; совместное применение требует контроля артериального давления и частоты пульса.', 'Бета-блокаторы, ингибиторы АПФ, дигоксин', s.id, 'WHO Monograph Vol. II, p. 74', 'VERIFIED'
 FROM plants p, sources s WHERE p.scientific_name = 'Crataegus oxyacantha' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'РЎРёРЅРµСЂРіРёР·Рј СЃ Р°РЅС‚РёРіРёРїРµСЂС‚РµРЅР·РёРІРЅС‹РјРё СЃСЂРµРґСЃС‚РІР°РјРё Рё СЃРµСЂРґРµС‡РЅС‹РјРё РіР»РёРєРѕР·РёРґР°РјРё');
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Синергизм с антигипертензивными средствами и сердечными гликозидами');
 
--- SILYBUM (Р РђРЎРўРћР РћРџРЁРђ)
+-- SILYBUM (РАСТОРОПША)
 INSERT INTO knowledge_claims (plant_id, claim_type, title, claim_text, source_id, source_locator, review_status)
-SELECT p.id, 'INDICATION', 'РўРѕРєСЃРёС‡РµСЃРєРёРµ РїРѕСЂР°Р¶РµРЅРёСЏ РїРµС‡РµРЅРё, Р¶РёСЂРѕРІРѕР№ РіРµРїР°С‚РѕР· Рё С…СЂРѕРЅРёС‡РµСЃРєРёР№ РіРµРїР°С‚РёС‚', 'РЎРёР»РёРјР°СЂРёРЅ СЃС‚Р°Р±РёР»РёР·РёСЂСѓРµС‚ РєР»РµС‚РѕС‡РЅС‹Рµ РјРµРјР±СЂР°РЅС‹ РіРµРїР°С‚РѕС†РёС‚РѕРІ, СЃС‚РёРјСѓР»РёСЂСѓРµС‚ СЃРёРЅС‚РµР· СЃС‚СЂСѓРєС‚СѓСЂРЅС‹С… Р±РµР»РєРѕРІ Рё С„РѕСЃС„РѕР»РёРїРёРґРѕРІ, РёРЅРіРёР±РёСЂСѓРµС‚ РїРµСЂРµРєРёСЃРЅРѕРµ РѕРєРёСЃР»РµРЅРёРµ Р»РёРїРёРґРѕРІ РїСЂРё РіРµРїР°С‚РѕС‚РѕРєСЃРёС‡РµСЃРєРёС… РІРѕР·РґРµР№СЃС‚РІРёСЏС….', s.id, 'WHO Monograph Vol. II, p. 300-310', 'VERIFIED'
+SELECT p.id, 'INDICATION', 'Токсические поражения печени, жировой гепатоз и хронический гепатит', 'Силимарин стабилизирует клеточные мембраны гепатоцитов, стимулирует синтез структурных белков и фосфолипидов, ингибирует перекисное окисление липидов при гепатотоксических воздействиях.', s.id, 'WHO Monograph Vol. II, p. 300-310', 'VERIFIED'
 FROM plants p, sources s WHERE p.scientific_name = 'Silybum marianum' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'РўРѕРєСЃРёС‡РµСЃРєРёРµ РїРѕСЂР°Р¶РµРЅРёСЏ РїРµС‡РµРЅРё, Р¶РёСЂРѕРІРѕР№ РіРµРїР°С‚РѕР· Рё С…СЂРѕРЅРёС‡РµСЃРєРёР№ РіРµРїР°С‚РёС‚');
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Токсические поражения печени, жировой гепатоз и хронический гепатит');
 
--- URTICA (РљР РђРџРР’Рђ)
+-- URTICA (КРАПИВА)
 INSERT INTO knowledge_claims (plant_id, claim_type, title, claim_text, source_id, source_locator, review_status)
-SELECT p.id, 'INDICATION', 'Р“РµРјРѕСЃС‚Р°Р· РїСЂРё РјР°С‚РѕС‡РЅС‹С…, РЅРѕСЃРѕРІС‹С… Рё РіРµРјРѕСЂСЂРѕРёРґР°Р»СЊРЅС‹С… РєСЂРѕРІРѕС‚РµС‡РµРЅРёСЏС…', 'Р’С‹СЃРѕРєРѕРµ СЃРѕРґРµСЂР¶Р°РЅРёРµ РІРёС‚Р°РјРёРЅР° K РІ Р»РёСЃС‚СЊСЏС… РєСЂР°РїРёРІС‹ Р°РєС‚РёРІРёСЂСѓРµС‚ СЃРёРЅС‚РµР· РїСЂРѕС‚СЂРѕРјР±РёРЅР° РІ РїРµС‡РµРЅРё Рё РЅРѕСЂРјР°Р»РёР·СѓРµС‚ РїРѕРєР°Р·Р°С‚РµР»Рё РєРѕР°РіСѓР»РѕРіСЂР°РјРјС‹.', s.id, 'Р¤Р°СЂРјР°РєРѕРїРµСЏ Р Р¤ IV, СЃС‚. Р¤РЎ.2.5.0019.15', 'VERIFIED'
-FROM plants p, sources s WHERE p.scientific_name = 'Urtica dioica' AND s.title = 'Р¤Р°СЂРјР°РєРѕРїРµСЏ Р РѕСЃСЃРёР№СЃРєРѕР№ Р¤РµРґРµСЂР°С†РёРё IV РёР·РґР°РЅРёРµ'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Р“РµРјРѕСЃС‚Р°Р· РїСЂРё РјР°С‚РѕС‡РЅС‹С…, РЅРѕСЃРѕРІС‹С… Рё РіРµРјРѕСЂСЂРѕРёРґР°Р»СЊРЅС‹С… РєСЂРѕРІРѕС‚РµС‡РµРЅРёСЏС…');
+SELECT p.id, 'INDICATION', 'Гемостаз при маточных, носовых и геморроидальных кровотечениях', 'Высокое содержание витамина K в листьях крапивы активирует синтез протромбина в печени и нормализует показатели коагулограммы.', s.id, 'Фармакопея РФ IV, ст. ФС.2.5.0019.15', 'VERIFIED'
+FROM plants p, sources s WHERE p.scientific_name = 'Urtica dioica' AND s.title = 'Фармакопея Российской Федерации IV издание'
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Гемостаз при маточных, носовых и геморроидальных кровотечениях');
 
 INSERT INTO knowledge_claims (plant_id, claim_type, title, claim_text, source_id, source_locator, review_status)
-SELECT p.id, 'CONTRAINDICATION', 'РџРѕРІС‹С€РµРЅРЅР°СЏ СЃРІРµСЂС‚С‹РІР°РµРјРѕСЃС‚СЊ РєСЂРѕРІРё, РІР°СЂРёРєРѕР· Рё С‚СЂРѕРјР±РѕС„Р»РµР±РёС‚', 'РџСЂРµРїР°СЂР°С‚С‹ РєСЂР°РїРёРІС‹ РїСЂРѕС‚РёРІРѕРїРѕРєР°Р·Р°РЅС‹ РїСЂРё С‚СЂРѕРјР±РѕР·Р°С…, РіРёРїРµСЂРєРѕР°РіСѓР»СЏС†РёРё Рё РІР°СЂРёРєРѕР·РЅРѕРј СЂР°СЃС€РёСЂРµРЅРёРё РІРµРЅ РёР·-Р·Р° СЂРёСЃРєР° С‚СЂРѕРјР±РѕРѕР±СЂР°Р·РѕРІР°РЅРёСЏ.', s.id, 'Р¤Р°СЂРјР°РєРѕРїРµСЏ Р Р¤ IV, СЃС‚. Р¤РЎ.2.5.0019.15', 'VERIFIED'
-FROM plants p, sources s WHERE p.scientific_name = 'Urtica dioica' AND s.title = 'Р¤Р°СЂРјР°РєРѕРїРµСЏ Р РѕСЃСЃРёР№СЃРєРѕР№ Р¤РµРґРµСЂР°С†РёРё IV РёР·РґР°РЅРёРµ'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'РџРѕРІС‹С€РµРЅРЅР°СЏ СЃРІРµСЂС‚С‹РІР°РµРјРѕСЃС‚СЊ РєСЂРѕРІРё, РІР°СЂРёРєРѕР· Рё С‚СЂРѕРјР±РѕС„Р»РµР±РёС‚');
+SELECT p.id, 'CONTRAINDICATION', 'Повышенная свертываемость крови, варикоз и тромбофлебит', 'Препараты крапивы противопоказаны при тромбозах, гиперкоагуляции и варикозном расширении вен из-за риска тромбообразования.', s.id, 'Фармакопея РФ IV, ст. ФС.2.5.0019.15', 'VERIFIED'
+FROM plants p, sources s WHERE p.scientific_name = 'Urtica dioica' AND s.title = 'Фармакопея Российской Федерации IV издание'
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Повышенная свертываемость крови, варикоз и тромбофлебит');
 
--- TUSSILAGO (РњРђРўР¬-Р-РњРђР§Р•РҐРђ)
+-- TUSSILAGO (МАТЬ-И-МАЧЕХА)
 INSERT INTO knowledge_claims (plant_id, claim_type, title, claim_text, source_id, source_locator, review_status)
-SELECT p.id, 'INDICATION', 'РћСЃС‚СЂС‹Р№ Рё С…СЂРѕРЅРёС‡РµСЃРєРёР№ РєР°С€РµР»СЊ, Р»Р°СЂРёРЅРіРёС‚, С‚СЂР°С…РµРёС‚', 'РЎР»РёР·РёСЃС‚С‹Рµ РїРѕР»РёСЃР°С…Р°СЂРёРґС‹ РѕР±РІРѕР»Р°РєРёРІР°СЋС‚ СЂР°Р·РґСЂР°Р¶РµРЅРЅСѓСЋ СЃР»РёР·РёСЃС‚СѓСЋ РґС‹С…Р°С‚РµР»СЊРЅС‹С… РїСѓС‚РµР№, Р° РіРѕСЂСЊРєРёРµ РіР»РёРєРѕР·РёРґС‹ СЃС‚РёРјСѓР»РёСЂСѓСЋС‚ РјРѕС‚РѕСЂРёРєСѓ РјРµСЂС†Р°С‚РµР»СЊРЅРѕРіРѕ СЌРїРёС‚РµР»РёСЏ, РѕР±Р»РµРіС‡Р°СЏ РѕС‚С…Р°СЂРєРёРІР°РЅРёРµ.', s.id, 'Р¤Р°СЂРјР°РєРѕРїРµСЏ Р Р¤ IV, СЃС‚. Р¤РЎ.2.5.0027.15', 'VERIFIED'
-FROM plants p, sources s WHERE p.scientific_name = 'Tussilago farfara' AND s.title = 'Р¤Р°СЂРјР°РєРѕРїРµСЏ Р РѕСЃСЃРёР№СЃРєРѕР№ Р¤РµРґРµСЂР°С†РёРё IV РёР·РґР°РЅРёРµ'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'РћСЃС‚СЂС‹Р№ Рё С…СЂРѕРЅРёС‡РµСЃРєРёР№ РєР°С€РµР»СЊ, Р»Р°СЂРёРЅРіРёС‚, С‚СЂР°С…РµРёС‚');
+SELECT p.id, 'INDICATION', 'Острый и хронический кашель, ларингит, трахеит', 'Слизистые полисахариды обволакивают раздраженную слизистую дыхательных путей, а горькие гликозиды стимулируют моторику мерцательного эпителия, облегчая отхаркивание.', s.id, 'Фармакопея РФ IV, ст. ФС.2.5.0027.15', 'VERIFIED'
+FROM plants p, sources s WHERE p.scientific_name = 'Tussilago farfara' AND s.title = 'Фармакопея Российской Федерации IV издание'
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Острый и хронический кашель, ларингит, трахеит');
 
--- CALENDULA (РљРђР›Р•РќР”РЈР›Рђ)
+-- CALENDULA (КАЛЕНДУЛА)
 INSERT INTO knowledge_claims (plant_id, claim_type, title, claim_text, source_id, source_locator, review_status)
-SELECT p.id, 'INDICATION', 'РРЅС„РёС†РёСЂРѕРІР°РЅРЅС‹Рµ СЂР°РЅС‹, РѕР¶РѕРіРё, С„Р°СЂРёРЅРіРёС‚, СЌСЂРѕР·РёРё', 'РљР°СЂРѕС‚РёРЅРѕРёРґС‹ Рё С„Р»Р°РІРѕРЅРѕРёРґС‹ РєР°Р»РµРЅРґСѓР»С‹ СЃС‚РёРјСѓР»РёСЂСѓСЋС‚ РіСЂР°РЅСѓР»СЏС†РёСЋ Рё СѓСЃРєРѕСЂСЏСЋС‚ СЌРїРёС‚РµР»РёР·Р°С†РёСЋ РїРѕРІСЂРµР¶РґРµРЅРЅС‹С… С‚РєР°РЅРµР№, РїСЂРѕСЏРІР»СЏСЏ РјРѕС‰РЅС‹Р№ Р±Р°РєС‚РµСЂРёС†РёРґРЅС‹Р№ СЌС„С„РµРєС‚ РїСЂРѕС‚РёРІ СЃС‚Р°С„РёР»РѕРєРѕРєРєРѕРІ Рё СЃС‚СЂРµРїС‚РѕРєРѕРєРєРѕРІ.', s.id, 'WHO Monograph Vol. II, p. 35-44', 'VERIFIED'
+SELECT p.id, 'INDICATION', 'Инфицированные раны, ожоги, фарингит, эрозии', 'Каротиноиды и флавоноиды календулы стимулируют грануляцию и ускоряют эпителизацию поврежденных тканей, проявляя мощный бактерицидный эффект против стафилококков и стрептококков.', s.id, 'WHO Monograph Vol. II, p. 35-44', 'VERIFIED'
 FROM plants p, sources s WHERE p.scientific_name = 'Calendula officinalis' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'РРЅС„РёС†РёСЂРѕРІР°РЅРЅС‹Рµ СЂР°РЅС‹, РѕР¶РѕРіРё, С„Р°СЂРёРЅРіРёС‚, СЌСЂРѕР·РёРё');
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Инфицированные раны, ожоги, фарингит, эрозии');
 
--- RHODIOLA (Р—РћР›РћРўРћР™ РљРћР Р•РќР¬)
+-- RHODIOLA (ЗОЛОТОЙ КОРЕНЬ)
 INSERT INTO knowledge_claims (plant_id, claim_type, title, claim_text, source_id, source_locator, review_status)
-SELECT p.id, 'INDICATION', 'РҐСЂРѕРЅРёС‡РµСЃРєР°СЏ СѓСЃС‚Р°Р»РѕСЃС‚СЊ, Р°СЃС‚РµРЅРёС‡РµСЃРєРёРµ СЃРѕСЃС‚РѕСЏРЅРёСЏ Рё РїСЃРёС…РѕСЌРјРѕС†РёРѕРЅР°Р»СЊРЅРѕРµ РёСЃС‚РѕС‰РµРЅРёРµ', 'РЎР°Р»РёРґСЂРѕР·РёРґ Рё СЂРѕР·Р°РІРёРЅ СЂРѕРґРёРѕР»С‹ СЂРѕР·РѕРІРѕР№ РїРѕРІС‹С€Р°СЋС‚ СѓРјСЃС‚РІРµРЅРЅСѓСЋ Рё С„РёР·РёС‡РµСЃРєСѓСЋ СЂР°Р±РѕС‚РѕСЃРїРѕСЃРѕР±РЅРѕСЃС‚СЊ, РјРѕРґСѓР»РёСЂСѓСЏ СѓСЂРѕРІРµРЅСЊ СЃРµСЂРѕС‚РѕРЅРёРЅР° Рё РґРѕС„Р°РјРёРЅР° Р±РµР· СЌС„С„РµРєС‚Р° РїСЂРёРІС‹РєР°РЅРёСЏ.', s.id, 'Р¤РёС‚РѕС‚РµСЂР°РїРµРІС‚РёС‡РµСЃРєРёР№ СЃРїСЂР°РІРѕС‡РЅРёРє: Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹Рµ СЂР°СЃС‚РµРЅРёСЏ Р¦РµРЅС‚СЂР°Р»СЊРЅРѕР№ РђР·РёРё', 'Р“Р»Р°РІР° 4, Р РѕРґРёРѕР»Р° СЂРѕР·РѕРІР°СЏ', 'VERIFIED'
-FROM plants p, sources s WHERE p.scientific_name = 'Rhodiola rosea' AND s.title = 'Р¤РёС‚РѕС‚РµСЂР°РїРµРІС‚РёС‡РµСЃРєРёР№ СЃРїСЂР°РІРѕС‡РЅРёРє: Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹Рµ СЂР°СЃС‚РµРЅРёСЏ Р¦РµРЅС‚СЂР°Р»СЊРЅРѕР№ РђР·РёРё'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'РҐСЂРѕРЅРёС‡РµСЃРєР°СЏ СѓСЃС‚Р°Р»РѕСЃС‚СЊ, Р°СЃС‚РµРЅРёС‡РµСЃРєРёРµ СЃРѕСЃС‚РѕСЏРЅРёСЏ Рё РїСЃРёС…РѕСЌРјРѕС†РёРѕРЅР°Р»СЊРЅРѕРµ РёСЃС‚РѕС‰РµРЅРёРµ');
+SELECT p.id, 'INDICATION', 'Хроническая усталость, астенические состояния и психоэмоциональное истощение', 'Салидрозид и розавин родиолы розовой повышают умственную и физическую работоспособность, модулируя уровень серотонина и дофамина без эффекта привыкания.', s.id, 'Фитотерапевтический справочник: лекарственные растения Центральной Азии', 'Глава 4, Родиола розовая', 'VERIFIED'
+FROM plants p, sources s WHERE p.scientific_name = 'Rhodiola rosea' AND s.title = 'Фитотерапевтический справочник: лекарственные растения Центральной Азии'
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Хроническая усталость, астенические состояния и психоэмоциональное истощение');
 
 INSERT INTO knowledge_claims (plant_id, claim_type, title, claim_text, source_id, source_locator, review_status)
-SELECT p.id, 'CONTRAINDICATION', 'Р“РёРїРµСЂС‚РѕРЅРёС‡РµСЃРєРёР№ РєСЂРёР· Рё РѕСЃС‚СЂРѕРµ РїСЃРёС…РѕРјРѕС‚РѕСЂРЅРѕРµ РІРѕР·Р±СѓР¶РґРµРЅРёРµ', 'РўРѕРЅРёР·РёСЂСѓСЋС‰РёРµ РїСЂРµРїР°СЂР°С‚С‹ СЂРѕРґРёРѕР»С‹ РєР°С‚РµРіРѕСЂРёС‡РµСЃРєРё РїСЂРѕС‚РёРІРѕРїРѕРєР°Р·Р°РЅС‹ РїСЂРё РІС‹СЃРѕРєРѕРј Р°СЂС‚РµСЂРёР°Р»СЊРЅРѕРј РґР°РІР»РµРЅРёРё, Р»РёС…РѕСЂР°РґРєРµ Рё Р±РµСЃСЃРѕРЅРЅРёС†Рµ.', s.id, 'Р¤РёС‚РѕС‚РµСЂР°РїРµРІС‚РёС‡РµСЃРєРёР№ СЃРїСЂР°РІРѕС‡РЅРёРє: Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹Рµ СЂР°СЃС‚РµРЅРёСЏ Р¦РµРЅС‚СЂР°Р»СЊРЅРѕР№ РђР·РёРё', 'Р“Р»Р°РІР° 4', 'VERIFIED'
-FROM plants p, sources s WHERE p.scientific_name = 'Rhodiola rosea' AND s.title = 'Р¤РёС‚РѕС‚РµСЂР°РїРµРІС‚РёС‡РµСЃРєРёР№ СЃРїСЂР°РІРѕС‡РЅРёРє: Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹Рµ СЂР°СЃС‚РµРЅРёСЏ Р¦РµРЅС‚СЂР°Р»СЊРЅРѕР№ РђР·РёРё'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Р“РёРїРµСЂС‚РѕРЅРёС‡РµСЃРєРёР№ РєСЂРёР· Рё РѕСЃС‚СЂРѕРµ РїСЃРёС…РѕРјРѕС‚РѕСЂРЅРѕРµ РІРѕР·Р±СѓР¶РґРµРЅРёРµ');
+SELECT p.id, 'CONTRAINDICATION', 'Гипертонический криз и острое психомоторное возбуждение', 'Тонизирующие препараты родиолы категорически противопоказаны при высоком артериальном давлении, лихорадке и бессоннице.', s.id, 'Фитотерапевтический справочник: лекарственные растения Центральной Азии', 'Глава 4', 'VERIFIED'
+FROM plants p, sources s WHERE p.scientific_name = 'Rhodiola rosea' AND s.title = 'Фитотерапевтический справочник: лекарственные растения Центральной Азии'
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Гипертонический криз и острое психомоторное возбуждение');
 
--- ARCTOSTAPHYLOS (РўРћР›РћРљРќРЇРќРљРђ)
+-- ARCTOSTAPHYLOS (ТОЛОКНЯНКА)
 INSERT INTO knowledge_claims (plant_id, claim_type, title, claim_text, source_id, source_locator, review_status)
-SELECT p.id, 'INDICATION', 'Р’РѕСЃРїР°Р»РёС‚РµР»СЊРЅС‹Рµ РёРЅС„РµРєС†РёРё РјРѕС‡РµРІС‹РІРѕРґСЏС‰РёС… РїСѓС‚РµР№ (С†РёСЃС‚РёС‚, СѓСЂРµС‚СЂРёС‚)', 'РђСЂР±СѓС‚РёРЅ РіРёРґСЂРѕР»РёР·СѓРµС‚СЃСЏ РІ С‰РµР»РѕС‡РЅРѕР№ РјРѕС‡Рµ РґРѕ РіРёРґСЂРѕС…РёРЅРѕРЅР°, РєРѕС‚РѕСЂС‹Р№ РѕРєР°Р·С‹РІР°РµС‚ РїСЂСЏРјРѕРµ Р°РЅС‚РёСЃРµРїС‚РёС‡РµСЃРєРѕРµ Рё Р±Р°РєС‚РµСЂРёС†РёРґРЅРѕРµ РґРµР№СЃС‚РІРёРµ РЅР° СѓСЂРѕРїР°С‚РѕРіРµРЅРЅС‹Рµ Р±Р°РєС‚РµСЂРёРё.', s.id, 'WHO Monograph Vol. II, p. 342-351', 'VERIFIED'
+SELECT p.id, 'INDICATION', 'Воспалительные инфекции мочевыводящих путей (цистит, уретрит)', 'Арбутин гидролизуется в щелочной моче до гидрохинона, который оказывает прямое антисептическое и бактерицидное действие на уропатогенные бактерии.', s.id, 'WHO Monograph Vol. II, p. 342-351', 'VERIFIED'
 FROM plants p, sources s WHERE p.scientific_name = 'Arctostaphylos uva-ursi' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Р’РѕСЃРїР°Р»РёС‚РµР»СЊРЅС‹Рµ РёРЅС„РµРєС†РёРё РјРѕС‡РµРІС‹РІРѕРґСЏС‰РёС… РїСѓС‚РµР№ (С†РёСЃС‚РёС‚, СѓСЂРµС‚СЂРёС‚)');
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Воспалительные инфекции мочевыводящих путей (цистит, уретрит)');
 
--- SENNA (РЎР•РќРќРђ)
+-- SENNA (СЕННА)
 INSERT INTO knowledge_claims (plant_id, claim_type, title, claim_text, source_id, source_locator, review_status)
-SELECT p.id, 'INDICATION', 'РђС‚РѕРЅРёС‡РµСЃРєРёРµ Р·Р°РїРѕСЂС‹ Рё СЂРµРіСѓР»РёСЂРѕРІР°РЅРёРµ СЃС‚СѓР»Р°', 'РђРЅС‚СЂР°РіР»РёРєРѕР·РёРґС‹ (СЃРµРЅРЅРѕР·РёРґС‹) РіРёРґСЂРѕР»РёР·СѓСЋС‚СЃСЏ РјРёРєСЂРѕР±РёРѕС‚РѕР№ С‚РѕР»СЃС‚РѕРіРѕ РєРёС€РµС‡РЅРёРєР° СЃ РѕР±СЂР°Р·РѕРІР°РЅРёРµРј СЂРµРёРЅР°С‚СЂРѕРЅР°, СЃС‚РёРјСѓР»РёСЂСѓСЋС‰РµРіРѕ РїРµСЂРёСЃС‚Р°Р»СЊС‚РёРєСѓ С‚РѕР»СЃС‚РѕР№ РєРёС€РєРё С‡РµСЂРµР· 8-12 С‡Р°СЃРѕРІ.', s.id, 'WHO Monograph Vol. I, p. 241-258', 'VERIFIED'
+SELECT p.id, 'INDICATION', 'Атонические запоры и регулирование стула', 'Антрагликозиды (сеннозиды) гидролизуются микробиотой толстого кишечника с образованием реинатрона, стимулирующего перистальтику толстой кишки через 8-12 часов.', s.id, 'WHO Monograph Vol. I, p. 241-258', 'VERIFIED'
 FROM plants p, sources s WHERE p.scientific_name = 'Senna alexandrina' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'РђС‚РѕРЅРёС‡РµСЃРєРёРµ Р·Р°РїРѕСЂС‹ Рё СЂРµРіСѓР»РёСЂРѕРІР°РЅРёРµ СЃС‚СѓР»Р°');
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Атонические запоры и регулирование стула');
 
 INSERT INTO knowledge_claims (plant_id, claim_type, title, claim_text, source_id, source_locator, review_status)
-SELECT p.id, 'CONTRAINDICATION', 'РљРёС€РµС‡РЅР°СЏ РЅРµРїСЂРѕС…РѕРґРёРјРѕСЃС‚СЊ, Р°РїРїРµРЅРґРёС†РёС‚ Рё СЃРїР°СЃС‚РёС‡РµСЃРєРёР№ РєРѕР»РёС‚', 'РЎРµРЅРЅР° РїСЂРѕС‚РёРІРѕРїРѕРєР°Р·Р°РЅР° РїСЂРё Р»СЋР±С‹С… РѕСЃС‚СЂС‹С… РІРѕСЃРїР°Р»РёС‚РµР»СЊРЅС‹С… РїСЂРѕС†РµСЃСЃР°С… Р±СЂСЋС€РЅРѕР№ РїРѕР»РѕСЃС‚Рё, РєСЂРѕРІРѕС‚РµС‡РµРЅРёСЏС… РёР· Р–РљРў Рё РєРёС€РµС‡РЅРѕР№ РѕР±СЃС‚СЂСѓРєС†РёРё.', s.id, 'WHO Monograph Vol. I, p. 245', 'VERIFIED'
+SELECT p.id, 'CONTRAINDICATION', 'Кишечная непроходимость, аппендицит и спастический колит', 'Сенна противопоказана при любых острых воспалительных процессах брюшной полости, кровотечениях из ЖКТ и кишечной обструкции.', s.id, 'WHO Monograph Vol. I, p. 245', 'VERIFIED'
 FROM plants p, sources s WHERE p.scientific_name = 'Senna alexandrina' AND s.title = 'WHO Monographs on Selected Medicinal Plants'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'РљРёС€РµС‡РЅР°СЏ РЅРµРїСЂРѕС…РѕРґРёРјРѕСЃС‚СЊ, Р°РїРїРµРЅРґРёС†РёС‚ Рё СЃРїР°СЃС‚РёС‡РµСЃРєРёР№ РєРѕР»РёС‚');
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.plant_id = p.id AND kc.title = 'Кишечная непроходимость, аппендицит и спастический колит');
 
 -- PREPARATIONS CLAIMS
 INSERT INTO knowledge_claims (preparation_id, claim_type, title, claim_text, source_id, source_locator, review_status)
-SELECT pr.id, 'INDICATION', 'РљРѕРјРїР»РµРєСЃРЅРѕРµ Р»РµС‡РµРЅРёРµ РѕСЃС‚СЂРѕРіРѕ Рё С…СЂРѕРЅРёС‡РµСЃРєРѕРіРѕ СЃРёРЅСѓСЃРёС‚Р°', 'РЎРёРЅСѓРїСЂРµС‚ СЂРµРіСѓР»РёСЂСѓРµС‚ СЃРµРєСЂРµС†РёСЋ СЃР»РёР·Рё, СѓСЃС‚СЂР°РЅСЏРµС‚ РѕС‚РµРє С‚РєР°РЅРµР№ РїСЂРёРґР°С‚РѕС‡РЅС‹С… РїР°Р·СѓС… РЅРѕСЃР° Рё РІРѕСЃСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ РµСЃС‚РµСЃС‚РІРµРЅРЅС‹Р№ РґСЂРµРЅР°Р¶ РѕРєРѕР»РѕРЅРѕСЃРѕРІС‹С… РїР°Р·СѓС….', s.id, 'РРЅСЃС‚СЂСѓРєС†РёСЏ РїРѕ РјРµРґРёС†РёРЅСЃРєРѕРјСѓ РїСЂРёРјРµРЅРµРЅРёСЋ РїСЂРµРїР°СЂР°С‚Р° РЎРёРЅСѓРїСЂРµС‚', 'VERIFIED'
-FROM preparations pr, sources s WHERE pr.name = 'РЎРёРЅСѓРїСЂРµС‚ (Sinupret)' AND s.title = 'Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р РµСЃРїСѓР±Р»РёРєРё РљР°Р·Р°С…СЃС‚Р°РЅ'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.preparation_id = pr.id AND kc.title = 'РљРѕРјРїР»РµРєСЃРЅРѕРµ Р»РµС‡РµРЅРёРµ РѕСЃС‚СЂРѕРіРѕ Рё С…СЂРѕРЅРёС‡РµСЃРєРѕРіРѕ СЃРёРЅСѓСЃРёС‚Р°');
+SELECT pr.id, 'INDICATION', 'Комплексное лечение острого и хронического синусита', 'Синупрет регулирует секрецию слизи, устраняет отек тканей придаточных пазух носа и восстанавливает естественный дренаж околоносовых пазух.', s.id, 'Инструкция по медицинскому применению препарата Синупрет', 'VERIFIED'
+FROM preparations pr, sources s WHERE pr.name = 'Синупрет (Sinupret)' AND s.title = 'Государственный реестр лекарственных средств Республики Казахстан'
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.preparation_id = pr.id AND kc.title = 'Комплексное лечение острого и хронического синусита');
 
 INSERT INTO knowledge_claims (preparation_id, claim_type, title, claim_text, source_id, source_locator, review_status)
-SELECT pr.id, 'INDICATION', 'РџСЂРѕС‚РёРІРѕРІРѕСЃРїР°Р»РёС‚РµР»СЊРЅРѕРµ РґРµР№СЃС‚РІРёРµ РїСЂРё РїРёРµР»РѕРЅРµС„СЂРёС‚Рµ Рё С†РёСЃС‚РёС‚Рµ', 'РљР°РЅРµС„СЂРѕРЅ H СЃРЅРёР¶Р°РµС‚ РІС‹СЂР°Р¶РµРЅРЅРѕСЃС‚СЊ Р±РѕР»РµР№ Рё СЃРїР°Р·РјРѕРІ РїСЂРё РјРѕС‡РµРёСЃРїСѓСЃРєР°РЅРёРё, СѓРјРµРЅСЊС€Р°РµС‚ РїСЂРѕС‚РµРёРЅСѓСЂРёСЋ Рё СЃРЅРёР¶Р°РµС‚ СЂРёСЃРє СЂРµС†РёРґРёРІРѕРІ С†РёСЃС‚РёС‚Р° Р±Р»Р°РіРѕРґР°СЂСЏ РєРѕРјРїР»РµРєСЃСѓ Р»СЋР±РёСЃС‚РѕРєР°, Р·РѕР»РѕС‚РѕС‚С‹СЃСЏС‡РЅРёРєР° Рё СЂРѕР·РјР°СЂРёРЅР°.', s.id, 'РРЅСЃС‚СЂСѓРєС†РёСЏ РїРѕ РјРµРґРёС†РёРЅСЃРєРѕРјСѓ РїСЂРёРјРµРЅРµРЅРёСЋ РљР°РЅРµС„СЂРѕРЅ H', 'VERIFIED'
-FROM preparations pr, sources s WHERE pr.name = 'РљР°РЅРµС„СЂРѕРЅ H (Canephron N)' AND s.title = 'Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р РµСЃРїСѓР±Р»РёРєРё РљР°Р·Р°С…СЃС‚Р°РЅ'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.preparation_id = pr.id AND kc.title = 'РџСЂРѕС‚РёРІРѕРІРѕСЃРїР°Р»РёС‚РµР»СЊРЅРѕРµ РґРµР№СЃС‚РІРёРµ РїСЂРё РїРёРµР»РѕРЅРµС„СЂРёС‚Рµ Рё С†РёСЃС‚РёС‚Рµ');
+SELECT pr.id, 'INDICATION', 'Противовоспалительное действие при пиелонефрите и цистите', 'Канефрон H снижает выраженность болей и спазмов при мочеиспускании, уменьшает протеинурию и снижает риск рецидивов цистита благодаря комплексу любистока, золототысячника и розмарина.', s.id, 'Инструкция по медицинскому применению Канефрон H', 'VERIFIED'
+FROM preparations pr, sources s WHERE pr.name = 'Канефрон H (Canephron N)' AND s.title = 'Государственный реестр лекарственных средств Республики Казахстан'
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.preparation_id = pr.id AND kc.title = 'Противовоспалительное действие при пиелонефрите и цистите');
 
 INSERT INTO knowledge_claims (preparation_id, claim_type, title, claim_text, source_id, source_locator, review_status)
-SELECT pr.id, 'INDICATION', 'РћР±Р»РµРіС‡РµРЅРёРµ РѕС‚С…Р°СЂРєРёРІР°РЅРёСЏ РїСЂРё РІР»Р°Р¶РЅРѕРј РїСЂРѕРґСѓРєС‚РёРІРЅРѕРј РєР°С€Р»Рµ', 'Р“РµРґРµР»РёРєСЃ РЅР° РѕСЃРЅРѕРІРµ СЌРєСЃС‚СЂР°РєС‚Р° РїР»СЋС‰Р° СЃРЅРёР¶Р°РµС‚ РІСЏР·РєРѕСЃС‚СЊ Р±СЂРѕРЅС…РёР°Р»СЊРЅРѕР№ РјРѕРєСЂРѕС‚С‹, СЂР°СЃСЃР»Р°Р±Р»СЏРµС‚ РіР»Р°РґРєСѓСЋ РјСѓСЃРєСѓР»Р°С‚СѓСЂСѓ Р±СЂРѕРЅС…РѕРІ Рё СѓСЃРєРѕСЂСЏРµС‚ РѕС‡РёС‰РµРЅРёРµ РґС‹С…Р°С‚РµР»СЊРЅС‹С… РїСѓС‚РµР№ РїСЂРё Р±СЂРѕРЅС…РёС‚Р°С….', s.id, 'РРЅСЃС‚СЂСѓРєС†РёСЏ РїРѕ РјРµРґРёС†РёРЅСЃРєРѕРјСѓ РїСЂРёРјРµРЅРµРЅРёСЋ Р“РµРґРµР»РёРєСЃ', 'VERIFIED'
-FROM preparations pr, sources s WHERE pr.name = 'Р“РµРґРµР»РёРєСЃ (Hedelix)' AND s.title = 'Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р РµСЃРїСѓР±Р»РёРєРё РљР°Р·Р°С…СЃС‚Р°РЅ'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.preparation_id = pr.id AND kc.title = 'РћР±Р»РµРіС‡РµРЅРёРµ РѕС‚С…Р°СЂРєРёРІР°РЅРёСЏ РїСЂРё РІР»Р°Р¶РЅРѕРј РїСЂРѕРґСѓРєС‚РёРІРЅРѕРј РєР°С€Р»Рµ');
+SELECT pr.id, 'INDICATION', 'Облегчение отхаркивания при влажном продуктивном кашле', 'Геделикс на основе экстракта плюща снижает вязкость бронхиальной мокроты, расслабляет гладкую мускулатуру бронхов и ускоряет очищение дыхательных путей при бронхитах.', s.id, 'Инструкция по медицинскому применению Геделикс', 'VERIFIED'
+FROM preparations pr, sources s WHERE pr.name = 'Геделикс (Hedelix)' AND s.title = 'Государственный реестр лекарственных средств Республики Казахстан'
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.preparation_id = pr.id AND kc.title = 'Облегчение отхаркивания при влажном продуктивном кашле');
 
 INSERT INTO knowledge_claims (preparation_id, claim_type, title, claim_text, source_id, source_locator, review_status)
-SELECT pr.id, 'CONTRAINDICATION', 'РџРѕРІС‹С€РµРЅРЅР°СЏ РёРЅРґРёРІРёРґСѓР°Р»СЊРЅР°СЏ С‡СѓРІСЃС‚РІРёС‚РµР»СЊРЅРѕСЃС‚СЊ Рё РІРѕР·СЂР°СЃС‚ РґРѕ 1 РіРѕРґР°', 'РџСЂРµРїР°СЂР°С‚ Р“РµРґРµР»РёРєСЃ РЅРµ СЂРµРєРѕРјРµРЅРґСѓРµС‚СЃСЏ РЅР°Р·РЅР°С‡Р°С‚СЊ РґРµС‚СЏРј РіСЂСѓРґРЅРѕРіРѕ РІРѕР·СЂР°СЃС‚Р° Р±РµР· РЅР°Р·РЅР°С‡РµРЅРёСЏ РїРµРґРёР°С‚СЂР° Рё РїСЂРё РґРµС„РёС†РёС‚Рµ С„СЂСѓРєС‚РѕР·Рѕ-1,6-РґРёС„РѕСЃС„Р°С‚Р°Р·С‹.', s.id, 'РРЅСЃС‚СЂСѓРєС†РёСЏ РїРѕ РјРµРґРёС†РёРЅСЃРєРѕРјСѓ РїСЂРёРјРµРЅРµРЅРёСЋ Р“РµРґРµР»РёРєСЃ', 'VERIFIED'
-FROM preparations pr, sources s WHERE pr.name = 'Р“РµРґРµР»РёРєСЃ (Hedelix)' AND s.title = 'Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р РµСЃРїСѓР±Р»РёРєРё РљР°Р·Р°С…СЃС‚Р°РЅ'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.preparation_id = pr.id AND kc.title = 'РџРѕРІС‹С€РµРЅРЅР°СЏ РёРЅРґРёРІРёРґСѓР°Р»СЊРЅР°СЏ С‡СѓРІСЃС‚РІРёС‚РµР»СЊРЅРѕСЃС‚СЊ Рё РІРѕР·СЂР°СЃС‚ РґРѕ 1 РіРѕРґР°');
+SELECT pr.id, 'CONTRAINDICATION', 'Повышенная индивидуальная чувствительность и возраст до 1 года', 'Препарат Геделикс не рекомендуется назначать детям грудного возраста без назначения педиатра и при дефиците фруктозо-1,6-дифосфатазы.', s.id, 'Инструкция по медицинскому применению Геделикс', 'VERIFIED'
+FROM preparations pr, sources s WHERE pr.name = 'Геделикс (Hedelix)' AND s.title = 'Государственный реестр лекарственных средств Республики Казахстан'
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.preparation_id = pr.id AND kc.title = 'Повышенная индивидуальная чувствительность и возраст до 1 года');
 
 INSERT INTO knowledge_claims (preparation_id, claim_type, title, claim_text, source_id, source_locator, review_status)
-SELECT pr.id, 'INDICATION', 'Р’РѕСЃРїР°Р»РёС‚РµР»СЊРЅС‹Рµ Р·Р°Р±РѕР»РµРІР°РЅРёСЏ Р¶РµР»С‡РµРІС‹РІРѕРґСЏС‰РёС… РїСѓС‚РµР№ Рё РґРёСЃРєРёРЅРµР·РёСЏ', 'РҐРѕС„РёС‚РѕР» СѓСЃРёР»РёРІР°РµС‚ РѕР±СЂР°Р·РѕРІР°РЅРёРµ Рё РѕС‚С‚РѕРє Р¶РµР»С‡Рё, РЅРѕСЂРјР°Р»РёР·СѓРµС‚ СѓСЂРѕРІРµРЅСЊ С…РѕР»РµСЃС‚РµСЂРёРЅР° Рё Р·Р°С‰РёС‰Р°РµС‚ РєР»РµС‚РєРё РїРµС‡РµРЅРё РѕС‚ РѕРєСЃРёРґР°С‚РёРІРЅРѕРіРѕ РїРѕРІСЂРµР¶РґРµРЅРёСЏ.', s.id, 'РРЅСЃС‚СЂСѓРєС†РёСЏ РїРѕ РјРµРґРёС†РёРЅСЃРєРѕРјСѓ РїСЂРёРјРµРЅРµРЅРёСЋ РїСЂРµРїР°СЂР°С‚Р° РҐРѕС„РёС‚РѕР»', 'VERIFIED'
-FROM preparations pr, sources s WHERE pr.name = 'РҐРѕС„РёС‚РѕР» (Chophytol)' AND s.title = 'Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р РµСЃРїСѓР±Р»РёРєРё РљР°Р·Р°С…СЃС‚Р°РЅ'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.preparation_id = pr.id AND kc.title = 'Р’РѕСЃРїР°Р»РёС‚РµР»СЊРЅС‹Рµ Р·Р°Р±РѕР»РµРІР°РЅРёСЏ Р¶РµР»С‡РµРІС‹РІРѕРґСЏС‰РёС… РїСѓС‚РµР№ Рё РґРёСЃРєРёРЅРµР·РёСЏ');
+SELECT pr.id, 'INDICATION', 'Воспалительные заболевания желчевыводящих путей и дискинезия', 'Хофитол усиливает образование и отток желчи, нормализует уровень холестерина и защищает клетки печени от оксидативного повреждения.', s.id, 'Инструкция по медицинскому применению препарата Хофитол', 'VERIFIED'
+FROM preparations pr, sources s WHERE pr.name = 'Хофитол (Chophytol)' AND s.title = 'Государственный реестр лекарственных средств Республики Казахстан'
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.preparation_id = pr.id AND kc.title = 'Воспалительные заболевания желчевыводящих путей и дискинезия');
 
 INSERT INTO knowledge_claims (preparation_id, claim_type, title, claim_text, source_id, source_locator, review_status)
-SELECT pr.id, 'CONTRAINDICATION', 'РќРµРїСЂРѕС…РѕРґРёРјРѕСЃС‚СЊ (РѕР±С‚СѓСЂР°С†РёСЏ) Р¶РµР»С‡РЅС‹С… РїСѓС‚РµР№ Рё РєР°Р»СЊРєСѓР»РµР·РЅС‹Р№ С…РѕР»РµС†РёСЃС‚РёС‚', 'Р–РµР»С‡РµРіРѕРЅРЅС‹Рµ РїСЂРµРїР°СЂР°С‚С‹ РїСЂРѕС‚РёРІРѕРїРѕРєР°Р·Р°РЅС‹ РїСЂРё Р¶РµР»С‡РЅРѕРєР°РјРµРЅРЅРѕР№ Р±РѕР»РµР·РЅРё СЃ СЂРёСЃРєРѕРј Р·Р°РєСѓРїРѕСЂРєРё Р¶РµР»С‡РЅС‹С… РїСЂРѕС‚РѕРєРѕРІ РєРѕРЅРєСЂРµРјРµРЅС‚Р°РјРё.', s.id, 'РРЅСЃС‚СЂСѓРєС†РёСЏ РїРѕ РјРµРґРёС†РёРЅСЃРєРѕРјСѓ РїСЂРёРјРµРЅРµРЅРёСЋ РїСЂРµРїР°СЂР°С‚Р° РҐРѕС„РёС‚РѕР»', 'VERIFIED'
-FROM preparations pr, sources s WHERE pr.name = 'РҐРѕС„РёС‚РѕР» (Chophytol)' AND s.title = 'Р“РѕСЃСѓРґР°СЂСЃС‚РІРµРЅРЅС‹Р№ СЂРµРµСЃС‚СЂ Р»РµРєР°СЂСЃС‚РІРµРЅРЅС‹С… СЃСЂРµРґСЃС‚РІ Р РµСЃРїСѓР±Р»РёРєРё РљР°Р·Р°С…СЃС‚Р°РЅ'
-AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.preparation_id = pr.id AND kc.title = 'РќРµРїСЂРѕС…РѕРґРёРјРѕСЃС‚СЊ (РѕР±С‚СѓСЂР°С†РёСЏ) Р¶РµР»С‡РЅС‹С… РїСѓС‚РµР№ Рё РєР°Р»СЊРєСѓР»РµР·РЅС‹Р№ С…РѕР»РµС†РёСЃС‚РёС‚');
+SELECT pr.id, 'CONTRAINDICATION', 'Непроходимость (обтурация) желчных путей и калькулезный холецистит', 'Желчегонные препараты противопоказаны при желчнокаменной болезни с риском закупорки желчных протоков конкрементами.', s.id, 'Инструкция по медицинскому применению препарата Хофитол', 'VERIFIED'
+FROM preparations pr, sources s WHERE pr.name = 'Хофитол (Chophytol)' AND s.title = 'Государственный реестр лекарственных средств Республики Казахстан'
+AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.preparation_id = pr.id AND kc.title = 'Непроходимость (обтурация) желчных путей и калькулезный холецистит');

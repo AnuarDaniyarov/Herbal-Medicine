@@ -57,4 +57,8 @@ public class KnowledgeClaimReview {
 
     @PrePersist
     void onCreate() { createdAt = OffsetDateTime.now(ZoneOffset.UTC); }
+
+    public KnowledgeClaim getClaim() { return claim; }
+    public UserAccount getReviewer() { return reviewer; }
+    public ReviewStatus getNewStatus() { return newStatus; }
 }

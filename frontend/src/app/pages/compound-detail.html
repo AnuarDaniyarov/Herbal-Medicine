@@ -38,6 +38,7 @@
 
     <h2>Экспериментальные измерения</h2>
     <p class="notice">Измерения показаны по отдельным тестам и единицам; результаты разных методик не объединяются.</p>
+    @if (measurementsError()) { <div class="error" role="alert">{{measurementsError()}}</div> }
     @if (measurements().length) {
       <div class="table-wrap" style="margin-top: 14px">
         <table>

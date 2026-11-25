@@ -6,6 +6,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -144,7 +146,9 @@ class MedicinePlatformApplicationTests {
         var claim = knowledgeClaims.save(new KnowledgeClaim(plant, null, ClaimType.INDICATION,
                 "Research topic evidence", "This verified statement discusses the research topic in a laboratory assay.",
                 null, source, "p. 4", null));
-        claim.review(null, ReviewStatus.VERIFIED, null);
+        UserAccount reviewer = userAccounts.save(new UserAccount("expert-" + UUID.randomUUID() + "@example.test", "Expert Reviewer",
+                "not-a-real-login-hash", UserRole.EXPERT));
+        claim.review(reviewer, ReviewStatus.VERIFIED, "Approved");
         knowledgeClaims.save(claim);
         UserAccount user = userAccounts.save(new UserAccount("assistant-" + UUID.randomUUID() + "@example.test", "Assistant Test",
                 "not-a-real-login-hash", UserRole.USER));
@@ -179,7 +183,9 @@ class MedicinePlatformApplicationTests {
                 "10.0000/names", "https://example.org/names", "ARTICLE", OffsetDateTime.now(ZoneOffset.UTC)));
         KnowledgeClaim claim = knowledgeClaims.save(new KnowledgeClaim(plant, null, ClaimType.INDICATION,
                 "Reference entry", "A verified reference entry for this plant.", null, source, "p. 2", null));
-        claim.review(null, ReviewStatus.VERIFIED, null);
+        UserAccount reviewer = userAccounts.save(new UserAccount("expert-" + UUID.randomUUID() + "@example.test", "Expert Reviewer",
+                "not-a-real-login-hash", UserRole.EXPERT));
+        claim.review(reviewer, ReviewStatus.VERIFIED, "Approved");
         knowledgeClaims.save(claim);
         UserAccount user = userAccounts.save(new UserAccount("names-" + UUID.randomUUID() + "@example.test",
                 "Names Test", "not-a-real-login-hash", UserRole.USER));
@@ -310,8 +316,11 @@ class MedicinePlatformApplicationTests {
                   "activityCode": "demo"
                 }
                 """;
+        UserAccount owner = userAccounts.save(new UserAccount(
+                "prediction-owner-" + UUID.randomUUID() + "@example.test", "Prediction Owner", "hash", UserRole.USER));
 
         mockMvc.perform(post("/api/predictions")
+                        .with(csrf()).with(user(owner))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(request))
                 .andExpect(status().isCreated())
@@ -323,13 +332,22 @@ class MedicinePlatformApplicationTests {
 
         long id = predictions.findAll().getFirst().getId();
         mockMvc.perform(get("/api/predictions/{id}", id))
+                .andExpect(status().isNotFound());
+        mockMvc.perform(get("/api/predictions/{id}", id).with(user(owner)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.modelName").value("prediction-api-placeholder"));
+        UserAccount other = userAccounts.save(new UserAccount(
+                "prediction-other-" + UUID.randomUUID() + "@example.test", "Other User", "hash", UserRole.USER));
+        mockMvc.perform(get("/api/predictions/{id}", id).with(user(other)))
+                .andExpect(status().isNotFound());
     }
 
     @Test
     void invalidPredictionAndMissingPlantReturnStructuredErrors() throws Exception {
         mockMvc.perform(post("/api/predictions")
+                        .with(csrf()).with(user(userAccounts.save(new UserAccount(
+                                "prediction-invalid-" + UUID.randomUUID() + "@example.test",
+                                "Prediction User", "hash", UserRole.USER))))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"smiles\":\" \",\"activityCode\":\"demo\"}"))
                 .andExpect(status().isBadRequest())
@@ -349,18 +367,21 @@ class MedicinePlatformApplicationTests {
         String request = "{\"candidateIds\":[" + first.getId() + "," + second.getId()
                 + "],\"activityCode\":\"demo\"}";
 
-        mockMvc.perform(post("/api/comparisons").contentType(MediaType.APPLICATION_JSON).content(request))
+        mockMvc.perform(post("/api/comparisons").with(csrf()).with(user("test-user").roles("USER"))
+                        .contentType(MediaType.APPLICATION_JSON).content(request))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.candidates.length()").value(2))
                 .andExpect(jsonPath("$.candidates[0].measurements").isArray())
                 .andExpect(jsonPath("$.notice").exists());
 
-        mockMvc.perform(post("/api/comparisons").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/api/comparisons").with(csrf()).with(user("test-user").roles("USER"))
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content(request.replace("demo", "unknown")))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.errorCode").value("INVALID_REQUEST"));
 
-        mockMvc.perform(post("/api/comparisons").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/api/comparisons").with(csrf()).with(user("test-user").roles("USER"))
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"candidateIds\":[987654,987655],\"activityCode\":\"demo\"}"))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.errorCode").value("NOT_FOUND"));

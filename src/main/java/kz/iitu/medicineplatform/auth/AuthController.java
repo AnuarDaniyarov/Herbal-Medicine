@@ -23,8 +23,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/auth")
 public class AuthController {
     private final AuthService authService;
+    private final AuthRateLimiter rateLimiter;
 
-    public AuthController(AuthService authService) { this.authService = authService; }
+    public AuthController(AuthService authService, AuthRateLimiter rateLimiter) {
+        this.authService = authService;
+        this.rateLimiter = rateLimiter;
+    }
 
     @GetMapping("/csrf")
     public Map<String, String> csrf(CsrfToken token) {
@@ -33,7 +37,9 @@ public class AuthController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public AuthDtos.UserResponse register(@Valid @RequestBody AuthDtos.RegisterRequest request) {
+    public AuthDtos.UserResponse register(@Valid @RequestBody AuthDtos.RegisterRequest request,
+                                         HttpServletRequest servletRequest) {
+        rateLimiter.checkRegister(clientIp(servletRequest));
         return AuthDtos.UserResponse.from(authService.register(request));
     }
 
@@ -41,7 +47,19 @@ public class AuthController {
     public AuthDtos.UserResponse login(@Valid @RequestBody AuthDtos.LoginRequest request,
                                        HttpServletRequest servletRequest,
                                        HttpServletResponse servletResponse) {
-        UserAccount account = authService.authenticate(request);
+        String ip = clientIp(servletRequest);
+        rateLimiter.checkLogin(request.email(), ip);
+        UserAccount account;
+        try {
+            account = authService.authenticate(request);
+            rateLimiter.recordLoginSuccess(request.email(), ip);
+        } catch (org.springframework.web.server.ResponseStatusException ex) {
+            if (ex.getStatusCode().value() == HttpStatus.UNAUTHORIZED.value()) {
+                rateLimiter.recordLoginFailure(request.email(), ip);
+            }
+            throw ex;
+        }
+
         HttpSession session = servletRequest.getSession(true);
         servletRequest.changeSessionId();
         SecurityContext context = SecurityContextHolder.createEmptyContext();
@@ -50,6 +68,15 @@ public class AuthController {
         SecurityContextHolder.setContext(context);
         new HttpSessionSecurityContextRepository().saveContext(context, servletRequest, servletResponse);
         return AuthDtos.UserResponse.from(account);
+    }
+
+    private String clientIp(HttpServletRequest request) {
+        String xForwardedFor = request.getHeader("X-Forwarded-For");
+        if (xForwardedFor != null && !xForwardedFor.isBlank()) {
+            String[] forwarded = xForwardedFor.split(",");
+            return forwarded[forwarded.length - 1].trim();
+        }
+        return request.getRemoteAddr();
     }
 
     @GetMapping("/me")

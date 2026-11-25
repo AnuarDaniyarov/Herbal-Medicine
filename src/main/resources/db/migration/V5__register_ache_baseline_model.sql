@@ -1,4 +1,4 @@
-﻿-- Register an explicitly exploratory baseline for one human AChE IC50 activity.
+-- Register an explicitly exploratory baseline for one human AChE IC50 activity.
 INSERT INTO model_versions (name, version, activity_code, execution_type, training_data_description, metrics_json, is_active)
 VALUES (
     'AChE SMILES n-gram logistic baseline',

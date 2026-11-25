@@ -58,6 +58,10 @@ public class Prediction {
     @Column(nullable = false, length = 30)
     private String status;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "created_by")
+    private kz.iitu.medicineplatform.auth.UserAccount createdBy;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private OffsetDateTime createdAt;
 
@@ -66,12 +70,18 @@ public class Prediction {
 
     public Prediction(Compound compound, String inputSmiles, String activityCode, ModelVersion modelVersion,
                       String warning, String status) {
+        this(compound, inputSmiles, activityCode, modelVersion, warning, status, null);
+    }
+
+    public Prediction(Compound compound, String inputSmiles, String activityCode, ModelVersion modelVersion,
+                      String warning, String status, kz.iitu.medicineplatform.auth.UserAccount createdBy) {
         this.compound = compound;
         this.inputSmiles = inputSmiles;
         this.activityCode = activityCode;
         this.modelVersion = modelVersion;
         this.warning = warning;
         this.status = status;
+        this.createdBy = createdBy;
     }
 
     public void setResult(PredictionResult result) {
@@ -101,5 +111,6 @@ public class Prediction {
     public ModelVersion getModelVersion() { return modelVersion; }
     public String getWarning() { return warning; }
     public String getStatus() { return status; }
+    public kz.iitu.medicineplatform.auth.UserAccount getCreatedBy() { return createdBy; }
     public OffsetDateTime getCreatedAt() { return createdAt; }
 }

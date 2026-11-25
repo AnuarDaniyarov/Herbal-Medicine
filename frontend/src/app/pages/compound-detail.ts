@@ -22,6 +22,7 @@ export class CompoundDetailPage {
   readonly favoriteId = signal<number | null>(null);
   readonly error = signal('');
   readonly notice = signal('');
+  readonly measurementsError = signal('');
 
   constructor() {
     const id = Number(inject(ActivatedRoute).snapshot.paramMap.get('id'));
@@ -33,8 +34,13 @@ export class CompoundDetailPage {
       error: e => this.error.set(e.error?.message || 'Соединение не найдено')
     });
     this.api.measurements(id).subscribe({
-      next: v => this.measurements.set(v),
-      error: () => {}
+      next: v => {
+        this.measurements.set(v);
+        this.measurementsError.set('');
+      },
+      error: e => this.measurementsError.set(
+        e.error?.message || 'Не удалось загрузить экспериментальные измерения.'
+      )
     });
   }
 

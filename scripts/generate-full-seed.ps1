@@ -500,5 +500,5 @@ FROM preparations pr, sources s WHERE pr.name = 'Хофитол (Chophytol)' AND
 AND NOT EXISTS (SELECT 1 FROM knowledge_claims kc WHERE kc.preparation_id = pr.id AND kc.title = 'Непроходимость (обтурация) желчных путей и калькулезный холецистит');
 "@
 
-[System.IO.File]::WriteAllText($targetFile, $sql, [System.Text.Encoding]::UTF8)
+[System.IO.File]::WriteAllText($targetFile, $sql, [System.Text.UTF8Encoding]::new($false))
 Write-Host "Generated $targetFile successfully."

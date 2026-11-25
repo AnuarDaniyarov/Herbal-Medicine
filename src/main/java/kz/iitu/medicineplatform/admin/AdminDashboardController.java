@@ -50,27 +50,32 @@ public class AdminDashboardController {
     @GetMapping("/stats")
     @Operation(summary = "Get platform overview metrics and database entity counts")
     public PlatformStats stats() {
-        long totalPlants = plants.count();
-        long verifiedPlants = plants.findAll().stream()
-                .filter(p -> "VERIFIED".equalsIgnoreCase(p.getReviewStatus())).count();
+        Object[] plantCounts = plants.countAndReviewStatus("VERIFIED");
+        long totalPlants = ((Number) plantCounts[0]).longValue();
+        long verifiedPlants = ((Number) plantCounts[1]).longValue();
 
         long totalCompounds = compounds.count();
-        long totalPreparations = preparations.count();
-        long verifiedPreparations = preparations.findAll().stream()
-                .filter(p -> p.getReviewStatus() == ReviewStatus.VERIFIED).count();
+        Object[] preparationCounts = preparations.countAndReviewStatus(ReviewStatus.VERIFIED);
+        long totalPreparations = ((Number) preparationCounts[0]).longValue();
+        long verifiedPreparations = ((Number) preparationCounts[1]).longValue();
 
-        long totalClaims = claims.count();
-        long verifiedClaims = claims.findByReviewStatus(ReviewStatus.VERIFIED, org.springframework.data.domain.Pageable.unpaged()).getTotalElements();
-        long pendingClaims = claims.findByReviewStatus(ReviewStatus.PENDING, org.springframework.data.domain.Pageable.unpaged()).getTotalElements();
-        long unverifiedClaims = claims.findByReviewStatus(ReviewStatus.UNVERIFIED, org.springframework.data.domain.Pageable.unpaged()).getTotalElements();
-        long rejectedClaims = claims.findByReviewStatus(ReviewStatus.REJECTED, org.springframework.data.domain.Pageable.unpaged()).getTotalElements();
+        Map<ReviewStatus, Long> claimCounts = new java.util.EnumMap<>(ReviewStatus.class);
+        for (Object[] row : claims.countGroupedByReviewStatus()) {
+            claimCounts.put((ReviewStatus) row[0], ((Number) row[1]).longValue());
+        }
+        long totalClaims = claimCounts.values().stream().mapToLong(Long::longValue).sum();
+        long verifiedClaims = claimCounts.getOrDefault(ReviewStatus.VERIFIED, 0L);
+        long pendingClaims = claimCounts.getOrDefault(ReviewStatus.PENDING, 0L);
+        long unverifiedClaims = claimCounts.getOrDefault(ReviewStatus.UNVERIFIED, 0L);
+        long rejectedClaims = claimCounts.getOrDefault(ReviewStatus.REJECTED, 0L);
 
         long totalSources = sources.count();
         long totalUsers = users.count();
 
         Map<String, Long> userRoles = new HashMap<>();
-        for (UserRole role : UserRole.values()) {
-            userRoles.put(role.name(), users.findAll().stream().filter(u -> u.getRole() == role).count());
+        for (UserRole role : UserRole.values()) userRoles.put(role.name(), 0L);
+        for (Object[] row : users.countGroupedByRole()) {
+            userRoles.put(((UserRole) row[0]).name(), ((Number) row[1]).longValue());
         }
 
         return new PlatformStats(
